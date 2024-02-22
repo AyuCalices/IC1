@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0d297e155f389e40a9856d64577033d, type: 3}
+  m_Name: SD Models Variable
+  m_EditorClassIdentifier: 
+  _models:
+  - rid: 3081478606466842626
+  - rid: 3081478606466842627
+  _currentModel: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 3081478606466842626
+      type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
+      data:
+        title: dreamshaperXL_turboDpmppSDE.safetensors [676f0d60c8]
+        model_name: dreamshaperXL_turboDpmppSDE
+        hash: 676f0d60c8
+        sha256: 676f0d60c8e860146d5e8a0d802599cadd04e7cadf85c283f189f41f01c9e359
+        filename: C:\Custom\stable-diffusion-webui-master\models\Stable-diffusion\dreamshaperXL_turboDpmppSDE.safetensors
+        config: 
+    - rid: 3081478606466842627
+      type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
+      data:
+        title: ghostmix_v20Bakedvae.safetensors [e3edb8a26f]
+        model_name: ghostmix_v20Bakedvae
+        hash: e3edb8a26f
+        sha256: e3edb8a26f44dfddc124129004b5ded3378be974b8d3bf82f43b9660d416d3d1
+        filename: C:\Custom\stable-diffusion-webui-master\models\Stable-diffusion\ghostmix_v20Bakedvae.safetensors
+        config: 
