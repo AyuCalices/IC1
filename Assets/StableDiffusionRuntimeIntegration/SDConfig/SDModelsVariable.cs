@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,9 +20,9 @@ namespace StableDiffusionRuntimeIntegration.SDConfig
         }
 
         [ContextMenu("Get All Models")]
-        public async void SetupAllModelsAsync()
+        public async Task SetupAllModelsAsync()
         {
-            _models = await StableDiffusionRequests.GetModelsAsync();
+            _models = await Automatic1111API.GetModelsAsync();
 
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
@@ -31,16 +32,12 @@ namespace StableDiffusionRuntimeIntegration.SDConfig
         [ContextMenu("Get Current Model")]
         public async void GetCurrentModelAsync()
         {
-            if (_models == null || _models.Length == 0)
-            {
-                _models = await StableDiffusionRequests.GetModelsAsync();
-            }
-            
-            string currentModelSha256 = await StableDiffusionRequests.GetSDCheckpointSha256Async();
+            await SetupAllModelsAsync();
+            string currentModelSha256 = await Automatic1111API.GetSDCheckpointSha256Async();
 
             if (_models.All(x => x.sha256 != currentModelSha256))
             {
-                _models = await StableDiffusionRequests.GetModelsAsync();
+                _models = await Automatic1111API.GetModelsAsync();
             }
 
             for (var index = 0; index < _models.Length; index++)
@@ -60,7 +57,7 @@ namespace StableDiffusionRuntimeIntegration.SDConfig
         [ContextMenu("Set Current Model")]
         public async void SetCurrentModelAsync()
         {
-            await StableDiffusionRequests.PostOptionsModelCheckpointAsync(_models[CurrentModel].model_name);
+            await Automatic1111API.PostOptionsModelCheckpointAsync(_models[CurrentModel].model_name);
             
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);

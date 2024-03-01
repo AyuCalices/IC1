@@ -21,7 +21,7 @@ namespace StableDiffusionRuntimeIntegration
         [ContextMenu("Setup Sampler")]
         public async void SetupSampler()
         {
-            SDOutSampler[] fetchedSamplers = await StableDiffusionRequests.GetSamplersAsync();
+            SDOutSampler[] fetchedSamplers = await Automatic1111API.GetSamplersAsync();
 
             _samplers = new string[fetchedSamplers.Length];
             for (var i = 0; i < fetchedSamplers.Length; i++)

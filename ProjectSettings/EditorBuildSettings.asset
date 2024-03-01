@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/StableDiffusionRuntimeIntegration/TestingScene.unity
+    path: Assets/Scenes/StableDiffusionTestingScene.unity
     guid: 8530b7de241945042a28601487f05feb
   m_configObjects: {}

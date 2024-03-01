@@ -13,7 +13,7 @@ using Debug = UnityEngine.Debug;
 
 namespace StableDiffusionRuntimeIntegration
 {
-    public static class StableDiffusionRequests
+    public static class Automatic1111API
     {
         private const string StableDiffusionServerURL = "http://127.0.0.1:7860";
         
