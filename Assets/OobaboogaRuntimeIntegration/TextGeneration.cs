@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -10,24 +9,28 @@ namespace OobaboogaRuntimeIntegration
     {
         [SerializeField] private TMP_Text _tmpText;
         
-        [ContextMenu("GenerateText")]
-        public async void GenerateText()
+        [ContextMenu("Generate Completion")]
+        public void GenerateCompletion()
         {
-            await InternalGenerateText();
+            CompletionRequest chatCompletionRequest = new CompletionRequest();
+            OobaboogaAPI.CreateCompletionStream(chatCompletionRequest, HandleResponse);
         }
-
-        private async Task InternalGenerateText()
+        
+        [ContextMenu("Generate Chat Completion")]
+        public void GenerateChatCompletion()
         {
-            GeneratedSettings generatedSettings = new GeneratedSettings();
-
-            await OobaboogaAPI.DispatchRequest(generatedSettings, 
-                HandleResponse, 
-                x => Debug.Log(x));
+            ChatCompletionRequest chatCompletionRequest = new ChatCompletionRequest();
+            OobaboogaAPI.CreateChatCompletionStream(chatCompletionRequest, HandleResponse);
         }
         
         private void HandleResponse(List<CompletionResponse> responses)
         {
-            _tmpText.text = string.Join("", responses.Select(r => r.choices[0].Text));
+            _tmpText.text = string.Join("", responses.Select(r => r.Choices[0].Text));
+        }
+        
+        private void HandleResponse(List<ChatCompletionResponse> responses)
+        {
+            _tmpText.text = string.Join("", responses.Select(r => r.Choices[0].Delta.Content));
         }
     }
 }

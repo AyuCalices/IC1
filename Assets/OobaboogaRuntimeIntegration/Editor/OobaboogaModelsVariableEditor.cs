@@ -1,5 +1,4 @@
 using OobaboogaRuntimeIntegration.OobaboogaConfig;
-using StableDiffusionRuntimeIntegration.SDConfig;
 using UnityEditor;
 using UnityEngine;
 
