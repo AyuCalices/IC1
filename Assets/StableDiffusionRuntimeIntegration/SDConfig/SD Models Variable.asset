@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: SD Models Variable
   m_EditorClassIdentifier: 
   _models:
-  - rid: 3081478606466842626
-  - rid: 3081478606466842627
-  _currentModel: 0
+  - rid: 2358949590549659664
+  - rid: 2358949590549659665
+  _currentModel: 1
   references:
     version: 2
     RefIds:
-    - rid: 3081478606466842626
+    - rid: 2358949590549659664
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
         title: dreamshaperXL_turboDpmppSDE.safetensors [676f0d60c8]
@@ -28,7 +28,7 @@ MonoBehaviour:
         sha256: 676f0d60c8e860146d5e8a0d802599cadd04e7cadf85c283f189f41f01c9e359
         filename: C:\Custom\stable-diffusion-webui-master\models\Stable-diffusion\dreamshaperXL_turboDpmppSDE.safetensors
         config: 
-    - rid: 3081478606466842627
+    - rid: 2358949590549659665
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
         title: ghostmix_v20Bakedvae.safetensors [e3edb8a26f]

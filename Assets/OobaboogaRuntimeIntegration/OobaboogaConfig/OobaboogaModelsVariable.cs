@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace OobaboogaRuntimeIntegration.OobaboogaConfig
 {
@@ -92,7 +93,7 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
         
         public async Task UnloadModelAsync()
         {
-            if (await OobaboogaAPI.UnloadModelAsync())
+            if (await OobaboogaAPI.UnloadModelAsync() == UnityWebRequest.Result.Success)
             {
                 _currentModelIndex = 0;
             }
