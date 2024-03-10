@@ -17,4 +17,4 @@ MonoBehaviour:
     - None
     - llama-2-13b-chat.Q4_K_M.gguf
     - TheBloke_MythoLogic-Mini-7B-GPTQ
-  _currentModelIndex: 1
+  _currentModelIndex: 2

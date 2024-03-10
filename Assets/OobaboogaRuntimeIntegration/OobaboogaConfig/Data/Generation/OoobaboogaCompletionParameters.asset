@@ -18,12 +18,11 @@ MonoBehaviour:
   _echo: 0
   _frequencyPenalty: 0
   _logprobs: 0
-  _maxTokens: 0
+  _maxTokens: 512
   _n: 1
   _presencePenalty: 0
   _stop: []
-  _stream: 0
   _suffix: 
-  _temperature: 1
-  _topP: 1
+  _temperature: 0.98
+  _topP: 0.37
   _user: 

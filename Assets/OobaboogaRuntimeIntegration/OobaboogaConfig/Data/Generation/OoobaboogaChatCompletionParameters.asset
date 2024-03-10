@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 765688f106862664a9b766379da4c6f6, type: 3}
+  m_Name: OoobaboogaChatCompletionParameters
+  m_EditorClassIdentifier: 
+  <Messages>k__BackingField: []
+  <Continue_>k__BackingField: 0
+  <Character>k__BackingField: {fileID: 11400000, guid: 50eace06e055d03418be4933b776c26d, type: 2}
+  <Mode>k__BackingField: chat
+  <Instruction_Template>k__BackingField: 
+  <Instruction_Template_Str>k__BackingField: "{%- set ns = namespace(found=false)
+    -%}\r\n{%- for message in messages -%}\r\n    {%- if message['role'] == 'system'
+    -%}\r\n        {%- set ns.found = true -%}\r\n    {%- endif -%}\r\n{%- endfor
+    -%}\r\n{%- if not ns.found -%}\r\n    {{- '' + 'Below is an instruction that
+    describes a task. Write a response that appropriately completes the request.'
+    + '\\n\\n' -}}\r\n{%- endif %}\r\n{%- for message in messages %}\r\n    {%- if
+    message['role'] == 'system' -%}\r\n        {{- '' + message['content'] + '\\n\\n'
+    -}}\r\n    {%- else -%}\r\n        {%- if message['role'] == 'user' -%}\r\n           
+    {{-'### Instruction:\\n' + message['content'] + '\\n\\n'-}}\r\n        {%- else
+    -%}\r\n            {{-'### Response:\\n' + message['content'] + '\\n\\n' -}}\r\n       
+    {%- endif -%}\r\n    {%- endif -%}\r\n{%- endfor -%}\r\n{%- if add_generation_prompt
+    -%}\r\n    {{-'### Response:\\n'-}}\r\n{%- endif -%}"
+  <Chat_Template_Str>k__BackingField: "{%- for message in messages %}\r\n    {%-
+    if message['role'] == 'system' -%}\r\n        {{- message['content'] + '\\n\\n'
+    -}}\r\n    {%- else -%}\r\n        {%- if message['role'] == 'user' -%}\r\n           
+    {{- name1 + ': ' + message['content'] + '\\n'-}}\r\n        {%- else -%}\r\n           
+    {{- name2 + ': ' + message['content'] + '\\n' -}}\r\n        {%- endif -%}\r\n   
+    {%- endif -%}\r\n{%- endfor -%}"
+  <Model>k__BackingField: 
+  <Function_Call>k__BackingField: 
+  <N>k__BackingField: 1
+  <User>k__BackingField: 
+  <Stop>k__BackingField: []
+  <Chat_Instruct_Command>k__BackingField: 

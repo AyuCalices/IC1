@@ -1131,6 +1131,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37851442fb7621a4a8d33875235a9334, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _chatCompletionParameters: {fileID: 11400000, guid: 62d9a0a4d54d7eb4ba39a4dc974eef71, type: 2}
+  _completionParameters: {fileID: 11400000, guid: 3b59083147845394fb4bb109578d16f8, type: 2}
+  _generationParameters: {fileID: 11400000, guid: 2ffe0e54a201ccb42a1e365d9adf9aef, type: 2}
   _tmpText: {fileID: 1985875118}
 --- !u!1 &2137224809
 GameObject:

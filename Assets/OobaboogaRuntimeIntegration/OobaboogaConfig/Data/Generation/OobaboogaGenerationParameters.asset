@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8843928d904d533468d92f55606a0863, type: 3}
+  m_Name: OobaboogaGenerationParameters
+  m_EditorClassIdentifier: 
+  <Preset_Option>k__BackingField: {fileID: 11400000, guid: 42a842795cec7ff409936d1876e496bd, type: 2}
+  <Seed>k__BackingField: -1
+  <Max_Tokens>k__BackingField: 512
+  <Auto_Max_New_Tokens>k__BackingField: 0
+  <Truncation_Length>k__BackingField: 2048
+  <Prompt_Lookup_Num_Tokens>k__BackingField: 0
+  <Ban_Eos_Token>k__BackingField: 0
+  <Add_Bos_Token>k__BackingField: 1
+  <Skip_Special_Tokens>k__BackingField: 1
+  <Max_Tokens_Second>k__BackingField: 0
+  <Grammar_String>k__BackingField: 
+  <Negative_Prompt>k__BackingField: 
+  <Custom_Token_Bans>k__BackingField: 

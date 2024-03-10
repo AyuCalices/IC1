@@ -47,12 +47,12 @@ namespace OobaboogaRuntimeIntegration
         /// on high latency networks like running the webui on Google Colab or using --share.
         /// https://github.com/oobabooga/text-generation-webui/wiki/03-‐-Parameters-Tab
         /// </summary>
-        public static async Task<APIResponse<List<CompletionResponse>>> CreateCompletion(CompletionRequest completionRequest)
+        public static async Task<APIResponse<List<CompletionResponse>>> CreateCompletion(CompletionRequestContainer completionRequestContainer)
         {
-            completionRequest.Stream = false;
-            
+            CompletionRequest chatCompletionRequest = new CompletionRequest(false, completionRequestContainer);
             string url = $"{ServerURL}/v1/completions";
-            return (await APICore.DispatchRequest(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(completionRequest), 
+            
+            return (await APICore.DispatchRequest(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(chatCompletionRequest), 
                 ParseResponse<CompletionResponse>));
         }
         
@@ -60,13 +60,13 @@ namespace OobaboogaRuntimeIntegration
         /// Returns stream, where the words return one at a time.
         /// https://github.com/oobabooga/text-generation-webui/wiki/03-‐-Parameters-Tab
         /// </summary>
-        public static void CreateCompletionStream(CompletionRequest completionRequest, CancellationTokenSource token, 
+        public static void CreateCompletionStream(CompletionRequestContainer completionRequestContainer, CancellationTokenSource token, 
             Action<APIResponse<List<CompletionResponse>>> onResponse = null, Action onComplete = null)
         {
-            completionRequest.Stream = true;
-            
+            CompletionRequest chatCompletionRequest = new CompletionRequest(true, completionRequestContainer);
             string url = $"{ServerURL}/v1/completions";
-            APICore.DispatchRequest(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(completionRequest), 
+            
+            APICore.DispatchRequest(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(chatCompletionRequest), 
                 ParseResponse<CompletionResponse>, token, onResponse, onComplete);
         }
         
@@ -75,12 +75,12 @@ namespace OobaboogaRuntimeIntegration
         /// on high latency networks like running the webui on Google Colab or using --share.
         /// https://github.com/oobabooga/text-generation-webui/wiki/03-‐-Parameters-Tab
         /// </summary>
-        public static async Task<APIResponse<List<ChatCompletionResponse>>> CreateCompletion(ChatCompletionRequest completionRequest)
+        public static async Task<APIResponse<List<ChatCompletionResponse>>> CreateCompletion(ChatCompletionRequestContainer chatCompletionRequestContainer)
         {
-            completionRequest.Stream = false;
-            
+            ChatCompletionRequest chatCompletionRequest = new ChatCompletionRequest(false, chatCompletionRequestContainer);
             string url = $"{ServerURL}/v1/chat/completions";
-            return (await APICore.DispatchRequest(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(completionRequest), 
+            
+            return (await APICore.DispatchRequest(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(chatCompletionRequest), 
                 ParseResponse<ChatCompletionResponse>));
         }
         
@@ -88,13 +88,13 @@ namespace OobaboogaRuntimeIntegration
         /// Returns stream, where the words return one at a time.
         /// https://github.com/oobabooga/text-generation-webui/wiki/03-‐-Parameters-Tab
         /// </summary>
-        public static void CreateChatCompletionStream(ChatCompletionRequest completionRequest, CancellationTokenSource token, 
+        public static void CreateChatCompletionStream(ChatCompletionRequestContainer chatCompletionRequestContainer, CancellationTokenSource token, 
             Action<APIResponse<List<ChatCompletionResponse>>> onResponse = null, Action onComplete = null)
         {
-            completionRequest.Stream = true;
-            
+            ChatCompletionRequest chatCompletionRequest = new ChatCompletionRequest(true, chatCompletionRequestContainer);
             string url = $"{ServerURL}/v1/chat/completions";
-            APICore.DispatchRequest(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(completionRequest), 
+            
+            APICore.DispatchRequest(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(chatCompletionRequest), 
                 ParseResponse<ChatCompletionResponse>, token, onResponse, onComplete);
         }
         

@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 978f8eb42ddf85348b124fdacef4fe79, type: 3}
+  m_Name: OoobaboogaPresetParameters
+  m_EditorClassIdentifier: 
+  <Temperature>k__BackingField: 0.98
+  <Top_P>k__BackingField: 0.37
+  <Min_P>k__BackingField: 0
+  <Top_K>k__BackingField: 100
+  <Repetition_Penalty>k__BackingField: 1.18
+  <Presence_Penalty>k__BackingField: 0
+  <Frequency_Penalty>k__BackingField: 0
+  <Repetition_Penalty_Range>k__BackingField: 1024
+  <Typical_P>k__BackingField: 1
+  <Tfs>k__BackingField: 1
+  <Top_A>k__BackingField: 0
+  <Epsilon_Cutoff>k__BackingField: 0
+  <Eta_Cutoff>k__BackingField: 0
+  <Guidance_Scale>k__BackingField: 1
+  <Penalty_Alpha>k__BackingField: 0
+  <Mirostat_Mode>k__BackingField: 0
+  <Mirostat_Tau>k__BackingField: 5
+  <Mirostat_Eta>k__BackingField: 0.1
+  <Smoothing_Factor>k__BackingField: 0
+  <Dynamic_Temperature>k__BackingField: 0
+  <Dynatemp_Low>k__BackingField: 1
+  <Dynatemp_High>k__BackingField: 1
+  <DynaTemp_Exponent>k__BackingField: 1
+  <Temperature_Last>k__BackingField: 0
+  <Do_Sample>k__BackingField: 1
+  <Encoder_Repetition_Penalty>k__BackingField: 1
+  <No_Repeat_Ngram_Size>k__BackingField: 0
+  <Min_Length>k__BackingField: 0
+  <Num_Beams>k__BackingField: 1
+  <Length_Penalty>k__BackingField: 1
+  <Early_Stopping>k__BackingField: 0
+  <Sampler_Priority>k__BackingField:
+  - temperature
+  - dynamic_temperature
+  - quadratic_sampling
+  - top_k
+  - top_p
+  - typical_p
+  - epsilon_cutoff
+  - eta_cutoff
+  - tfs
+  - top_a
+  - min_p
+  - mirostat
