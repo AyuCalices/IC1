@@ -14,16 +14,16 @@ namespace OobaboogaRuntimeIntegration
     {
         private const string ServerURL = "http://127.0.0.1:5000";
     
-        public static async Task<ModelInfoResponse> GetCurrentModelAsync()
+        public static async Task<APIResponse<ModelInfoResponse>> GetCurrentModelAsync()
         {
             string url = $"{ServerURL}/v1/internal/model/info";
-            return (await APICore.DispatchRequest<ModelInfoResponse>(url, UnityWebRequest.kHttpVerbGET)).Data;
+            return await APICore.DispatchRequest<ModelInfoResponse>(url, UnityWebRequest.kHttpVerbGET);
         }
     
-        public static async Task<ModelListResponse> GetAllModelAsync()
+        public static async Task<APIResponse<ModelListResponse>> GetAllModelAsync()
         {
             string url = $"{ServerURL}/v1/internal/model/list";
-            return (await APICore.DispatchRequest<ModelListResponse>(url, UnityWebRequest.kHttpVerbGET)).Data;
+            return await APICore.DispatchRequest<ModelListResponse>(url, UnityWebRequest.kHttpVerbGET);
         }
     
         public static async Task LoadModelAsync(string modelName)

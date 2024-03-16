@@ -1,47 +1,43 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace OobaboogaRuntimeIntegration.OobaboogaConfig
 {
+    public enum ChatCompletionMode
+    {
+        [Description("chat"), UsedImplicitly]
+        Chat,
+        [Description("chat-instruct"), UsedImplicitly]
+        ChatInstruct,
+        [Description("instruct"), UsedImplicitly]
+        Instruct
+    }
+    
     [CreateAssetMenu(fileName = "OobaboogaChatCompletionParameters", menuName = "Oobabooga/ChatCompletionParameters")]
     public class ChatCompletionParameters : ScriptableObject, IChatCompletionParameters
     {
-        #region User Input
-        
-        //TODO: done by user input
-        /// <summary>
-        /// Given your prompt, the model calculates the probabilities for every possible next token.
-        /// https://github.com/oobabooga/text-generation-webui/wiki/03-‐-Parameters-Tab
-        /// </summary>
-        [field: SerializeField, Header("User Input")] public List<Message> Messages { get; set; } = new();
-        
-        //TODO: if set to true, but messages doesnt contain one -> error
-        //TODO: done by user input
-        /// <summary>
-        /// Makes the last bot message in the history be continued instead of starting a new message.
-        /// https://github.com/oobabooga/text-generation-webui/blob/main/extensions/openai/typing.py
-        /// </summary>
-        [field: SerializeField] public bool Continue_ { get; set; } = false;
-        
-        //TODO: done by user input
-        /// <summary>
-        /// A character defined under text-generation-webui/characters. If not set, the default \"Assistant\" character will be used.
-        /// https://github.com/oobabooga/text-generation-webui/blob/main/extensions/openai/typing.py
-        /// </summary>
-        [field: SerializeField] public CharacterOption Character { get; set; }
-        
-        #endregion
-        
         #region Other Settings
         
-        //TODO: enum?
+        [SerializeField, Header("Other Settings")] private ChatCompletionMode _chatCompletionMode = ChatCompletionMode.Chat;
+
         /// <summary>
         /// Valid options: instruct, chat, chat-instruct.
         /// https://github.com/oobabooga/text-generation-webui/blob/main/extensions/openai/typing.py
         /// </summary>
-        [field: SerializeField, Header("Other Settings")] public string Mode { get; set; } = "instruct";
-        
+        public string Mode
+        {
+            get
+            {
+                var field = _chatCompletionMode.GetType().GetField(_chatCompletionMode.ToString());
+                var attribute = (DescriptionAttribute)Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute));
+                return attribute != null ? attribute.Description : _chatCompletionMode.ToString();
+            }
+            set => _chatCompletionMode = (ChatCompletionMode)Enum.Parse(typeof(ChatCompletionMode), value, ignoreCase: true);
+        }
+
         #endregion
         
         #region TemplateString

@@ -77,7 +77,7 @@ namespace Utils
             
             if (request.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError($"Request Error: {request.responseCode} | {request.error}");
+                Debug.LogWarning($"Request Error: {request.responseCode} | {request.error} | {request.result}");
             }
             else
             {

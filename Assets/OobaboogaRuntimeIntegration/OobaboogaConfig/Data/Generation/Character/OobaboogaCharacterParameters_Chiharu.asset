@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e89396bfca774d3418d8c9793f1de7a5, type: 3}
-  m_Name: OobaboogaCharacterParameters
+  m_Name: OobaboogaCharacterParameters_Chiharu
   m_EditorClassIdentifier: 
   _userName: You
   _botName: Chiharu Yamada

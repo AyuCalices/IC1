@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
+using Utils;
 
 namespace OobaboogaRuntimeIntegration.OobaboogaConfig
 {
@@ -19,7 +18,7 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
             get => _currentModelIndex;
             set => _currentModelIndex = value;
         }
-        
+
         private ModelInfoResponse _currentModel;
         
         [ContextMenu("Get All Models")]
@@ -28,14 +27,19 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
             await SetupAllModelsAsync();
         }
 
-        public async Task SetupAllModelsAsync()
+        public async Task<APIResponse<ModelListResponse>> SetupAllModelsAsync()
         {
-            _modelList = await OobaboogaAPI.GetAllModelAsync();
+            APIResponse<ModelListResponse> response = await OobaboogaAPI.GetAllModelAsync();
+            if (response.Result != UnityWebRequest.Result.Success) return response;
+            
+            _modelList = response.Data;
             _modelList.model_names.Insert(0, "None");
 
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
 #endif
+
+            return response;
         }
 
         [ContextMenu("Get Current Model")]
@@ -44,11 +48,12 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
             await GetCurrentModelAsync();
         }
         
-        public async Task GetCurrentModelAsync()
+        public async Task<APIResponse<ModelInfoResponse>> GetCurrentModelAsync()
         {
-            await SetupAllModelsAsync();
+            APIResponse<ModelInfoResponse> currentModelResponse = await OobaboogaAPI.GetCurrentModelAsync();
+            if (currentModelResponse.Result != UnityWebRequest.Result.Success) return currentModelResponse;
             
-            _currentModel = await OobaboogaAPI.GetCurrentModelAsync();
+            _currentModel = currentModelResponse.Data;
 
             bool isContained = false;
             for (var i = 0; i < _modelList.model_names.Count; i++)
@@ -68,6 +73,7 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
 #endif
+            return currentModelResponse;
         }
         
         [ContextMenu("Load Current Model")]
@@ -78,6 +84,12 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
         
         public async Task LoadModelAsync()
         {
+            if (_currentModelIndex == 0)
+            {
+                Debug.LogWarning("Cant load model None");
+                return;
+            }
+            
             await OobaboogaAPI.LoadModelAsync(_modelList.model_names[CurrentModelIndex]);
             
 #if UNITY_EDITOR
@@ -93,6 +105,12 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
         
         public async Task UnloadModelAsync()
         {
+            if (_currentModelIndex == 0)
+            {
+                Debug.LogWarning("Cant unload model None");
+                return;
+            }
+            
             if (await OobaboogaAPI.UnloadModelAsync() == UnityWebRequest.Result.Success)
             {
                 _currentModelIndex = 0;
