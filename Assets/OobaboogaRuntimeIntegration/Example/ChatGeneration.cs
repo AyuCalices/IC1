@@ -43,7 +43,10 @@ namespace OobaboogaRuntimeIntegration.Example
         {
             ChatMessageView instantiatedMessage = Instantiate(_chatMessageView, _instantiationParent);
             instantiatedMessage.Role = _character.Name2;
-            instantiatedMessage.Content = FormatText(_character.Greeting);
+            
+            string starFormatted = FormatTextQuotation(_character.Greeting, '*', "<i>", "</i>");
+            string quotationFormatted = FormatTextQuotation(starFormatted, '\"', "\"<i>", "</i>\"");
+            instantiatedMessage.Content = quotationFormatted;
         }
 
         private void CommitMessage(string arg0)
@@ -96,7 +99,10 @@ namespace OobaboogaRuntimeIntegration.Example
         private void HandleResponse(APIResponse<List<ChatCompletionResponse>> responses)
         {
             _chatMessageViews[^1].Content = string.Join("", responses.Data.Select(r => r.Choices[0].Delta.Content));
-            _chatMessageViews[^1].Content = FormatText(_chatMessageViews[^1].Content);
+            
+            string starFormatted = FormatTextQuotation(_chatMessageViews[^1].Content, '*', "<i>", "</i>");
+            string quotationFormatted = FormatTextQuotation(starFormatted, '\"', "\"<i>", "</i>\"");
+            _chatMessageViews[^1].Content = quotationFormatted;
         }
 
         private void OnComplete()
@@ -104,10 +110,9 @@ namespace OobaboogaRuntimeIntegration.Example
             Messages.Add(new Message{Role = "assistant", Content = _chatMessageViews[^1].Content});
         }
         
-        //TODO: formatter system
-        private string FormatText(string originalText)
+        private string FormatTextQuotation(string originalText, char separator, string prefix, string suffix)
         {
-            string[] parts = originalText.Split('*');
+            string[] parts = originalText.Split(separator);
             string formattedText = "";
 
             for (int i = 0; i < parts.Length; i++)
@@ -116,11 +121,11 @@ namespace OobaboogaRuntimeIntegration.Example
                 
                 if (i % 2 == 0)
                 {
-                    formattedText += "\"" + parts[i].Trim() + "\"\n\n";
+                    formattedText += "" + parts[i].Trim() + "\n\n";
                 }
                 else
                 {
-                    formattedText += "<i>" + parts[i].Trim() + "</i>\n\n";
+                    formattedText += prefix + parts[i].Trim() + suffix + "\n\n";
                 }
             }
 

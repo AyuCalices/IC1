@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Core.UI;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,10 +11,13 @@ namespace StableDiffusionRuntimeIntegration
 {
     public class StableDiffusionText2ImageRuntime : MonoBehaviour
     {
+        [SerializeField] private Image _targetImage;
         [SerializeField] private ImageSlider _imageSlider;
-    
-        [Header("Generation")]
-        [SerializeField] private string _prompt = "";
+
+        [Header("Generation")] 
+        [SerializeField] private TMP_InputField _characterNamePromptInputField;
+        [SerializeField] private TMP_InputField _contextPromptInputField;
+        //[SerializeField] private string _prompt = "";
         [SerializeField] private string _negativePrompt = "";
         [SerializeField, Range(1, 150)] private int _steps = 25;
         [SerializeField, Range(1, 30)] private int _cfgScale = 7;
@@ -96,7 +100,7 @@ namespace StableDiffusionRuntimeIntegration
         {
             SDInTxt2Img inTxt2Img = new SDInTxt2Img
             {
-                prompt = _prompt,
+                prompt = _characterNamePromptInputField.text + ":1.4, " + _contextPromptInputField.text,
                 negative_prompt = _negativePrompt,
                 steps = _steps,
                 cfg_scale = _cfgScale,
@@ -130,12 +134,9 @@ namespace StableDiffusionRuntimeIntegration
                             byte[] fileImage = await File.ReadAllBytesAsync(filePath);
                             texture.LoadImage(fileImage);
                             texture.Apply();
-
-                            if (TryGetComponent(out Image imageComponent))
-                            {
-                                Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
-                                imageComponent.sprite = sprite;
-                            }
+                            
+                            Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+                            _targetImage.sprite = sprite;
                         }
                     }
                     catch (Exception ex)

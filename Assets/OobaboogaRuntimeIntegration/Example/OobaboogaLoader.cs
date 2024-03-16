@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +21,9 @@ namespace OobaboogaRuntimeIntegration.Example
         {
             if ((await _oobaboogaModelsVariable.SetupAllModelsAsync()).Result != UnityWebRequest.Result.Success)
             {
+                Debug.Log("Start API");
                 await StartupAPI();
+                Debug.Log("Start API Complete");
             }
             
             if (_oobaboogaModelsVariable.CurrentModelIndex >= _oobaboogaModelsVariable.ModelList.model_names.Count)
@@ -38,7 +39,9 @@ namespace OobaboogaRuntimeIntegration.Example
                 return;
             }
 
+            Debug.Log("Load Model");
             await _oobaboogaModelsVariable.LoadModelAsync();
+            Debug.Log("Load Model Complete");
         }
 
         private void OnDestroy()

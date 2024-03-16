@@ -25,14 +25,14 @@ namespace Core.UI
         {
             _text.text = message;
             
-            var rect = _sliderSizeReference.rect;
+            var sizeDelta = _sliderSizeReference.sizeDelta;
             switch (_sliderOrientation)
             {
                 case SliderOrientation.Vertical:
-                    _sliderImageRect.sizeDelta = new Vector2(rect.width, rect.height * percent);
+                    _sliderImageRect.sizeDelta = new Vector2(sizeDelta.x, sizeDelta.y * percent);
                     break;
                 case SliderOrientation.Horizontal:
-                    _sliderImageRect.sizeDelta = new Vector2(rect.width * percent, rect.height);
+                    _sliderImageRect.sizeDelta = new Vector2(sizeDelta.x * percent, sizeDelta.y);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

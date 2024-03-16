@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e89396bfca774d3418d8c9793f1de7a5, type: 3}
+  m_Name: OobaboogaCharacterParameters_Story
+  m_EditorClassIdentifier: 
+  _userName: You
+  _botName: Narrator
+  <Context>k__BackingField: You are April, a female aasimar monk living in the city
+    of Waterdeep. You grew up in an orphanage in the city and were adopted by a local
+    merchant family when you were young. You found a sense of purpose in your training
+    as a monk and have since devoted your life to defending the city and its people.
+    You walk through the crowded streets of Waterdeep, keeping your eyes and ears
+    open for any signs of trouble. Suddenly, you hear a loud commotion coming from
+    a nearby alleyway. As you approach, you see a group of ruffians beating up a
+    lone man. You step in to defend him, your fist connecting with one of the attackers.
+  <Greeting>k__BackingField: "Land of intrigue, adventure, magic and mysticism, Faer\xFBn
+    is a primeval wilderness populated by beasts, monsters, fey creatures and extraplanar
+    beings, where city-states, nations and tribes of myriad races with a millennial
+    history thrive in trade and vie in war, led by warlords, divinities and fiends,
+    where heroes battle ancient evils and horrors, kings and queens are crowned and
+    deposed, mortals ascend to godhood and cults form to worship forgotten divinities
+    and reawakening powers.\r\n\r\nYou are April, a female aasimar monk living in
+    the city of Waterdeep. You grew up in an orphanage in the city and were adopted
+    by a local merchant family when you were young. You found a sense of purpose
+    in your training as a monk and have since devoted your life to defending the
+    city and its people. You walk through the crowded streets of Waterdeep, keeping
+    your eyes and ears open for any signs of trouble. Suddenly, you hear a loud commotion
+    coming from a nearby alleyway. As you approach, you see a group of ruffians beating
+    up a lone man. You step in to defend him, your fist connecting with one of the
+    attackers."
