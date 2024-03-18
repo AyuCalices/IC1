@@ -1,5 +1,7 @@
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
+using Utils;
 
 namespace StableDiffusionRuntimeIntegration
 {
@@ -19,9 +21,12 @@ namespace StableDiffusionRuntimeIntegration
         public string GetCurrent => _samplers[CurrentSampler];
 
         [ContextMenu("Setup Sampler")]
-        public async void SetupSampler()
+        public async Task<(APIResponse Response, SDOutSampler[] Data)> SetupSampler()
         {
-            SDOutSampler[] fetchedSamplers = await Automatic1111API.GetSamplersAsync();
+            var content = await Automatic1111API.GetSamplersAsync();
+            if (content.Response.IsError) return content;
+            
+            SDOutSampler[] fetchedSamplers = content.Data;
 
             _samplers = new string[fetchedSamplers.Length];
             for (var i = 0; i < fetchedSamplers.Length; i++)
@@ -32,6 +37,8 @@ namespace StableDiffusionRuntimeIntegration
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
 #endif
+
+            return content;
         }
     }
 }

@@ -43,4 +43,5 @@ MonoBehaviour:
   - DDIM
   - PLMS
   - UniPC
+  - LCM
   _currentSampler: 0

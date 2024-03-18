@@ -3,61 +3,75 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
+using Utils;
 
 namespace StableDiffusionRuntimeIntegration.SDConfig
 {
     [CreateAssetMenu]
     public class SDModelsVariable : ScriptableObject
     {
-        [SerializeReference] private SDOutModel[] _models = Array.Empty<SDOutModel>();
-        public SDOutModel[] Models => _models;
+        [SerializeReference] private SDOutModel[] _modelList = Array.Empty<SDOutModel>();
+        public SDOutModel[] ModelList => _modelList;
         
-        [SerializeField] private int _currentModel;
-        public int CurrentModel
+        [SerializeField] private int _currentModelIndex;
+        public int CurrentModelIndex
         {
-            get => _currentModel;
-            set => _currentModel = value;
+            get => _currentModelIndex;
+            set => _currentModelIndex = value;
         }
 
         [ContextMenu("Get All Models")]
-        public async Task SetupAllModelsAsync()
+        public async Task<(APIResponse Response, SDOutModel[] Data)> SetupAllModelsAsync()
         {
-            _models = await Automatic1111API.GetModelsAsync();
-
+            var content = await Automatic1111API.GetModelsAsync();
+            if (content.Response.IsError) return content;
+            
+            _modelList = content.Data;
+            
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
 #endif
+            
+            return content;
         }
 
         [ContextMenu("Get Current Model")]
-        public async void GetCurrentModelAsync()
+        public async Task<(APIResponse Response, SDOutModel Data)> GetCurrentModelAsync()
         {
-            await SetupAllModelsAsync();
-            string currentModelSha256 = await Automatic1111API.GetSDCheckpointSha256Async();
-
-            if (_models.All(x => x.sha256 != currentModelSha256))
+            var currentModelSha256Content = await Automatic1111API.GetSDCheckpointSha256Async();
+            APIResponse newestResponse = currentModelSha256Content.Response;
+            if (currentModelSha256Content.Response.IsError) return (newestResponse, null);
+            
+            if (_modelList.All(x => x.sha256 != currentModelSha256Content.Data))
             {
-                _models = await Automatic1111API.GetModelsAsync();
+                Debug.Log("Setting up all models, because the requested model is not locally available!");
+                var content = await SetupAllModelsAsync();
+                newestResponse = content.Response;
+                if (content.Response.IsError) return (newestResponse, null);
             }
 
-            for (var index = 0; index < _models.Length; index++)
+            SDOutModel foundModel = null;
+            for (var index = 0; index < _modelList.Length; index++)
             {
-                var sdModel = _models[index];
-                if (sdModel.sha256 == currentModelSha256)
+                var sdModel = _modelList[index];
+                if (sdModel.sha256 == currentModelSha256Content.Data)
                 {
-                    CurrentModel = index;
+                    foundModel = sdModel;
+                    CurrentModelIndex = index;
                 }
             }
             
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
 #endif
+
+            return (newestResponse, foundModel);
         }
         
         [ContextMenu("Set Current Model")]
-        public async void SetCurrentModelAsync()
+        public async Task SetCurrentModelAsync()
         {
-            await Automatic1111API.PostOptionsModelCheckpointAsync(_models[CurrentModel].model_name);
+            await Automatic1111API.PostOptionsModelCheckpointAsync(_modelList[CurrentModelIndex].model_name);
             
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);

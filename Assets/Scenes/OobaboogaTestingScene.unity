@@ -3003,6 +3003,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1268383873}
+  - component: {fileID: 1268383875}
+  - component: {fileID: 1268383874}
   - component: {fileID: 1268383872}
   m_Layer: 0
   m_Name: Loader
@@ -3018,12 +3020,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1268383871}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d167d1b926942249a9f0c07a163045a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startupPath: C:\Custom\IndependantCoursework1\text-generation-webui\start_windows.bat
+  _startupPath: C:\Custom\IndependantCoursework1\text-generation-webui
+  _fileName: start_windows.bat
   _oobaboogaModelsVariable: {fileID: 11400000, guid: d962f6d3e3d19054c9b4801b4c87f154, type: 2}
 --- !u!4 &1268383873
 Transform:
@@ -3040,6 +3043,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1268383874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268383871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de3d521477010b548a8c830c7c9ff0ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startupPath: C:\Custom\IndependantCoursework1\stable-diffusion-webui
+  _fileName: webui-user.bat
+  _sdModelsVariable: {fileID: 11400000, guid: e9efe97b0d8944748bae1ffe96c1b2e8, type: 2}
+  _sdSamplersVariable: {fileID: 11400000, guid: c9c6bb7f59892e143960f821d029fd5f, type: 2}
+--- !u!114 &1268383875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268383871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4c60393fc097c42b867758355e7859, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _apiLoaderOrder:
+  - {fileID: 1268383874}
+  - {fileID: 1268383872}
 --- !u!1 &1388239254
 GameObject:
   m_ObjectHideFlags: 0

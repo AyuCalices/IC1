@@ -20,7 +20,7 @@ namespace Utils
         #region Public Methods
         
         public static async void DispatchRequest<T>(string url, string webMethod, byte[] body, 
-            Func<string, List<T>> responseParseMethod, CancellationTokenSource token, Action<APIResponse<List<T>>> onResponse = null, Action onComplete = null)
+            Func<string, List<T>> responseParseMethod, CancellationTokenSource token, Action<(APIResponse, List<T>)> onResponse = null, Action onComplete = null)
         {
             using var request = UnityWebRequest.Put(url, body);
             request.method = webMethod;
@@ -36,14 +36,13 @@ namespace Utils
                 {
                     previousResponse = text;
                     
-                    APIResponse<List<T>> response = new APIResponse<List<T>>()
+                    APIResponse response = new APIResponse()
                     {
                         ResponseCode = request.responseCode,
-                        Result = request.result,
-                        Data = responseParseMethod(text)
+                        Result = request.result
                     };
                     
-                    onResponse?.Invoke(response);
+                    onResponse?.Invoke((response, responseParseMethod(text)));
                 }
 
                 await Task.Yield();
@@ -51,7 +50,7 @@ namespace Utils
 
             if (request.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError($"Request Error: {request.responseCode} | {request.error}");
+                Debug.LogWarning($"Request Error: {request.responseCode} | {request.error}");
             }
             else
             {
@@ -61,7 +60,7 @@ namespace Utils
             onComplete?.Invoke();
         }
         
-        public static async Task<APIResponse<T>> DispatchRequest<T>(string url, string webMethod, byte[] body = null, Func<string, T> responseParseMethod = null)
+        public static async Task<(APIResponse Response, T Data)> DispatchRequest<T>(string url, string webMethod, byte[] body = null, Func<string, T> responseParseMethod = null)
         {
             using var request = UnityWebRequest.Put(url, body);
             request.method = webMethod;
@@ -69,12 +68,13 @@ namespace Utils
 
             await request.SendWebRequest();
 
-            APIResponse<T> response = new APIResponse<T>()
+            APIResponse response = new APIResponse()
             {
                 ResponseCode = request.responseCode,
                 Result = request.result
             };
-            
+
+            T data = default;
             if (request.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogWarning($"Request Error: {request.responseCode} | {request.error} | {request.result}");
@@ -84,15 +84,15 @@ namespace Utils
                 Debug.LogWarning($"Finished request to {request.url} with result {request.responseCode} {request.result}");
                 if (responseParseMethod == null)
                 {
-                    response.Data = JsonConvert.DeserializeObject<T>(request.downloadHandler.text);
+                    data = JsonConvert.DeserializeObject<T>(request.downloadHandler.text);
                 }
                 else
                 {
-                    response.Data = responseParseMethod.Invoke(request.downloadHandler.text);
+                    data = responseParseMethod.Invoke(request.downloadHandler.text);
                 }
             }
             
-            return response;
+            return (response, data);
         }
         
         public static byte[] CreateBody<T>(T @object)
@@ -124,6 +124,17 @@ namespace Utils
         };
         
         #endregion
+    }
+    
+    public class APIResponse
+    {
+        public bool IsError => Result is UnityWebRequest.Result.ConnectionError 
+            or UnityWebRequest.Result.ProtocolError
+            or UnityWebRequest.Result.DataProcessingError;
+        public bool IsInProgress => Result is UnityWebRequest.Result.InProgress;
+        public bool IsValid => Result is UnityWebRequest.Result.Success or UnityWebRequest.Result.InProgress;
+        public long ResponseCode { get; set; }
+        public UnityWebRequest.Result Result { get; set; }
     }
     
     public static class ExtensionMethods
@@ -165,13 +176,5 @@ namespace Utils
         public void OnCompleted( Action continuation ) => _asyncOperation.completed += _ => continuation();
 
         public UnityWebRequest GetResult() => _asyncOperation.webRequest;
-    }
-    
-    public class APIResponse<T>
-    {
-        //TODO: error handling
-        public long ResponseCode { get; set; }
-        public UnityWebRequest.Result Result { get; set; }
-        public T Data { get; set; }
     }
 }

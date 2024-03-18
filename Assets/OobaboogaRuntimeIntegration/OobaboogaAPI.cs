@@ -14,13 +14,13 @@ namespace OobaboogaRuntimeIntegration
     {
         private const string ServerURL = "http://127.0.0.1:5000";
     
-        public static async Task<APIResponse<ModelInfoResponse>> GetCurrentModelAsync()
+        public static async Task<(APIResponse Response, ModelInfoResponse Data)> GetCurrentModelAsync()
         {
             string url = $"{ServerURL}/v1/internal/model/info";
             return await APICore.DispatchRequest<ModelInfoResponse>(url, UnityWebRequest.kHttpVerbGET);
         }
     
-        public static async Task<APIResponse<ModelListResponse>> GetAllModelAsync()
+        public static async Task<(APIResponse Response, ModelListResponse Data)> GetAllModelAsync()
         {
             string url = $"{ServerURL}/v1/internal/model/list";
             return await APICore.DispatchRequest<ModelListResponse>(url, UnityWebRequest.kHttpVerbGET);
@@ -36,10 +36,10 @@ namespace OobaboogaRuntimeIntegration
             await APICore.DispatchRequest<string>(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(loadModelRequest));
         }
         
-        public static async Task<UnityWebRequest.Result> UnloadModelAsync()
+        public static async Task<APIResponse> UnloadModelAsync()
         {
             string url = $"{ServerURL}/v1/internal/model/unload";
-            return (await APICore.DispatchRequest<string>(url, UnityWebRequest.kHttpVerbPOST)).Result;
+            return (await APICore.DispatchRequest<string>(url, UnityWebRequest.kHttpVerbPOST)).Response;
         }
         
         /// <summary>
@@ -47,7 +47,7 @@ namespace OobaboogaRuntimeIntegration
         /// on high latency networks like running the webui on Google Colab or using --share.
         /// https://github.com/oobabooga/text-generation-webui/wiki/03-‐-Parameters-Tab
         /// </summary>
-        public static async Task<APIResponse<List<CompletionResponse>>> CreateCompletion(CompletionRequestContainer completionRequestContainer)
+        public static async Task<(APIResponse Response, List<CompletionResponse> Data)> CreateCompletion(CompletionRequestContainer completionRequestContainer)
         {
             CompletionRequest chatCompletionRequest = new CompletionRequest(false, completionRequestContainer);
             string url = $"{ServerURL}/v1/completions";
@@ -61,13 +61,13 @@ namespace OobaboogaRuntimeIntegration
         /// https://github.com/oobabooga/text-generation-webui/wiki/03-‐-Parameters-Tab
         /// </summary>
         public static void CreateCompletionStream(CompletionRequestContainer completionRequestContainer, CancellationTokenSource token, 
-            Action<APIResponse<List<CompletionResponse>>> onResponse = null, Action onComplete = null)
+            Action<(APIResponse Response, List<CompletionResponse> Data)> onResponseContent = null, Action onComplete = null)
         {
             CompletionRequest chatCompletionRequest = new CompletionRequest(true, completionRequestContainer);
             string url = $"{ServerURL}/v1/completions";
             
             APICore.DispatchRequest(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(chatCompletionRequest), 
-                ParseResponse<CompletionResponse>, token, onResponse, onComplete);
+                ParseResponse<CompletionResponse>, token, onResponseContent, onComplete);
         }
         
         /// <summary>
@@ -75,7 +75,7 @@ namespace OobaboogaRuntimeIntegration
         /// on high latency networks like running the webui on Google Colab or using --share.
         /// https://github.com/oobabooga/text-generation-webui/wiki/03-‐-Parameters-Tab
         /// </summary>
-        public static async Task<APIResponse<List<ChatCompletionResponse>>> CreateCompletion(ChatCompletionRequestContainer chatCompletionRequestContainer)
+        public static async Task<(APIResponse Response, List<ChatCompletionResponse> Data)> CreateCompletion(ChatCompletionRequestContainer chatCompletionRequestContainer)
         {
             ChatCompletionRequest chatCompletionRequest = new ChatCompletionRequest(false, chatCompletionRequestContainer);
             string url = $"{ServerURL}/v1/chat/completions";
@@ -89,13 +89,13 @@ namespace OobaboogaRuntimeIntegration
         /// https://github.com/oobabooga/text-generation-webui/wiki/03-‐-Parameters-Tab
         /// </summary>
         public static void CreateChatCompletionStream(ChatCompletionRequestContainer chatCompletionRequestContainer, CancellationTokenSource token, 
-            Action<APIResponse<List<ChatCompletionResponse>>> onResponse = null, Action onComplete = null)
+            Action<(APIResponse Response, List<ChatCompletionResponse> Data)> onResponseContent = null, Action onComplete = null)
         {
             ChatCompletionRequest chatCompletionRequest = new ChatCompletionRequest(true, chatCompletionRequestContainer);
             string url = $"{ServerURL}/v1/chat/completions";
             
             APICore.DispatchRequest(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(chatCompletionRequest), 
-                ParseResponse<ChatCompletionResponse>, token, onResponse, onComplete);
+                ParseResponse<ChatCompletionResponse>, token, onResponseContent, onComplete);
         }
         
         private static List<T> ParseResponse<T>(string responseText)

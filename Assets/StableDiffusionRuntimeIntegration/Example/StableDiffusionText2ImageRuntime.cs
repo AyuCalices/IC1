@@ -43,7 +43,10 @@ namespace StableDiffusionRuntimeIntegration
             UpdateProgressString("Waiting ...");
             while (true)
             {
-                SDOutProgress progress = await Automatic1111API.GetProgressAsync();
+                var content = await Automatic1111API.GetProgressAsync();
+                if (content.Response.IsError) break;
+                    
+                SDOutProgress progress = content.Data;
                 if (task.IsCompleted) return;
                 
                 UpdateProgressBar(progress);
@@ -110,7 +113,10 @@ namespace StableDiffusionRuntimeIntegration
                 sampler_name = _sdSamplersVariable.GetCurrent
             };
 
-            SDOutTxt2Img outTxt2Img = await Automatic1111API.PostTextToImage(inTxt2Img);
+            var content = await Automatic1111API.PostTextToImage(inTxt2Img);
+            if (content.Response.IsError) return;
+
+            SDOutTxt2Img outTxt2Img = content.Data;
             bool hasImage = outTxt2Img.images != null && outTxt2Img.images.Count != 0;
             
             if (hasImage)

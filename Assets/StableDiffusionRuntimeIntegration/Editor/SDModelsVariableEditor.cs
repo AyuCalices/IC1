@@ -14,16 +14,16 @@ namespace StableDiffusionRuntimeIntegration.Editor
             SDModelsVariable samplersVariable = (SDModelsVariable)target;
 
             // Draw the drop-down list for the Samplers list
-            if (samplersVariable.Models != null && samplersVariable.Models.Length != 0)
+            if (samplersVariable.ModelList != null && samplersVariable.ModelList.Length != 0)
             {
-                string[] modelNames = new string[samplersVariable.Models.Length];
-                for (var index = 0; index < samplersVariable.Models.Length; index++)
+                string[] modelNames = new string[samplersVariable.ModelList.Length];
+                for (var index = 0; index < samplersVariable.ModelList.Length; index++)
                 {
-                    var samplersVariableModel = samplersVariable.Models[index];
+                    var samplersVariableModel = samplersVariable.ModelList[index];
                     modelNames[index] = samplersVariableModel.model_name;
                 }
 
-                samplersVariable.CurrentModel = EditorGUILayout.Popup("Model", samplersVariable.CurrentModel, modelNames);
+                samplersVariable.CurrentModelIndex = EditorGUILayout.Popup("Model", samplersVariable.CurrentModelIndex, modelNames);
             }
             
             GUILayout.Space(10f);

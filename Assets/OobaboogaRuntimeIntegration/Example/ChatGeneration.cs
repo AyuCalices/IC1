@@ -95,10 +95,12 @@ namespace OobaboogaRuntimeIntegration.Example
             
             OobaboogaAPI.CreateChatCompletionStream(chatCompletionRequestContainer, _token, HandleResponse, OnComplete);
         }
-        
-        private void HandleResponse(APIResponse<List<ChatCompletionResponse>> responses)
+
+        private void HandleResponse((APIResponse Response, List<ChatCompletionResponse> Data) content)
         {
-            _chatMessageViews[^1].Content = string.Join("", responses.Data.Select(r => r.Choices[0].Delta.Content));
+            if (content.Response.IsError) return;
+            
+            _chatMessageViews[^1].Content = string.Join("", content.Data.Select(r => r.Choices[0].Delta.Content));
             
             string starFormatted = FormatTextQuotation(_chatMessageViews[^1].Content, '*', "<i>", "</i>");
             string quotationFormatted = FormatTextQuotation(starFormatted, '\"', "\"<i>", "</i>\"");

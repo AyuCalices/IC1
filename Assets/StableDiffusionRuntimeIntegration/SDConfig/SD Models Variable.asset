@@ -12,78 +12,88 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d297e155f389e40a9856d64577033d, type: 3}
   m_Name: SD Models Variable
   m_EditorClassIdentifier: 
-  _models:
-  - rid: 2358949797268553735
-  - rid: 2358949797268553736
-  - rid: 2358949797268553737
-  - rid: 2358949797268553738
-  - rid: 2358949797268553739
-  - rid: 2358949797268553740
-  - rid: 2358949797268553741
-  _currentModel: 0
+  _modelList:
+  - rid: 2358949828637491216
+  - rid: 2358949828637491217
+  - rid: 2358949828637491218
+  - rid: 2358949828637491219
+  - rid: 2358949828637491220
+  - rid: 2358949828637491221
+  - rid: 2358949828637491222
+  - rid: 2358949828637491223
+  _currentModelIndex: 0
   references:
     version: 2
     RefIds:
-    - rid: 2358949797268553735
+    - rid: 2358949828637491216
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
         title: aliceDollMix.safetensors [68a47130ed]
         model_name: aliceDollMix
         hash: 68a47130ed
         sha256: 68a47130ed9cd074faa81bd2e6877dc8a438a5d0a580ec3ca9751845b28a934d
-        filename: C:\Custom\stable-diffusion-webui-master\models\Stable-diffusion\aliceDollMix.safetensors
+        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\aliceDollMix.safetensors
         config: 
-    - rid: 2358949797268553736
+    - rid: 2358949828637491217
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
         title: cyberrealistic_v42.safetensors [93ed864a22]
         model_name: cyberrealistic_v42
         hash: 93ed864a22
         sha256: 93ed864a2245c0ec0338fd4681595ba5fa7c397764798de8ef0a9bdbc4946216
-        filename: C:\Custom\stable-diffusion-webui-master\models\Stable-diffusion\cyberrealistic_v42.safetensors
+        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\cyberrealistic_v42.safetensors
         config: 
-    - rid: 2358949797268553737
+    - rid: 2358949828637491218
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
-        title: dreamshaperXL_turboDpmppSDE.safetensors [676f0d60c8]
+        title: dreamshaperXL_turboDpmppSDE.safetensors
         model_name: dreamshaperXL_turboDpmppSDE
-        hash: 676f0d60c8
-        sha256: 676f0d60c8e860146d5e8a0d802599cadd04e7cadf85c283f189f41f01c9e359
-        filename: C:\Custom\stable-diffusion-webui-master\models\Stable-diffusion\dreamshaperXL_turboDpmppSDE.safetensors
+        hash: 
+        sha256: 
+        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\dreamshaperXL_turboDpmppSDE.safetensors
         config: 
-    - rid: 2358949797268553738
+    - rid: 2358949828637491219
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
-        title: ghostmix_v20Bakedvae.safetensors [e3edb8a26f]
+        title: ghostmix_v20Bakedvae.safetensors
         model_name: ghostmix_v20Bakedvae
-        hash: e3edb8a26f
-        sha256: e3edb8a26f44dfddc124129004b5ded3378be974b8d3bf82f43b9660d416d3d1
-        filename: C:\Custom\stable-diffusion-webui-master\models\Stable-diffusion\ghostmix_v20Bakedvae.safetensors
+        hash: 
+        sha256: 
+        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\ghostmix_v20Bakedvae.safetensors
         config: 
-    - rid: 2358949797268553739
+    - rid: 2358949828637491220
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
-        title: henmixReal_v5c.safetensors [b2eb92023a]
+        title: henmixReal_v5c.safetensors
         model_name: henmixReal_v5c
-        hash: b2eb92023a
-        sha256: b2eb92023ae246729dfabb655e84f85323c37829a1abc224a55c1bc2be320daa
-        filename: C:\Custom\stable-diffusion-webui-master\models\Stable-diffusion\henmixReal_v5c.safetensors
+        hash: 
+        sha256: 
+        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\henmixReal_v5c.safetensors
         config: 
-    - rid: 2358949797268553740
+    - rid: 2358949828637491221
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
-        title: neverendingDreamNED_v122BakedVae.safetensors [ecefb796ff]
+        title: neverendingDreamNED_v122BakedVae.safetensors
         model_name: neverendingDreamNED_v122BakedVae
-        hash: ecefb796ff
-        sha256: ecefb796ffcb7e4099df12f6419dffad671caa88780ff84fac9d680947173a0f
-        filename: C:\Custom\stable-diffusion-webui-master\models\Stable-diffusion\neverendingDreamNED_v122BakedVae.safetensors
+        hash: 
+        sha256: 
+        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\neverendingDreamNED_v122BakedVae.safetensors
         config: 
-    - rid: 2358949797268553741
+    - rid: 2358949828637491222
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
-        title: rpg_v5.safetensors [bb7e29def5]
+        title: rpg_v5.safetensors
         model_name: rpg_v5
-        hash: bb7e29def5
-        sha256: bb7e29def5e64f1a303bf0d87195b7e88f4d463696b532c6cdfd109fbec4fd9e
-        filename: C:\Custom\stable-diffusion-webui-master\models\Stable-diffusion\rpg_v5.safetensors
+        hash: 
+        sha256: 
+        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\rpg_v5.safetensors
+        config: 
+    - rid: 2358949828637491223
+      type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
+      data:
+        title: v1-5-pruned-emaonly.safetensors [6ce0161689]
+        model_name: v1-5-pruned-emaonly
+        hash: 6ce0161689
+        sha256: 6ce0161689b3853acaa03779ec93eafe75a02f4ced659bee03f50797806fa2fa
+        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\v1-5-pruned-emaonly.safetensors
         config: 
