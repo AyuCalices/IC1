@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: SD Models Variable
   m_EditorClassIdentifier: 
   _modelList:
-  - rid: 2358949828637491216
-  - rid: 2358949828637491217
-  - rid: 2358949828637491218
-  - rid: 2358949828637491219
-  - rid: 2358949828637491220
-  - rid: 2358949828637491221
-  - rid: 2358949828637491222
-  - rid: 2358949828637491223
+  - rid: 2358949955041493008
+  - rid: 2358949955041493009
+  - rid: 2358949955041493010
+  - rid: 2358949955041493011
+  - rid: 2358949955041493012
+  - rid: 2358949955041493013
+  - rid: 2358949955041493014
+  - rid: 2358949955041493015
   _currentModelIndex: 0
   references:
     version: 2
     RefIds:
-    - rid: 2358949828637491216
+    - rid: 2358949955041493008
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
         title: aliceDollMix.safetensors [68a47130ed]
@@ -34,7 +34,7 @@ MonoBehaviour:
         sha256: 68a47130ed9cd074faa81bd2e6877dc8a438a5d0a580ec3ca9751845b28a934d
         filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\aliceDollMix.safetensors
         config: 
-    - rid: 2358949828637491217
+    - rid: 2358949955041493009
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
         title: cyberrealistic_v42.safetensors [93ed864a22]
@@ -43,7 +43,7 @@ MonoBehaviour:
         sha256: 93ed864a2245c0ec0338fd4681595ba5fa7c397764798de8ef0a9bdbc4946216
         filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\cyberrealistic_v42.safetensors
         config: 
-    - rid: 2358949828637491218
+    - rid: 2358949955041493010
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
         title: dreamshaperXL_turboDpmppSDE.safetensors
@@ -52,7 +52,7 @@ MonoBehaviour:
         sha256: 
         filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\dreamshaperXL_turboDpmppSDE.safetensors
         config: 
-    - rid: 2358949828637491219
+    - rid: 2358949955041493011
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
         title: ghostmix_v20Bakedvae.safetensors
@@ -61,7 +61,7 @@ MonoBehaviour:
         sha256: 
         filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\ghostmix_v20Bakedvae.safetensors
         config: 
-    - rid: 2358949828637491220
+    - rid: 2358949955041493012
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
         title: henmixReal_v5c.safetensors
@@ -70,7 +70,7 @@ MonoBehaviour:
         sha256: 
         filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\henmixReal_v5c.safetensors
         config: 
-    - rid: 2358949828637491221
+    - rid: 2358949955041493013
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
         title: neverendingDreamNED_v122BakedVae.safetensors
@@ -79,7 +79,7 @@ MonoBehaviour:
         sha256: 
         filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\neverendingDreamNED_v122BakedVae.safetensors
         config: 
-    - rid: 2358949828637491222
+    - rid: 2358949955041493014
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
         title: rpg_v5.safetensors
@@ -88,7 +88,7 @@ MonoBehaviour:
         sha256: 
         filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\rpg_v5.safetensors
         config: 
-    - rid: 2358949828637491223
+    - rid: 2358949955041493015
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
         title: v1-5-pruned-emaonly.safetensors [6ce0161689]

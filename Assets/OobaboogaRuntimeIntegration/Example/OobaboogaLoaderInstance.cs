@@ -1,17 +1,28 @@
 using System.Threading.Tasks;
 using OobaboogaRuntimeIntegration.OobaboogaConfig;
+using TMPro;
 using UnityEngine;
 using Utils;
 using Debug = UnityEngine.Debug;
 
 namespace OobaboogaRuntimeIntegration.Example
 {
-    public class OobaboogaLoaderInstance : BaseAPILoaderInstance
+    public class  OobaboogaLoaderInstance : BaseAPILoaderInstance
     {
+        [SerializeField] private TMP_InputField _serverUrl;
         [SerializeField] private OobaboogaModelsVariable _oobaboogaModelsVariable;
-        
+
+        protected void Awake()
+        {
+            if (!string.IsNullOrEmpty(_serverUrl.text))
+            {
+                OobaboogaAPI.SetCustomServerUrl(_serverUrl.text);
+            }
+        }
+
         public override async Task<bool> StartupFailed()
         {
+            UpdateProgressState("Setup Text Generation API");
             return (await _oobaboogaModelsVariable.SetupAllModelsAsync()).Response.IsError;
         }
 
@@ -23,6 +34,7 @@ namespace OobaboogaRuntimeIntegration.Example
                 return;
             }
 
+            UpdateProgressState("Get Current Text Generation Model");
             string currentModel = (await OobaboogaAPI.GetCurrentModelAsync()).Data.model_name;
             if (currentModel == _oobaboogaModelsVariable.ModelList.model_names[_oobaboogaModelsVariable.CurrentModelIndex])
             {
@@ -30,9 +42,8 @@ namespace OobaboogaRuntimeIntegration.Example
                 return;
             }
 
-            Debug.Log("Load Model");
+            UpdateProgressState("Load Text Generation Model");
             await _oobaboogaModelsVariable.LoadModelAsync();
-            Debug.Log("Load Model Complete");
         }
     }
 }

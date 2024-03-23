@@ -12,7 +12,17 @@ namespace OobaboogaRuntimeIntegration
 {
     public class OobaboogaAPI : MonoBehaviour
     {
-        private const string ServerURL = "http://127.0.0.1:5000";
+        private static string ServerURL => _hasCustom ? _customServerUrl : DefaultServerURL;
+
+        private const string DefaultServerURL = "http://127.0.0.1:5000";
+        private static string _customServerUrl;
+        private static bool _hasCustom;
+
+        public static void SetCustomServerUrl(string customServerUrl)
+        {
+            _hasCustom = true;
+            _customServerUrl = customServerUrl;
+        }
     
         public static async Task<(APIResponse Response, ModelInfoResponse Data)> GetCurrentModelAsync()
         {

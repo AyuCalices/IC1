@@ -10,23 +10,33 @@ namespace StableDiffusionRuntimeIntegration
 {
     public static class Automatic1111API
     {
-        private const string StableDiffusionServerURL = "http://127.0.0.1:7860";
+        private static string ServerURL => _hasCustom ? _customServerUrl : DefaultServerURL;
+
+        private const string DefaultServerURL = "http://127.0.0.1:7860";
+        private static string _customServerUrl;
+        private static bool _hasCustom;
+
+        public static void SetCustomServerUrl(string customServerUrl)
+        {
+            _hasCustom = true;
+            _customServerUrl = customServerUrl;
+        }
         
         public static async Task<(APIResponse Response, SDOutSampler[] Data)> GetSamplersAsync()
         {
-            string url = $"{StableDiffusionServerURL}/sdapi/v1/samplers";
+            string url = $"{ServerURL}/sdapi/v1/samplers";
             return await APICore.DispatchRequest<SDOutSampler[]>(url, UnityWebRequest.kHttpVerbGET);
         }
         
         public static async Task<(APIResponse Response, SDOutModel[] Data)> GetModelsAsync()
         {
-            string url = $"{StableDiffusionServerURL}/sdapi/v1/sd-models";
+            string url = $"{ServerURL}/sdapi/v1/sd-models";
             return await APICore.DispatchRequest<SDOutModel[]>(url, UnityWebRequest.kHttpVerbGET);
         }
         
         public static async Task PostOptionsModelCheckpointAsync(string modelName)
         {
-            string url = $"{StableDiffusionServerURL}/sdapi/v1/options";
+            string url = $"{ServerURL}/sdapi/v1/options";
             SDInOptionsModelCheckpoint loadModelRequest = new SDInOptionsModelCheckpoint()
             {
                 sd_model_checkpoint = modelName
@@ -48,20 +58,20 @@ namespace StableDiffusionRuntimeIntegration
         
         public static async Task<(APIResponse Response, string Data)> GetSDCheckpointSha256Async()
         {
-            string url = $"{StableDiffusionServerURL}/sdapi/v1/options";
+            string url = $"{ServerURL}/sdapi/v1/options";
             
             return await APICore.DispatchRequest(url, UnityWebRequest.kHttpVerbGET, null, ParseResponse);
         }
         
         public static async Task<(APIResponse Response, SDOutProgress Data)> GetProgressAsync()
         {
-            string url = $"{StableDiffusionServerURL}/sdapi/v1/progress";
+            string url = $"{ServerURL}/sdapi/v1/progress";
             return await APICore.DispatchRequest<SDOutProgress>(url, UnityWebRequest.kHttpVerbGET);
         }
 
         public static async Task<(APIResponse Response, SDOutTxt2Img Data)> PostTextToImage(SDInTxt2Img inTxt2Img)
         {
-            string url = $"{StableDiffusionServerURL}/sdapi/v1/txt2img";
+            string url = $"{ServerURL}/sdapi/v1/txt2img";
             return await APICore.DispatchRequest<SDOutTxt2Img>(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(inTxt2Img));
         }
     }

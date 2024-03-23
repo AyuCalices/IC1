@@ -1,16 +1,19 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using Debug = UnityEngine.Debug;
 
 namespace Utils
 {
     public class APILoader : MonoBehaviour
     {
+        [SerializeField] private bool _loadOnStart;
         [SerializeField] private List<BaseAPILoaderInstance> _apiLoaderOrder;
+        [SerializeField] private UnityEvent _onLoadComplete;
     
         private const int TaskDelay = 1000;
     
@@ -18,8 +21,25 @@ namespace Utils
 
         private async void Start()
         {
+            if (_loadOnStart)
+            {
+                LoadAPIInstances();
+            }
+        }
+
+        public async void LoadAPIInstances()
+        {
+            if (_apiLoaderOrder.Any(x => !x.CanBeStarted()))
+            {
+                Debug.LogWarning("Couldn't be started, because a loader is not properly configured!");
+                return;
+            }
+            
             foreach (BaseAPILoaderInstance apiLoaderInstance in _apiLoaderOrder)
             {
+                if (_cancellationToken.IsCancellationRequested)
+                    return;
+                
                 bool startupFailed = await apiLoaderInstance.StartupFailed();
                 if (startupFailed)
                 {
@@ -28,6 +48,8 @@ namespace Utils
 
                 await apiLoaderInstance.Initiate();
             }
+            
+            _onLoadComplete?.Invoke();
         }
 
         private void OnDestroy()
@@ -37,13 +59,13 @@ namespace Utils
         
         private async Task StartupAPI(BaseAPILoaderInstance baseAPILoaderInstance)
         {
-            if (StartOobaboogaProcess(baseAPILoaderInstance))
+            if (StartProcess(baseAPILoaderInstance))
             {
                 await AwaitSetupOobabooga(baseAPILoaderInstance);
             }
         }
 
-        private bool StartOobaboogaProcess(BaseAPILoaderInstance baseAPILoaderInstance)
+        private bool StartProcess(BaseAPILoaderInstance baseAPILoaderInstance)
         {
             if (System.IO.File.Exists(baseAPILoaderInstance.DirectoryPath + "\\" + baseAPILoaderInstance.FileName))
             {
