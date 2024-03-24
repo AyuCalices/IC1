@@ -12,88 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d297e155f389e40a9856d64577033d, type: 3}
   m_Name: SD Models Variable
   m_EditorClassIdentifier: 
+  _stableDiffusionAPIVariable: {fileID: 11400000, guid: dfd44a0a12a6c7f4cbf9d1c2a97f33d3, type: 2}
   _modelList:
-  - rid: 2358949955041493008
-  - rid: 2358949955041493009
-  - rid: 2358949955041493010
-  - rid: 2358949955041493011
-  - rid: 2358949955041493012
-  - rid: 2358949955041493013
-  - rid: 2358949955041493014
-  - rid: 2358949955041493015
+  - rid: 2358949955041493018
   _currentModelIndex: 0
   references:
     version: 2
     RefIds:
-    - rid: 2358949955041493008
+    - rid: 2358949955041493018
       type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
       data:
-        title: aliceDollMix.safetensors [68a47130ed]
-        model_name: aliceDollMix
-        hash: 68a47130ed
-        sha256: 68a47130ed9cd074faa81bd2e6877dc8a438a5d0a580ec3ca9751845b28a934d
-        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\aliceDollMix.safetensors
-        config: 
-    - rid: 2358949955041493009
-      type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
-      data:
-        title: cyberrealistic_v42.safetensors [93ed864a22]
-        model_name: cyberrealistic_v42
-        hash: 93ed864a22
-        sha256: 93ed864a2245c0ec0338fd4681595ba5fa7c397764798de8ef0a9bdbc4946216
-        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\cyberrealistic_v42.safetensors
-        config: 
-    - rid: 2358949955041493010
-      type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
-      data:
-        title: dreamshaperXL_turboDpmppSDE.safetensors
-        model_name: dreamshaperXL_turboDpmppSDE
-        hash: 
-        sha256: 
-        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\dreamshaperXL_turboDpmppSDE.safetensors
-        config: 
-    - rid: 2358949955041493011
-      type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
-      data:
-        title: ghostmix_v20Bakedvae.safetensors
-        model_name: ghostmix_v20Bakedvae
-        hash: 
-        sha256: 
-        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\ghostmix_v20Bakedvae.safetensors
-        config: 
-    - rid: 2358949955041493012
-      type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
-      data:
-        title: henmixReal_v5c.safetensors
-        model_name: henmixReal_v5c
-        hash: 
-        sha256: 
-        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\henmixReal_v5c.safetensors
-        config: 
-    - rid: 2358949955041493013
-      type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
-      data:
-        title: neverendingDreamNED_v122BakedVae.safetensors
-        model_name: neverendingDreamNED_v122BakedVae
-        hash: 
-        sha256: 
-        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\neverendingDreamNED_v122BakedVae.safetensors
-        config: 
-    - rid: 2358949955041493014
-      type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
-      data:
-        title: rpg_v5.safetensors
-        model_name: rpg_v5
-        hash: 
-        sha256: 
-        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\rpg_v5.safetensors
-        config: 
-    - rid: 2358949955041493015
-      type: {class: SDOutModel, ns: StableDiffusionRuntimeIntegration, asm: Assembly-CSharp}
-      data:
-        title: v1-5-pruned-emaonly.safetensors [6ce0161689]
-        model_name: v1-5-pruned-emaonly
-        hash: 6ce0161689
-        sha256: 6ce0161689b3853acaa03779ec93eafe75a02f4ced659bee03f50797806fa2fa
-        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\v1-5-pruned-emaonly.safetensors
+        title: dreamshaper_8.safetensors [879db523c3]
+        model_name: dreamshaper_8
+        hash: 879db523c3
+        sha256: 879db523c30d3b9017143d56705015e15a2cb5628762c11d086fed9538abd7fd
+        filename: D:\RobinStuff\stable-diffusion-webui\models\Stable-diffusion\dreamshaper_8.safetensors
         config: 

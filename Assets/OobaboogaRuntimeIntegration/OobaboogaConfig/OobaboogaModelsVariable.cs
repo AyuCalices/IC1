@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using DataStructures.Variables;
 using UnityEditor;
 using UnityEngine;
 using Utils;
@@ -8,6 +9,7 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
     [CreateAssetMenu]
     public class OobaboogaModelsVariable : ScriptableObject
     {
+        [SerializeField] private OobaboogaAPIVariable _oobaboogaAPIVariable;
         [SerializeField] private ModelListResponse _modelList;
         public ModelListResponse ModelList => _modelList;
         
@@ -28,7 +30,7 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
 
         public async Task<(APIResponse Response, ModelListResponse Data)> SetupAllModelsAsync()
         {
-            var content = await OobaboogaAPI.GetAllModelAsync();
+            var content = await _oobaboogaAPIVariable.Get().GetAllModelAsync();
             if (content.Response.IsError) return (content.Response, null);
             
             _modelList = content.Data;
@@ -49,7 +51,7 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
         
         public async Task<(APIResponse Response, ModelInfoResponse Data)> GetCurrentModelAsync()
         {
-            var content = await OobaboogaAPI.GetCurrentModelAsync();
+            var content = await _oobaboogaAPIVariable.Get().GetCurrentModelAsync();
             if (content.Response.IsError) return (content.Response, null);
             
             _currentModel = content.Data;
@@ -89,7 +91,7 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
                 return;
             }
             
-            await OobaboogaAPI.LoadModelAsync(_modelList.model_names[CurrentModelIndex]);
+            await _oobaboogaAPIVariable.Get().LoadModelAsync(_modelList.model_names[CurrentModelIndex]);
             
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
@@ -110,7 +112,7 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
                 return;
             }
             
-            if ((await OobaboogaAPI.UnloadModelAsync()).IsValid)
+            if ((await _oobaboogaAPIVariable.Get().UnloadModelAsync()).IsValid)
             {
                 _currentModelIndex = 0;
             }

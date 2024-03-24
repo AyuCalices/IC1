@@ -3,40 +3,39 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
+using Unity.Collections;
+using UnityEngine;
 using UnityEngine.Networking;
 using Utils;
 
 namespace StableDiffusionRuntimeIntegration
 {
-    public static class Automatic1111API
+    [Serializable]
+    public class StableDiffusionAPI
     {
-        private static string ServerURL => _hasCustom ? _customServerUrl : DefaultServerURL;
+        [SerializeField, ReadOnly] private string _serverUrl;
+        public string ServerUrl => _serverUrl;
 
-        private const string DefaultServerURL = "http://127.0.0.1:7860";
-        private static string _customServerUrl;
-        private static bool _hasCustom;
-
-        public static void SetCustomServerUrl(string customServerUrl)
+        public StableDiffusionAPI(string url = "http://127.0.0.1:7860")
         {
-            _hasCustom = true;
-            _customServerUrl = customServerUrl;
+            _serverUrl = url;
         }
         
-        public static async Task<(APIResponse Response, SDOutSampler[] Data)> GetSamplersAsync()
+        public async Task<(APIResponse Response, SDOutSampler[] Data)> GetSamplersAsync()
         {
-            string url = $"{ServerURL}/sdapi/v1/samplers";
+            string url = $"{ServerUrl}/sdapi/v1/samplers";
             return await APICore.DispatchRequest<SDOutSampler[]>(url, UnityWebRequest.kHttpVerbGET);
         }
         
-        public static async Task<(APIResponse Response, SDOutModel[] Data)> GetModelsAsync()
+        public async Task<(APIResponse Response, SDOutModel[] Data)> GetModelsAsync()
         {
-            string url = $"{ServerURL}/sdapi/v1/sd-models";
+            string url = $"{ServerUrl}/sdapi/v1/sd-models";
             return await APICore.DispatchRequest<SDOutModel[]>(url, UnityWebRequest.kHttpVerbGET);
         }
         
-        public static async Task PostOptionsModelCheckpointAsync(string modelName)
+        public async Task PostOptionsModelCheckpointAsync(string modelName)
         {
-            string url = $"{ServerURL}/sdapi/v1/options";
+            string url = $"{ServerUrl}/sdapi/v1/options";
             SDInOptionsModelCheckpoint loadModelRequest = new SDInOptionsModelCheckpoint()
             {
                 sd_model_checkpoint = modelName
@@ -44,7 +43,7 @@ namespace StableDiffusionRuntimeIntegration
             await APICore.DispatchRequest<SDOutModel[]>(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(loadModelRequest));
         }
         
-        private static string ParseResponse(string responseText)
+        private string ParseResponse(string responseText)
         {
             JObject obj = JObject.Parse(responseText);
             JToken currentModelSha256 = obj["sd_checkpoint_hash"];
@@ -56,22 +55,22 @@ namespace StableDiffusionRuntimeIntegration
             return "";
         }
         
-        public static async Task<(APIResponse Response, string Data)> GetSDCheckpointSha256Async()
+        public async Task<(APIResponse Response, string Data)> GetSDCheckpointSha256Async()
         {
-            string url = $"{ServerURL}/sdapi/v1/options";
+            string url = $"{ServerUrl}/sdapi/v1/options";
             
             return await APICore.DispatchRequest(url, UnityWebRequest.kHttpVerbGET, null, ParseResponse);
         }
         
-        public static async Task<(APIResponse Response, SDOutProgress Data)> GetProgressAsync()
+        public async Task<(APIResponse Response, SDOutProgress Data)> GetProgressAsync()
         {
-            string url = $"{ServerURL}/sdapi/v1/progress";
+            string url = $"{ServerUrl}/sdapi/v1/progress";
             return await APICore.DispatchRequest<SDOutProgress>(url, UnityWebRequest.kHttpVerbGET);
         }
 
-        public static async Task<(APIResponse Response, SDOutTxt2Img Data)> PostTextToImage(SDInTxt2Img inTxt2Img)
+        public async Task<(APIResponse Response, SDOutTxt2Img Data)> PostTextToImage(SDInTxt2Img inTxt2Img)
         {
-            string url = $"{ServerURL}/sdapi/v1/txt2img";
+            string url = $"{ServerUrl}/sdapi/v1/txt2img";
             return await APICore.DispatchRequest<SDOutTxt2Img>(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(inTxt2Img));
         }
     }

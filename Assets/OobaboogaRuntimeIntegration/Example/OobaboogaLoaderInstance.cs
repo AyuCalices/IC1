@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using DataStructures.Variables;
 using OobaboogaRuntimeIntegration.OobaboogaConfig;
 using TMPro;
 using UnityEngine;
@@ -9,14 +10,21 @@ namespace OobaboogaRuntimeIntegration.Example
 {
     public class  OobaboogaLoaderInstance : BaseAPILoaderInstance
     {
+        [SerializeField] private OobaboogaAPIVariable _oobaboogaAPIVariable;
         [SerializeField] private TMP_InputField _serverUrl;
         [SerializeField] private OobaboogaModelsVariable _oobaboogaModelsVariable;
+
+        private OobaboogaAPI _oobaboogaAPI;
 
         protected void Awake()
         {
             if (!string.IsNullOrEmpty(_serverUrl.text))
             {
-                OobaboogaAPI.SetCustomServerUrl(_serverUrl.text);
+                _oobaboogaAPIVariable.Set(new OobaboogaAPI(_serverUrl.text));
+            }
+            else
+            {
+                _oobaboogaAPIVariable.Restore();
             }
         }
 
@@ -35,7 +43,7 @@ namespace OobaboogaRuntimeIntegration.Example
             }
 
             UpdateProgressState("Get Current Text Generation Model");
-            string currentModel = (await OobaboogaAPI.GetCurrentModelAsync()).Data.model_name;
+            string currentModel = (await _oobaboogaAPI.GetCurrentModelAsync()).Data.model_name;
             if (currentModel == _oobaboogaModelsVariable.ModelList.model_names[_oobaboogaModelsVariable.CurrentModelIndex])
             {
                 Debug.LogWarning($"Model already loaded: {currentModel}");

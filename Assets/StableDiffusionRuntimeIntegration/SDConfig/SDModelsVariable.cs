@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using DataStructures.Variables;
 using UnityEditor;
 using UnityEngine;
 using Utils;
@@ -10,6 +11,7 @@ namespace StableDiffusionRuntimeIntegration.SDConfig
     [CreateAssetMenu]
     public class SDModelsVariable : ScriptableObject
     {
+        [SerializeField] private StableDiffusionAPIVariable _stableDiffusionAPIVariable;
         [SerializeReference] private SDOutModel[] _modelList = Array.Empty<SDOutModel>();
         public SDOutModel[] ModelList => _modelList;
         
@@ -23,7 +25,7 @@ namespace StableDiffusionRuntimeIntegration.SDConfig
         [ContextMenu("Get All Models")]
         public async Task<(APIResponse Response, SDOutModel[] Data)> SetupAllModelsAsync()
         {
-            var content = await Automatic1111API.GetModelsAsync();
+            var content = await _stableDiffusionAPIVariable.Get().GetModelsAsync();
             if (content.Response.IsError) return content;
             
             _modelList = content.Data;
@@ -38,7 +40,7 @@ namespace StableDiffusionRuntimeIntegration.SDConfig
         [ContextMenu("Get Current Model")]
         public async Task<(APIResponse Response, SDOutModel Data)> GetCurrentModelAsync()
         {
-            var currentModelSha256Content = await Automatic1111API.GetSDCheckpointSha256Async();
+            var currentModelSha256Content = await _stableDiffusionAPIVariable.Get().GetSDCheckpointSha256Async();
             APIResponse newestResponse = currentModelSha256Content.Response;
             if (currentModelSha256Content.Response.IsError) return (newestResponse, null);
             
@@ -71,7 +73,7 @@ namespace StableDiffusionRuntimeIntegration.SDConfig
         [ContextMenu("Set Current Model")]
         public async Task SetCurrentModelAsync()
         {
-            await Automatic1111API.PostOptionsModelCheckpointAsync(_modelList[CurrentModelIndex].model_name);
+            await _stableDiffusionAPIVariable.Get().PostOptionsModelCheckpointAsync(_modelList[CurrentModelIndex].model_name);
             
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);

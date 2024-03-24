@@ -17,14 +17,19 @@ namespace VENTUS.DataStructures.Variables
 
         public void Restore()
         {
-            bool storedIsNull = storedValue.IsUnityNull();
-            if (!storedIsNull && storedValue.Equals(runtimeValue)) return;
+            storedValue = SetStoredDefault();
+            if (storedValue.Equals(runtimeValue)) return;
 
             T bufferedPreviousValue = runtimeValue;
-            runtimeValue = storedIsNull ? default : storedValue;
+            runtimeValue = storedValue;
             InternalOnRestore(runtimeValue, bufferedPreviousValue);
             
             if (onValueChanged != null) onValueChanged.Raise();
+        }
+
+        protected virtual T SetStoredDefault()
+        {
+            return default; 
         }
         
         protected virtual void InternalOnRestore(T newValue, T previousValue) {}

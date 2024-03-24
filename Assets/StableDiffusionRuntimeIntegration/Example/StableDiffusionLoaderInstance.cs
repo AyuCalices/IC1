@@ -1,4 +1,6 @@
 using System.Threading.Tasks;
+using DataStructures.Variables;
+using OobaboogaRuntimeIntegration;
 using StableDiffusionRuntimeIntegration.SDConfig;
 using TMPro;
 using UnityEngine;
@@ -9,15 +11,22 @@ namespace StableDiffusionRuntimeIntegration.Example
 {
     public class StableDiffusionLoaderInstance : BaseAPILoaderInstance
     {
+        [SerializeField] private StableDiffusionAPIVariable _stableDiffusionAPIVariable;
         [SerializeField] private TMP_InputField _serverUrl;
         [SerializeField] private SDModelsVariable _sdModelsVariable;
         [SerializeField] private SDSamplersVariable _sdSamplersVariable;
+
+        private StableDiffusionAPI _stableDiffusionAPI;
         
         protected void Awake()
         {
             if (!string.IsNullOrEmpty(_serverUrl.text))
             {
-                Automatic1111API.SetCustomServerUrl(_serverUrl.text);
+                _stableDiffusionAPIVariable.Set(new StableDiffusionAPI(_serverUrl.text));
+            }
+            else
+            {
+                _stableDiffusionAPIVariable.Restore();
             }
         }
 
@@ -37,7 +46,7 @@ namespace StableDiffusionRuntimeIntegration.Example
             }
 
             UpdateProgressState("Get Current Image Generation Model");
-            string currentModel = (await Automatic1111API.GetSDCheckpointSha256Async()).Data;
+            string currentModel = (await _stableDiffusionAPI.GetSDCheckpointSha256Async()).Data;
             if (currentModel == _sdModelsVariable.ModelList[_sdModelsVariable.CurrentModelIndex].sha256)
             {
                 Debug.LogWarning($"Model already loaded: {currentModel}");

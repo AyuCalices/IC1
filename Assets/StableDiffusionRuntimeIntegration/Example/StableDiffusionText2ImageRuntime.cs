@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Core.UI;
+using DataStructures.Variables;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace StableDiffusionRuntimeIntegration
         [SerializeField] private ImageSlider _imageSlider;
 
         [Header("Generation")] 
+        [SerializeField] private StableDiffusionAPIVariable _stableDiffusionAPIVariable;
         [SerializeField] private TMP_InputField _characterNamePromptInputField;
         [SerializeField] private TMP_InputField _contextPromptInputField;
         //[SerializeField] private string _prompt = "";
@@ -43,7 +45,7 @@ namespace StableDiffusionRuntimeIntegration
             UpdateProgressString("Waiting ...");
             while (true)
             {
-                var content = await Automatic1111API.GetProgressAsync();
+                var content = await _stableDiffusionAPIVariable.Get().GetProgressAsync();
                 if (content.Response.IsError) break;
                     
                 SDOutProgress progress = content.Data;
@@ -113,7 +115,7 @@ namespace StableDiffusionRuntimeIntegration
                 sampler_name = _sdSamplersVariable.GetCurrent
             };
 
-            var content = await Automatic1111API.PostTextToImage(inTxt2Img);
+            var content = await _stableDiffusionAPIVariable.Get().PostTextToImage(inTxt2Img);
             if (content.Response.IsError) return;
 
             SDOutTxt2Img outTxt2Img = content.Data;

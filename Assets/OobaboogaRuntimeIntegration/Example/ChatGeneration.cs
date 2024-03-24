@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using DataStructures.Variables;
 using OobaboogaRuntimeIntegration.OobaboogaConfig;
 using TMPro;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace OobaboogaRuntimeIntegration.Example
     public class ChatGeneration : MonoBehaviour, IMessageWrapper
     {
         [Header("Parameters")] 
+        [SerializeField] private OobaboogaAPIVariable _oobaboogaAPIVariable;
         [SerializeField] private CharacterData _character;
         [SerializeField] private ChatCompletionParameters _chatCompletionParameters;
         [SerializeField] private GenerationParameters _generationParameters;
@@ -93,7 +95,7 @@ namespace OobaboogaRuntimeIntegration.Example
                 PresetParameters = _generationParameters.Preset_Option.UseCustomPreset ? _generationParameters.Preset_Option.CustomPreset : null
             };
             
-            OobaboogaAPI.CreateChatCompletionStream(chatCompletionRequestContainer, _token, HandleResponse, OnComplete);
+            _oobaboogaAPIVariable.Get().CreateChatCompletionStream(chatCompletionRequestContainer, _token, HandleResponse, OnComplete);
         }
 
         private void HandleResponse((APIResponse Response, List<ChatCompletionResponse> Data) content)

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using DataStructures.Variables;
 using UnityEditor;
 using UnityEngine;
 using Utils;
@@ -8,6 +9,7 @@ namespace StableDiffusionRuntimeIntegration
     [CreateAssetMenu]
     public class SDSamplersVariable : ScriptableObject
     {
+        [SerializeField] private StableDiffusionAPIVariable _stableDiffusionAPIVariable;
         [SerializeReference] private string[] _samplers;
         public string[] Samplers => _samplers;
         
@@ -23,7 +25,7 @@ namespace StableDiffusionRuntimeIntegration
         [ContextMenu("Setup Sampler")]
         public async Task<(APIResponse Response, SDOutSampler[] Data)> SetupSampler()
         {
-            var content = await Automatic1111API.GetSamplersAsync();
+            var content = await _stableDiffusionAPIVariable.Get().GetSamplersAsync();
             if (content.Response.IsError) return content;
             
             SDOutSampler[] fetchedSamplers = content.Data;

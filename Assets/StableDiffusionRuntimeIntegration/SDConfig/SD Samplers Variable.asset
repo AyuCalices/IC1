@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca3f706056e7e4541a782470798c4b9d, type: 3}
   m_Name: SD Samplers Variable
   m_EditorClassIdentifier: 
+  _stableDiffusionAPIVariable: {fileID: 11400000, guid: dfd44a0a12a6c7f4cbf9d1c2a97f33d3, type: 2}
   _samplers:
   - DPM++ 2M Karras
   - DPM++ SDE Karras
