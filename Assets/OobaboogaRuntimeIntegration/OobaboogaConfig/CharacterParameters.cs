@@ -15,7 +15,17 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
             get => _userName;
             set => _userName = value;
         }
-        
+
+        /// <summary>
+        /// The user description/personality.
+        /// </summary>
+        [SerializeField] private string _userBio = string.Empty;
+        public string User_Bio 
+        { 
+            get => _userBio; 
+            set => _userBio = value; 
+        }
+
         /// <summary>
         /// Overwrites the value set by character field. (Bot_Name)
         /// https://github.com/oobabooga/text-generation-webui/blob/main/extensions/openai/typing.py

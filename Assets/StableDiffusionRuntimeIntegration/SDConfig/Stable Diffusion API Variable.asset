@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Stable Diffusion API Variable
   m_EditorClassIdentifier: 
   runtimeValue:
-    _serverUrl: http://suminom.privatedns.org:7860/
+    _serverUrl: http://127.0.0.1:7860
   storedValue:
-    _serverUrl: http://suminom.privatedns.org:7860/
+    _serverUrl: http://127.0.0.1:7860
   onValueChanged: {fileID: 0}
-  _useDefaultUrl: 1
+  _useDefaultUrl: 0
   _defaultURL: http://suminom.privatedns.org:7860/

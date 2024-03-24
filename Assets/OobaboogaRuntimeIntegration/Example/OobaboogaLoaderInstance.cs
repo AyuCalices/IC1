@@ -14,8 +14,6 @@ namespace OobaboogaRuntimeIntegration.Example
         [SerializeField] private TMP_InputField _serverUrl;
         [SerializeField] private OobaboogaModelsVariable _oobaboogaModelsVariable;
 
-        private OobaboogaAPI _oobaboogaAPI;
-
         protected void Awake()
         {
             if (!string.IsNullOrEmpty(_serverUrl.text))
@@ -43,7 +41,7 @@ namespace OobaboogaRuntimeIntegration.Example
             }
 
             UpdateProgressState("Get Current Text Generation Model");
-            string currentModel = (await _oobaboogaAPI.GetCurrentModelAsync()).Data.model_name;
+            string currentModel = (await _oobaboogaAPIVariable.Get().GetCurrentModelAsync()).Data.model_name;
             if (currentModel == _oobaboogaModelsVariable.ModelList.model_names[_oobaboogaModelsVariable.CurrentModelIndex])
             {
                 Debug.LogWarning($"Model already loaded: {currentModel}");

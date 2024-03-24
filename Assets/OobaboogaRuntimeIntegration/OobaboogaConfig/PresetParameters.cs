@@ -11,7 +11,7 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
         /// https://github.com/oobabooga/text-generation-webui/wiki/03-‐-Parameters-Tab
         /// </summary>
         [field: SerializeField] public float Temperature { get; set; } = 1;
-        
+
         /// <summary>
         /// If not set to 1, select tokens with probabilities adding up to less than this number. Higher value = higher range of possible random results.
         /// https://github.com/oobabooga/text-generation-webui/wiki/03-‐-Parameters-Tab
@@ -132,6 +132,11 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
         /// https://github.com/oobabooga/text-generation-webui/blob/992affefef7d71544352920720eec08cbf3f56b9/docs/03%20-%20Parameters%20Tab.md?plain=1#L58
         /// </summary>
         [field: SerializeField] public float Smoothing_Factor { get; set; } = 0;
+        
+        /// <summary>
+        /// Adjusts the dropoff curve of Quadratic Sampling.
+        /// </summary>
+        [field: SerializeField] public float Smoothing_Curve { get; set; } = 1f;
         
         /// <summary>
         /// Activates Dynamic Temperature. This modifies temperature to range between "dynatemp_low" (minimum)

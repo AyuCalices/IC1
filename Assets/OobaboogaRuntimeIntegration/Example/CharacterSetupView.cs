@@ -20,7 +20,9 @@ namespace OobaboogaRuntimeIntegration.Example
             get => _ownName.text;
             set => _ownName.text = value;
         }
-        
+
+        public override string User_Bio { get; set; } = string.Empty;
+
         public override string Name2 
         { 
             get => _characterName.text;

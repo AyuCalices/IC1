@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Oobabooga API Variable
   m_EditorClassIdentifier: 
   runtimeValue:
-    _serverUrl: http://suminom.privatedns.org:7861/
+    _serverUrl: http://127.0.0.1:5000
   storedValue:
-    _serverUrl: http://suminom.privatedns.org:7861/
+    _serverUrl: http://127.0.0.1:5000
   onValueChanged: {fileID: 0}
-  _useDefaultUrl: 1
+  _useDefaultUrl: 0
   _defaultURL: http://suminom.privatedns.org:7861/

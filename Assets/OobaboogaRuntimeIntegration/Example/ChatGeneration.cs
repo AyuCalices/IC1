@@ -63,7 +63,7 @@ namespace OobaboogaRuntimeIntegration.Example
 
         private void RegenerateMessage()
         {
-            if (Messages[^1].Role == "assistant")
+            if (Messages[^1].Role == "char")
             {
                 Messages.RemoveAt(Messages.Count - 1);
                 
@@ -111,7 +111,7 @@ namespace OobaboogaRuntimeIntegration.Example
 
         private void OnComplete()
         {
-            Messages.Add(new Message{Role = "assistant", Content = _chatMessageViews[^1].Content});
+            Messages.Add(new Message{Role = "char", Content = _chatMessageViews[^1].Content});
         }
         
         private string FormatTextQuotation(string originalText, char separator, string prefix, string suffix)

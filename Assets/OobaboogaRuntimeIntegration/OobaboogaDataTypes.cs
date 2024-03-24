@@ -106,38 +106,39 @@ namespace OobaboogaRuntimeIntegration
         public string[] Stop { get; set; } = Array.Empty<string>();
         public bool Stream { get; set; } = false;   //is set internally -> not inside interface
         public string Suffix { get; set; } = string.Empty;
-        public float Temperature { get; set; } = 1;
-        public float Top_P { get; set; } = 1;
+        public float Temperature { get; set; } = 1f;
+        public float Top_P { get; set; } = 1f;
         public string User { get; set; } = string.Empty;
         public string Preset { get; set; } = string.Empty;
-        public float Min_P { get; set; } = 0;
+        public float Min_P { get; set; } = 0f;
         public bool Dynamic_Temperature { get; set; } = false;
-        public float Dynatemp_Low { get; set; } = 1;
-        public float Dynatemp_High { get; set; } = 1;
-        public float DynaTemp_Exponent { get; set; } = 1;
-        public float Smoothing_Factor { get; set; } = 0;
+        public float Dynatemp_Low { get; set; } = 1f;
+        public float Dynatemp_High { get; set; } = 1f;
+        public float DynaTemp_Exponent { get; set; } = 1f;
+        public float Smoothing_Factor { get; set; } = 0f;
+        public float Smoothing_Curve { get; set; } = 1f;
         public int Top_K { get; set; } = 0;
-        public float Repetition_Penalty { get; set; } = 1;
+        public float Repetition_Penalty { get; set; } = 1f;
         public int Repetition_Penalty_Range { get; set; } = 1024;
-        public float Typical_P { get; set; } = 1;
-        public float Tfs { get; set; } = 1;
+        public float Typical_P { get; set; } = 1f;
+        public float Tfs { get; set; } = 1f;
         public int Top_A { get; set; } = 0;
-        public float Epsilon_Cutoff { get; set; } = 0;
-        public float Eta_Cutoff { get; set; } = 0;
-        public float Guidance_Scale { get; set; } = 1;
+        public float Epsilon_Cutoff { get; set; } = 0f;
+        public float Eta_Cutoff { get; set; } = 0f;
+        public float Guidance_Scale { get; set; } = 1f;
         public string Negative_Prompt { get; set; } = string.Empty;
-        public float Penalty_Alpha { get; set; } = 0;
+        public float Penalty_Alpha { get; set; } = 0f;
         public int Mirostat_Mode { get; set; } = 0;
-        public float Mirostat_Tau { get; set; } = 5;
+        public float Mirostat_Tau { get; set; } = 5f;
         public float Mirostat_Eta { get; set; } = 0.1f;
         public bool Temperature_Last { get; set; } = false;
         public bool Do_Sample { get; set; } = true;
         public int Seed { get; set; } = -1;
-        public float Encoder_Repetition_Penalty { get; set; } = 1;
+        public float Encoder_Repetition_Penalty { get; set; } = 1f;
         public int No_Repeat_Ngram_Size { get; set; } = 0;
         public int Min_Length { get; set; } = 0;
         public int Num_Beams { get; set; } = 1;
-        public float Length_Penalty { get; set; } = 1;
+        public float Length_Penalty { get; set; } = 1f;
         public bool Early_Stopping { get; set; } = false;
         public int Truncation_Length { get; set; } = 0;
         public int Max_Tokens_Second { get; set; } = 0;
@@ -249,14 +250,15 @@ namespace OobaboogaRuntimeIntegration
         public int Presence_Penalty { get; set; } = 0;
         public string[] Stop { get; set; } = Array.Empty<string>();
         public bool Stream { get; set; } = false;   //is set internally -> not inside interface
-        public float Temperature { get; set; } = 1;
-        public float Top_P { get; set; } = 1;
+        public float Temperature { get; set; } = 1f;
+        public float Top_P { get; set; } = 1f;
         public string User { get; set; } = string.Empty;
         public string Mode { get; set; } = "instruct";
         public string Instruction_Template { get; set; } = string.Empty;
         public string Instruction_Template_Str { get; set; } = string.Empty;
         public string Character { get; set; } = string.Empty;
         public string Name1 { get; set; } = string.Empty;
+        public string User_Bio { get; set; } = string.Empty;
         public string Name2 { get; set; } = string.Empty;
         public string Context { get; set; } = string.Empty;
         public string Greeting { get; set; } = string.Empty;
@@ -264,34 +266,35 @@ namespace OobaboogaRuntimeIntegration
         public string Chat_Instruct_Command { get; set; } = string.Empty;
         public bool Continue_ { get; set; } = false;
         public string Preset { get; set; } = string.Empty;
-        public float Min_P { get; set; } = 0;
+        public float Min_P { get; set; } = 0f;
         public bool Dynamic_Temperature { get; set; } = false;
-        public float Dynatemp_Low { get; set; } = 1;
-        public float Dynatemp_High { get; set; } = 1;
-        public float DynaTemp_Exponent { get; set; } = 1;
-        public float Smoothing_Factor { get; set; } = 0;
+        public float Dynatemp_Low { get; set; } = 1f;
+        public float Dynatemp_High { get; set; } = 1f;
+        public float DynaTemp_Exponent { get; set; } = 1f;
+        public float Smoothing_Factor { get; set; } = 0f;
+        public float Smoothing_Curve { get; set; } = 1f;
         public int Top_K { get; set; } = 0;
-        public float Repetition_Penalty { get; set; } = 1;
+        public float Repetition_Penalty { get; set; } = 1f;
         public int Repetition_Penalty_Range { get; set; } = 1024;
-        public float Typical_P { get; set; } = 1;
-        public float Tfs { get; set; } = 1;
+        public float Typical_P { get; set; } = 1f;
+        public float Tfs { get; set; } = 1f;
         public int Top_A { get; set; } = 0;
-        public float Epsilon_Cutoff { get; set; } = 0;
-        public float Eta_Cutoff { get; set; } = 0;
-        public float Guidance_Scale { get; set; } = 1;
+        public float Epsilon_Cutoff { get; set; } = 0f;
+        public float Eta_Cutoff { get; set; } = 0f;
+        public float Guidance_Scale { get; set; } = 1f;
         public string Negative_Prompt { get; set; } = string.Empty;
-        public float Penalty_Alpha { get; set; } = 0;
+        public float Penalty_Alpha { get; set; } = 0f;
         public int Mirostat_Mode { get; set; } = 0;
-        public float Mirostat_Tau { get; set; } = 5;
+        public float Mirostat_Tau { get; set; } = 5f;
         public float Mirostat_Eta { get; set; } = 0.1f;
         public bool Temperature_Last { get; set; } = false;
         public bool Do_Sample { get; set; } = true;
         public int Seed { get; set; } = -1;
-        public float Encoder_Repetition_Penalty { get; set; } = 1;
+        public float Encoder_Repetition_Penalty { get; set; } = 1f;
         public int No_Repeat_Ngram_Size { get; set; } = 0;
         public int Min_Length { get; set; } = 0;
         public int Num_Beams { get; set; } = 1;
-        public float Length_Penalty { get; set; } = 1;
+        public float Length_Penalty { get; set; } = 1f;
         public bool Early_Stopping { get; set; } = false;
         public int Truncation_Length { get; set; } = 0;
         public int Max_Tokens_Second { get; set; } = 0;
@@ -344,6 +347,7 @@ namespace OobaboogaRuntimeIntegration
     public interface ICharacterParameters
     {
         public string Name1 { get; set; }
+        public string User_Bio { get; set; }
         public string Name2 { get; set; }
         public string Context { get; set; }
         public string Greeting { get; set; }
@@ -408,6 +412,7 @@ namespace OobaboogaRuntimeIntegration
         public float Dynatemp_High { get; set; }
         public float DynaTemp_Exponent { get; set; }
         public float Smoothing_Factor { get; set; }
+        public float Smoothing_Curve { get; set; }
         public float Top_P { get; set; }
         public float Min_P { get; set; }
         public int Top_K { get; set; }
