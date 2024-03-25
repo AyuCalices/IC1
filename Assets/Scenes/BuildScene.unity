@@ -1692,11 +1692,11 @@ MonoBehaviour:
     _activeObjects:
     - {fileID: 1351874253}
     - {fileID: 352157111}
-    - {fileID: 1420434449}
     - {fileID: 1081117513}
     - {fileID: 1208459895}
   _toggledGroup:
-    _activeObjects: []
+    _activeObjects:
+    - {fileID: 1420434449}
 --- !u!1 &352157109 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 347704148970733815, guid: 0960a908be2e80946beb29e3a37e8fab, type: 3}
@@ -2726,7 +2726,7 @@ GameObject:
   - component: {fileID: 592298403}
   - component: {fileID: 592298404}
   m_Layer: 5
-  m_Name: CreateBook_View
+  m_Name: EditBook_View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2780,6 +2780,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57e1e43046249f34dae9282af33a4dc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bookDataToLoad: {fileID: 11400000, guid: a59a1809cfaba04478d5971cb9906251, type: 2}
+  _buttonToggleGroupManager: {fileID: 352157108}
+  _cancelButton: {fileID: 1363041125}
+  _onCancel:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: a59a1809cfaba04478d5971cb9906251, type: 2}
+        m_TargetAssemblyTypeName: VENTUS.DataStructures.Variables.AbstractVariable`1[[Features.CharacterCard.Scripts.BookData,
+          Assembly-CSharp
+        m_MethodName: Restore
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1641233567}
+        m_TargetAssemblyTypeName: Utils.CanvasNavigator.CanvasManager, Assembly-CSharp
+        m_MethodName: SwitchCanvas
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 39de565851304f3428c1643331696617, type: 2}
+          m_ObjectArgumentAssemblyTypeName: Utils.CanvasNavigator.MenuType_SO, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _createButton: {fileID: 376147262}
   _onCreate:
     m_PersistentCalls:
@@ -2788,6 +2819,19 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: Features.CharacterCard.Scripts.BookLoader, Assembly-CSharp
         m_MethodName: AddNewBook
         m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: a59a1809cfaba04478d5971cb9906251, type: 2}
+        m_TargetAssemblyTypeName: VENTUS.DataStructures.Variables.AbstractVariable`1[[Features.CharacterCard.Scripts.BookData,
+          Assembly-CSharp
+        m_MethodName: Restore
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7257,6 +7301,17 @@ MonoBehaviour:
   _text: {fileID: 1351874252}
   _activeString: 'Mode: Story'
   _inactiveString: 'Mode: Chat'
+--- !u!114 &1363041125 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1052958043392444675, guid: 0960a908be2e80946beb29e3a37e8fab, type: 3}
+  m_PrefabInstance: {fileID: 995786587}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1373307387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9353,15 +9408,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bookPrefab: {fileID: 2614078782741745467, guid: 049621792c3c9974988545f05cec6701, type: 3}
   _instantiationParent: {fileID: 215822142}
+  _lastElement: {fileID: 103506756}
   _onPressPlayBook:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 11400000, guid: a59a1809cfaba04478d5971cb9906251, type: 2}
+        m_TargetAssemblyTypeName: VENTUS.DataStructures.Variables.AbstractVariable`1[[Features.CharacterCard.Scripts.BookData,
+          Assembly-CSharp
+        m_MethodName: Set
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1641233567}
         m_TargetAssemblyTypeName: Utils.CanvasNavigator.CanvasManager, Assembly-CSharp
         m_MethodName: SwitchCanvas
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 11400000, guid: 3f4373c29eabeca4f9a005be0110a6ad, type: 2}
+          m_ObjectArgumentAssemblyTypeName: Utils.CanvasNavigator.MenuType_SO, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onPressEditBook:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: a59a1809cfaba04478d5971cb9906251, type: 2}
+        m_TargetAssemblyTypeName: VENTUS.DataStructures.Variables.AbstractVariable`1[[Features.CharacterCard.Scripts.BookData,
+          Assembly-CSharp
+        m_MethodName: Set
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1641233567}
+        m_TargetAssemblyTypeName: Utils.CanvasNavigator.CanvasManager, Assembly-CSharp
+        m_MethodName: SwitchCanvas
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: d879dd6bb49104b4d9734f9eb3a8cc30, type: 2}
           m_ObjectArgumentAssemblyTypeName: Utils.CanvasNavigator.MenuType_SO, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0

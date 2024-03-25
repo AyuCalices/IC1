@@ -302,6 +302,7 @@ GameObject:
   - component: {fileID: 8172259525077479970}
   - component: {fileID: 6435562335648041535}
   - component: {fileID: 1256065604115002824}
+  - component: {fileID: 8527598984941413509}
   m_Layer: 5
   m_Name: Default_InputField (TMP)
   m_TagString: Untagged
@@ -434,22 +435,11 @@ MonoBehaviour:
       m_Calls: []
   m_OnSelect:
     m_PersistentCalls:
-      m_Calls: []
-  m_OnDeselect:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnTextSelection:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnEndTextSelection:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnValueChanged:
-    m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1256065604115002824}
-        m_TargetAssemblyTypeName: UnityEngine.UI.ContentSizeFitter, UnityEngine.UI
-        m_MethodName: SetLayoutVertical
+      - m_Target: {fileID: 8527598984941413509}
+        m_TargetAssemblyTypeName: Features.Connection.UI.UpdateSetLayoutVertical,
+          Assembly-CSharp
+        m_MethodName: EnableUpdate
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -459,6 +449,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  m_OnDeselect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8527598984941413509}
+        m_TargetAssemblyTypeName: Features.Connection.UI.UpdateSetLayoutVertical,
+          Assembly-CSharp
+        m_MethodName: DisableUpdate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_OnTextSelection:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnEndTextSelection:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -491,6 +506,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &8527598984941413509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5174003224819897447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc4b08edee6cd47abbaf971bf1a727, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _contentSizeFitter: {fileID: 1256065604115002824}
 --- !u!1 &6804922120548402128
 GameObject:
   m_ObjectHideFlags: 0

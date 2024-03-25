@@ -16,16 +16,17 @@ namespace Features.CharacterCard.Scripts
         
         [Header("Buttons")]
         [SerializeField] private Button _playButton;
+        [SerializeField] private Button _editButton;
         [SerializeField] private Button _deleteButton;
         
         public BookData ContainedBook { get; private set; }
 
-        //TODO: set selected book as focus
-        public void Initialize(BookData bookData, UnityEvent onPressPlayButton, Action<BookData> onRemoveAction)
+        public void Initialize(BookData bookData, UnityEvent<BookData> onPressPlayButton, UnityEvent<BookData> onPressEditButton, Action<BookData> onRemoveAction)
         {
             ContainedBook = bookData;
             
-            _playButton.onClick.AddListener(onPressPlayButton.Invoke);
+            _playButton.onClick.AddListener(() => onPressPlayButton.Invoke(bookData));
+            _editButton.onClick.AddListener(() => onPressEditButton.Invoke(bookData));
             _deleteButton.onClick.AddListener(() => onRemoveAction.Invoke(bookData));
             
             //_bookCoverImage.sprite = 
@@ -36,6 +37,7 @@ namespace Features.CharacterCard.Scripts
         private void OnDestroy()
         {
             _playButton.onClick.RemoveAllListeners();
+            _editButton.onClick.RemoveAllListeners();
             _deleteButton.onClick.RemoveAllListeners();
         }
     }

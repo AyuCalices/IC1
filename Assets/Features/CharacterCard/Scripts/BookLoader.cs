@@ -8,7 +8,11 @@ namespace Features.CharacterCard.Scripts
     {
         [SerializeField] private BookSelectElement _bookPrefab;
         [SerializeField] private Transform _instantiationParent;
-        [SerializeField] private UnityEvent _onPressPlayBook;
+        [SerializeField] private Transform _lastElement;
+        
+        [Header("Events")]
+        [SerializeField] private UnityEvent<BookData> _onPressPlayBook;
+        [SerializeField] private UnityEvent<BookData> _onPressEditBook;
         
         private BookSerializer _bookSerializer;
         private readonly List<BookSelectElement> _instantiatedElements = new();
@@ -20,8 +24,9 @@ namespace Features.CharacterCard.Scripts
             foreach (BookData bookData in _bookSerializer.BookDataList)
             {
                 BookSelectElement instantiatedElement = Instantiate(_bookPrefab, _instantiationParent);
-                instantiatedElement.Initialize(bookData, _onPressPlayBook, RemoveBook);
+                instantiatedElement.Initialize(bookData, _onPressPlayBook, _onPressEditBook, RemoveBook);
                 _instantiatedElements.Add(instantiatedElement);
+                _lastElement.SetAsLastSibling();
             }
         }
 
@@ -34,7 +39,8 @@ namespace Features.CharacterCard.Scripts
         {
             _bookSerializer.AddBook(bookData);
             BookSelectElement instantiatedElement = Instantiate(_bookPrefab, _instantiationParent);
-            instantiatedElement.Initialize(bookData, _onPressPlayBook, _bookSerializer.RemoveBook);
+            instantiatedElement.Initialize(bookData, _onPressPlayBook, _onPressEditBook, _bookSerializer.RemoveBook);
+            _lastElement.SetAsLastSibling();
         }
 
         public void RemoveBook(BookData bookData)
