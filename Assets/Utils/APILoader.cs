@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using Debug = UnityEngine.Debug;
@@ -13,7 +13,13 @@ namespace Utils
     {
         [SerializeField] private bool _loadOnStart;
         [SerializeField] private List<BaseAPILoaderInstance> _apiLoaderOrder;
+        
+        [Header("Visualization")]
+        [SerializeField] private TMP_Text _loadingText;
+        
+        [Header("Events")]
         [SerializeField] private UnityEvent _onLoadComplete;
+        [SerializeField] private UnityEvent _onLoadFailed;
     
         private const int TaskDelay = 1000;
     
@@ -26,35 +32,41 @@ namespace Utils
                 LoadAPIInstances();
             }
         }
+        
+        private void OnDestroy()
+        {
+            _cancellationToken.Cancel();
+        }
 
         public async void LoadAPIInstances()
         {
-            if (_apiLoaderOrder.Any(x => !x.CanBeStarted()))
+            foreach (BaseAPILoaderInstance apiLoaderInstance in _apiLoaderOrder)
             {
-                Debug.LogWarning("Couldn't be started, because a loader is not properly configured!");
-                return;
+                if (_cancellationToken.IsCancellationRequested)
+                    return;
+
+                bool startupValid = await apiLoaderInstance.TryStartup(UpdateProgressState);
+                if (!startupValid && apiLoaderInstance.CanStartupAPI)
+                {
+                    await StartupAPI(apiLoaderInstance);
+                }
+                else
+                {
+                    Debug.LogError("Load failed on " + apiLoaderInstance.GetType());
+                    _onLoadFailed.Invoke();
+                    return;
+                }
             }
             
             foreach (BaseAPILoaderInstance apiLoaderInstance in _apiLoaderOrder)
             {
                 if (_cancellationToken.IsCancellationRequested)
                     return;
-                
-                bool startupFailed = await apiLoaderInstance.StartupFailed();
-                if (startupFailed)
-                {
-                    await StartupAPI(apiLoaderInstance);
-                }
 
-                await apiLoaderInstance.Initiate();
+                await apiLoaderInstance.OnStart(UpdateProgressState);
             }
             
             _onLoadComplete?.Invoke();
-        }
-
-        private void OnDestroy()
-        {
-            _cancellationToken.Cancel();
         }
         
         private async Task StartupAPI(BaseAPILoaderInstance baseAPILoaderInstance)
@@ -63,17 +75,24 @@ namespace Utils
             {
                 await AwaitSetupOobabooga(baseAPILoaderInstance);
             }
+            else
+            {
+                _cancellationToken.Cancel();
+                _onLoadFailed.Invoke();
+            }
         }
 
         private bool StartProcess(BaseAPILoaderInstance baseAPILoaderInstance)
         {
-            if (System.IO.File.Exists(baseAPILoaderInstance.DirectoryPath + "\\" + baseAPILoaderInstance.FileName))
+            string directory = UpdateSlashOnDirectory(baseAPILoaderInstance.DirectoryPath);
+            string fileName = UpdateSlashOnFileName(baseAPILoaderInstance.FileName);
+            if (System.IO.File.Exists( directory + fileName))
             {
                 // Create a new ProcessStartInfo instance
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
-                    FileName = baseAPILoaderInstance.FileName,
-                    WorkingDirectory = baseAPILoaderInstance.DirectoryPath,
+                    FileName = fileName,
+                    WorkingDirectory = directory,
                     UseShellExecute = true
                 };
 
@@ -87,10 +106,36 @@ namespace Utils
         
         private async Task AwaitSetupOobabooga(BaseAPILoaderInstance baseAPILoaderInstance)
         {
-            while (await baseAPILoaderInstance.StartupFailed() && !_cancellationToken.IsCancellationRequested)
+            while (!await baseAPILoaderInstance.TryStartup(UpdateProgressState) && !_cancellationToken.IsCancellationRequested)
             {
                 await Task.Delay(TaskDelay);
             }
+        }
+
+        private string UpdateSlashOnDirectory(string firstString)
+        {
+            if (!firstString.EndsWith("\\"))
+            {
+                return firstString + "\\";
+            }
+            
+            return firstString;
+        }
+        
+        private string UpdateSlashOnFileName(string secondString)
+        {
+            if (secondString.StartsWith("\\"))
+            {
+                return secondString.Remove(0);
+            }
+
+            return secondString;
+        }
+
+        private void UpdateProgressState(string text)
+        {
+            Debug.Log(text);
+            _loadingText.text = text;
         }
     }
 }

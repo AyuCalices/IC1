@@ -9,13 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66cc74477a57a6b4db339bf75a13d16c, type: 3}
-  m_Name: Oobabooga API Variable
+  m_Script: {fileID: 11500000, guid: 251b0e356f074704985b89bf90a4e19d, type: 3}
+  m_Name: OobaboogaDirectoryFileName_StringVariable
   m_EditorClassIdentifier: 
-  runtimeValue:
-    _serverUrl: http://127.0.0.1:5000
-  storedValue:
-    _serverUrl: http://127.0.0.1:5000
+  runtimeValue: 
+  storedValue: start_windows.bat
   onValueChanged: {fileID: 0}
-  _useDefaultUrl: 0
-  _defaultURL: http://127.0.0.1:5000

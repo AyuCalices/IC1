@@ -27,10 +27,7 @@ namespace VENTUS.DataStructures.Variables
             if (onValueChanged != null) onValueChanged.Raise();
         }
 
-        protected virtual T SetStoredDefault()
-        {
-            return default; 
-        }
+        protected abstract T SetStoredDefault();
         
         protected virtual void InternalOnRestore(T newValue, T previousValue) {}
         

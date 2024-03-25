@@ -1,7 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using DataStructures.Variables;
+using Features.Connection.UI;
 using StableDiffusionRuntimeIntegration.SDConfig;
-using TMPro;
 using UnityEngine;
 using Utils;
 using Debug = UnityEngine.Debug;
@@ -10,31 +11,22 @@ namespace StableDiffusionRuntimeIntegration.Example
 {
     public class StableDiffusionLoaderInstance : BaseAPILoaderInstance
     {
+        [Header("Request")]
+        [SerializeField] private BoolButtonRotationElement _isRemoteModeButtonRotationElement;
         [SerializeField] private StableDiffusionAPIVariable _stableDiffusionAPIVariable;
-        [SerializeField] private TMP_InputField _serverUrl;
         [SerializeField] private SDModelsVariable _sdModelsVariable;
         [SerializeField] private SDSamplersVariable _sdSamplersVariable;
-        
-        protected void Awake()
+
+        public override bool CanStartupAPI => !_isRemoteModeButtonRotationElement.IsActive;
+
+        public override async Task<bool> TryStartup(Action<string> updateProgressMethod)
         {
-            if (!string.IsNullOrEmpty(_serverUrl.text))
-            {
-                _stableDiffusionAPIVariable.Set(new StableDiffusionAPI(_serverUrl.text));
-            }
-            else
-            {
-                _stableDiffusionAPIVariable.Restore();
-            }
+            updateProgressMethod.Invoke("Setup Image Generation API");
+            return (await _sdModelsVariable.SetupAllModelsAsync()).Response.IsValid &&
+                   (await _sdSamplersVariable.SetupSampler()).Response.IsValid;
         }
 
-        public override async Task<bool> StartupFailed()
-        {
-            UpdateProgressState("Setup Image Generation API");
-            return (await _sdModelsVariable.SetupAllModelsAsync()).Response.IsError ||
-                   (await _sdSamplersVariable.SetupSampler()).Response.IsError;
-        }
-
-        public override async Task Initiate()
+        public override async Task OnStart(Action<string> updateProgressMethod)
         {
             if (_sdModelsVariable.CurrentModelIndex >= _sdModelsVariable.ModelList.Length)
             {
@@ -42,7 +34,7 @@ namespace StableDiffusionRuntimeIntegration.Example
                 return;
             }
 
-            UpdateProgressState("Get Current Image Generation Model");
+            updateProgressMethod.Invoke("Get Current Image Generation Model");
             string currentModel = (await _stableDiffusionAPIVariable.Get().GetSDCheckpointSha256Async()).Data;
             if (currentModel == _sdModelsVariable.ModelList[_sdModelsVariable.CurrentModelIndex].sha256)
             {
@@ -50,7 +42,7 @@ namespace StableDiffusionRuntimeIntegration.Example
                 return;
             }
 
-            UpdateProgressState("Load Image Generation Model");
+            updateProgressMethod.Invoke("Load Image Generation Model");
             await _sdModelsVariable.SetCurrentModelAsync();
         }
     }

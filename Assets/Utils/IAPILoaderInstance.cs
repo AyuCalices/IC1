@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 namespace Utils
@@ -6,7 +7,8 @@ namespace Utils
     {
         public string DirectoryPath { get; }
         public string FileName { get; }
-        public Task<bool> StartupFailed();
-        public Task Initiate();
+        public bool CanStartupAPI { get; }
+        public Task<bool> TryStartup(Action<string> updateProgressMethod);
+        public Task OnStart(Action<string> updateProgressMethod);
     }
 }

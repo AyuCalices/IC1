@@ -77,7 +77,7 @@ namespace Utils
             T data = default;
             if (request.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogWarning($"Request Error: {request.responseCode} | {request.error} | {request.result}");
+                Debug.LogWarning($"Request Error to {request.url}: {request.responseCode} | {request.error} | {request.result}");
             }
             else
             {

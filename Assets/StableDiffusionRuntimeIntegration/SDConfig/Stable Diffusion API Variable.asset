@@ -18,4 +18,4 @@ MonoBehaviour:
     _serverUrl: http://127.0.0.1:7860
   onValueChanged: {fileID: 0}
   _useDefaultUrl: 0
-  _defaultURL: http://suminom.privatedns.org:7860/
+  _defaultURL: http://127.0.0.1:7860
