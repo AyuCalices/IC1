@@ -37,7 +37,7 @@ namespace Features.Connection.UI
 
         public override bool ButtonIsEnabled()
         {
-            string requestedDirectory = UpdateSlashOnDirectory(_directoryPath.text.Trim()) + UpdateSlashOnFileName(_fileNameVariable.Get().Trim());
+            string requestedDirectory = _directoryPath.text.Trim().AddIfLastNotSlash() + _fileNameVariable.Get().Trim().RemoveIfFirstSlash();
             bool isValid = System.IO.File.Exists(requestedDirectory);
 
             if (gameObject.activeSelf)
@@ -48,28 +48,6 @@ namespace Features.Connection.UI
             
             _errorText.text = !isValid ? $"Invalid Directory: {requestedDirectory}" : "";
             return isValid;
-        }
-        
-        //TODO: update slash
-        private string UpdateSlashOnDirectory(string firstString)
-        {
-            if (!firstString.EndsWith("\\"))
-            {
-                return firstString + "\\";
-            }
-            
-            return firstString;
-        }
-        
-        //TODO: update slash
-        private string UpdateSlashOnFileName(string secondString)
-        {
-            if (secondString.StartsWith("\\"))
-            {
-                return secondString.Remove(0);
-            }
-
-            return secondString;
         }
     }
 }

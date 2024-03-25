@@ -16,17 +16,19 @@ namespace Features.Connection.UI
         {
             if (_isRemoteModeButtonRotationManager.IsToggleActive)
             {
-                UpdateVariable(_localServerUrl.isActiveAndEnabled ? _localServerUrl.text : string.Empty);
+                string selectedText = (_localServerUrl.isActiveAndEnabled ? _localServerUrl.text : string.Empty).Trim().RemoveIfLastSlash();
+                UpdateVariable(selectedText);
             }
             else
             {
-                UpdateVariable(_remoteServerUrl.text);
+                string selectedText = _remoteServerUrl.text.Trim().RemoveIfLastSlash();
+                UpdateVariable(selectedText);
             }
         }
         
         private void UpdateVariable(string url)
         {
-            if (!string.IsNullOrEmpty(UpdateSlashOnURL(url)))
+            if (!string.IsNullOrEmpty(url))
             {
                 _stableDiffusionAPIVariable.Set(new StableDiffusionAPI(url));
             }
@@ -34,12 +36,6 @@ namespace Features.Connection.UI
             {
                 _stableDiffusionAPIVariable.Restore();
             }
-        }
-        
-        //TODO: update slash
-        private string UpdateSlashOnURL(string firstString)
-        {
-            return !firstString.EndsWith("\\") ? firstString.Remove(firstString.Length - 1) : firstString;
         }
     }
 }

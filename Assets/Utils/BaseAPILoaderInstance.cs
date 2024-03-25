@@ -12,8 +12,8 @@ namespace Utils
         [SerializeField] private TMP_InputField _directoryInputField;
         [SerializeField] private StringVariable _fileName;
         
-        public string DirectoryPath => _directoryInputField.text.Trim();
-        public string FileName => _fileName.Get().Trim();
+        public string DirectoryPath => _directoryInputField.text;
+        public string FileName => _fileName.Get();
         public abstract bool CanStartupAPI { get; }
         public abstract string URL { get; }
 

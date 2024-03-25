@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Features.Connection.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -31,10 +32,10 @@ namespace Utils
         private bool _currentlyOpening;
         private float _timeoutDelta;
 
-        private void Start()
+        private void Awake()
         {
             _loadingText.text = string.Empty;
-            _timeoutText.gameObject.SetActive(_timeoutDelta > _timeoutInSeconds);
+            _timeoutText.gameObject.SetActive(false);
         }
 
         private void Update()
@@ -53,7 +54,6 @@ namespace Utils
 
         public async void LoadAPIInstances()
         {
-            UpdateProgressState("Initialize ...");
             List<BaseAPILoaderInstance> instancesToStartAPI = new();
             foreach (BaseAPILoaderInstance apiLoaderInstance in _apiLoaderOrder)
             {
@@ -107,8 +107,8 @@ namespace Utils
 
         private bool StartProcess(BaseAPILoaderInstance baseAPILoaderInstance)
         {
-            string directory = UpdateSlashOnDirectory(baseAPILoaderInstance.DirectoryPath);
-            string fileName = UpdateSlashOnFileName(baseAPILoaderInstance.FileName);
+            string directory = baseAPILoaderInstance.DirectoryPath.Trim().AddIfLastNotSlash();
+            string fileName = baseAPILoaderInstance.FileName.Trim().RemoveIfFirstSlash();
             if (File.Exists( directory + fileName))
             {
                 // Create a new ProcessStartInfo instance
@@ -135,28 +135,6 @@ namespace Utils
             {
                 await Task.Delay(TaskDelay);
             }
-        }
-
-        //TODO: update slash
-        private string UpdateSlashOnDirectory(string firstString)
-        {
-            if (!firstString.EndsWith("\\"))
-            {
-                return firstString + "\\";
-            }
-            
-            return firstString;
-        }
-        
-        //TODO: update slash
-        private string UpdateSlashOnFileName(string secondString)
-        {
-            if (secondString.StartsWith("\\"))
-            {
-                return secondString.Remove(0);
-            }
-
-            return secondString;
         }
 
         private void UpdateProgressState(string text)
