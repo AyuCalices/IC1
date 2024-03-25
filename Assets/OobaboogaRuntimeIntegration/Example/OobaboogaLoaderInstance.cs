@@ -17,10 +17,11 @@ namespace OobaboogaRuntimeIntegration.Example
         [SerializeField] private OobaboogaModelsVariable _oobaboogaModelsVariable;
 
         public override bool CanStartupAPI => _isRemoteModeButtonRotationManager.IsToggleActive;
+        public override string URL  => _oobaboogaAPIVariable.Get().ServerUrl;
 
         public override async Task<bool> TryStartup(Action<string> updateProgressMethod)
         {
-            updateProgressMethod.Invoke("Setup Text Generation API");
+            updateProgressMethod.Invoke("Setup Text Generation API ...");
             return (await _oobaboogaModelsVariable.SetupAllModelsAsync()).Response.IsValid;
         }
 
@@ -32,7 +33,7 @@ namespace OobaboogaRuntimeIntegration.Example
                 return;
             }
 
-            updateProgressMethod.Invoke("Get Current Text Generation Model");
+            updateProgressMethod.Invoke("Get Current Text Generation Model ...");
             string currentModel = (await _oobaboogaAPIVariable.Get().GetCurrentModelAsync()).Data.model_name;
             if (currentModel == _oobaboogaModelsVariable.ModelList.model_names[_oobaboogaModelsVariable.CurrentModelIndex])
             {
@@ -40,7 +41,7 @@ namespace OobaboogaRuntimeIntegration.Example
                 return;
             }
 
-            updateProgressMethod.Invoke("Load Text Generation Model");
+            updateProgressMethod.Invoke("Load Text Generation Model ...");
             await _oobaboogaModelsVariable.LoadModelAsync();
         }
     }

@@ -26,7 +26,7 @@ namespace Features.Connection.UI
         
         private void UpdateVariable(string url)
         {
-            if (!string.IsNullOrEmpty(url))
+            if (!string.IsNullOrEmpty(UpdateSlashOnURL(url)))
             {
                 _stableDiffusionAPIVariable.Set(new StableDiffusionAPI(url));
             }
@@ -34,6 +34,12 @@ namespace Features.Connection.UI
             {
                 _stableDiffusionAPIVariable.Restore();
             }
+        }
+        
+        //TODO: update slash
+        private string UpdateSlashOnURL(string firstString)
+        {
+            return !firstString.EndsWith("\\") ? firstString.Remove(firstString.Length - 1) : firstString;
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using TMPro;
@@ -11,28 +12,40 @@ namespace Utils
 {
     public class APILoader : MonoBehaviour
     {
-        [SerializeField] private bool _loadOnStart;
         [SerializeField] private List<BaseAPILoaderInstance> _apiLoaderOrder;
+        
+        [Header("Timeout Text")]
+        [SerializeField] private float _timeoutInSeconds = 100;
+        [SerializeField] private TMP_Text _timeoutText;
         
         [Header("Visualization")]
         [SerializeField] private TMP_Text _loadingText;
         
         [Header("Events")]
         [SerializeField] private UnityEvent _onLoadComplete;
-        [SerializeField] private UnityEvent _onLoadFailed;
+        [SerializeField] private UnityEvent<string> _onLoadFailed;
     
         private const int TaskDelay = 1000;
     
         private readonly CancellationTokenSource _cancellationToken = new();
+        private bool _currentlyOpening;
+        private float _timeoutDelta;
 
-        private async void Start()
+        private void Start()
         {
-            if (_loadOnStart)
-            {
-                LoadAPIInstances();
-            }
+            _loadingText.text = string.Empty;
+            _timeoutText.gameObject.SetActive(_timeoutDelta > _timeoutInSeconds);
         }
-        
+
+        private void Update()
+        {
+            _timeoutText.gameObject.SetActive(_timeoutDelta > _timeoutInSeconds);
+            
+            if (!_currentlyOpening) return;
+            
+            _timeoutDelta += Time.deltaTime;
+        }
+
         private void OnDestroy()
         {
             _cancellationToken.Cancel();
@@ -40,6 +53,7 @@ namespace Utils
 
         public async void LoadAPIInstances()
         {
+            UpdateProgressState("Initialize ...");
             List<BaseAPILoaderInstance> instancesToStartAPI = new();
             foreach (BaseAPILoaderInstance apiLoaderInstance in _apiLoaderOrder)
             {
@@ -54,8 +68,9 @@ namespace Utils
                 }
                 else
                 {
-                    Debug.LogError("Load failed on " + apiLoaderInstance.GetType());
-                    _onLoadFailed.Invoke();
+                    string errorMessage = $"Server on URL {apiLoaderInstance.URL} is currently not Online!";
+                    Debug.LogWarning(errorMessage);
+                    _onLoadFailed.Invoke(errorMessage);
                     return;
                 }
             }
@@ -78,22 +93,23 @@ namespace Utils
         
         private async Task StartupAPI(BaseAPILoaderInstance baseAPILoaderInstance)
         {
+            _currentlyOpening = true;
+            
             if (StartProcess(baseAPILoaderInstance))
             {
+                _timeoutDelta = 0f;
                 await AwaitSetupOobabooga(baseAPILoaderInstance);
             }
-            else
-            {
-                _cancellationToken.Cancel();
-                _onLoadFailed.Invoke();
-            }
+
+            _timeoutDelta = 0f;
+            _currentlyOpening = false;
         }
 
         private bool StartProcess(BaseAPILoaderInstance baseAPILoaderInstance)
         {
             string directory = UpdateSlashOnDirectory(baseAPILoaderInstance.DirectoryPath);
             string fileName = UpdateSlashOnFileName(baseAPILoaderInstance.FileName);
-            if (System.IO.File.Exists( directory + fileName))
+            if (File.Exists( directory + fileName))
             {
                 // Create a new ProcessStartInfo instance
                 ProcessStartInfo startInfo = new ProcessStartInfo
@@ -106,8 +122,10 @@ namespace Utils
                 Process.Start(startInfo);
                 return true;
             }
-
-            Debug.LogError("File does not exist at path: " + baseAPILoaderInstance.DirectoryPath);
+            
+            _cancellationToken.Cancel();
+            Debug.LogWarning("File does not exist at path: " + baseAPILoaderInstance.DirectoryPath);
+            _onLoadFailed.Invoke("File does not exist at path: " + baseAPILoaderInstance.DirectoryPath);
             return false;
         }
         
@@ -119,6 +137,7 @@ namespace Utils
             }
         }
 
+        //TODO: update slash
         private string UpdateSlashOnDirectory(string firstString)
         {
             if (!firstString.EndsWith("\\"))
@@ -129,6 +148,7 @@ namespace Utils
             return firstString;
         }
         
+        //TODO: update slash
         private string UpdateSlashOnFileName(string secondString)
         {
             if (secondString.StartsWith("\\"))

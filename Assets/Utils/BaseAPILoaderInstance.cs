@@ -11,10 +11,11 @@ namespace Utils
         [Header("Directory Path")]
         [SerializeField] private TMP_InputField _directoryInputField;
         [SerializeField] private StringVariable _fileName;
-
+        
         public string DirectoryPath => _directoryInputField.text.Trim();
         public string FileName => _fileName.Get().Trim();
         public abstract bool CanStartupAPI { get; }
+        public abstract string URL { get; }
 
         public virtual Task<bool> TryStartup(Action<string> updateProgressMethod)
         {

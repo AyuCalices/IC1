@@ -50,6 +50,7 @@ namespace Features.Connection.UI
             return isValid;
         }
         
+        //TODO: update slash
         private string UpdateSlashOnDirectory(string firstString)
         {
             if (!firstString.EndsWith("\\"))
@@ -60,6 +61,7 @@ namespace Features.Connection.UI
             return firstString;
         }
         
+        //TODO: update slash
         private string UpdateSlashOnFileName(string secondString)
         {
             if (secondString.StartsWith("\\"))

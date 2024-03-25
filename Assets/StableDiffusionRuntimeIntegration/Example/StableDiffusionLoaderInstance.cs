@@ -18,10 +18,11 @@ namespace StableDiffusionRuntimeIntegration.Example
         [SerializeField] private SDSamplersVariable _sdSamplersVariable;
 
         public override bool CanStartupAPI => _isRemoteModeButtonRotationManager.IsToggleActive;
+        public override string URL => _stableDiffusionAPIVariable.Get().ServerUrl;
 
         public override async Task<bool> TryStartup(Action<string> updateProgressMethod)
         {
-            updateProgressMethod.Invoke("Setup Image Generation API");
+            updateProgressMethod.Invoke("Setup Image Generation API ...");
             return (await _sdModelsVariable.SetupAllModelsAsync()).Response.IsValid &&
                    (await _sdSamplersVariable.SetupSampler()).Response.IsValid;
         }
@@ -34,7 +35,7 @@ namespace StableDiffusionRuntimeIntegration.Example
                 return;
             }
 
-            updateProgressMethod.Invoke("Get Current Image Generation Model");
+            updateProgressMethod.Invoke("Get Current Image Generation Model ...");
             string currentModel = (await _stableDiffusionAPIVariable.Get().GetSDCheckpointSha256Async()).Data;
             if (currentModel == _sdModelsVariable.ModelList[_sdModelsVariable.CurrentModelIndex].sha256)
             {
@@ -42,7 +43,7 @@ namespace StableDiffusionRuntimeIntegration.Example
                 return;
             }
 
-            updateProgressMethod.Invoke("Load Image Generation Model");
+            updateProgressMethod.Invoke("Load Image Generation Model ...");
             await _sdModelsVariable.SetCurrentModelAsync();
         }
     }
