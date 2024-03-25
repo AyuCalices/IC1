@@ -45,8 +45,9 @@ namespace Utils
                 if (_cancellationToken.IsCancellationRequested)
                     return;
 
-                bool startupValid = await apiLoaderInstance.TryStartup(UpdateProgressState);
-                if (!startupValid && apiLoaderInstance.CanStartupAPI)
+                if (await apiLoaderInstance.TryStartup(UpdateProgressState)) continue;
+                
+                if (apiLoaderInstance.CanStartupAPI)
                 {
                     await StartupAPI(apiLoaderInstance);
                 }
