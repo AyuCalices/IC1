@@ -13,7 +13,7 @@ namespace StableDiffusionRuntimeIntegration
     [Serializable]
     public class StableDiffusionAPI
     {
-        [SerializeField, ReadOnly] private string _serverUrl;
+        [SerializeField, DataStructures.Attributes.ReadOnly] private string _serverUrl;
         public string ServerUrl => _serverUrl;
 
         public StableDiffusionAPI(string url = "http://127.0.0.1:7860")

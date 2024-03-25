@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Features.Connection.UI
 {
-    public abstract class BaseButtonRotationElement : MonoBehaviour
+    public abstract class BaseButtonToggleElement : MonoBehaviour
     {
         private readonly List<ButtonToggleGroupManager> _disablingManagers = new ();
     

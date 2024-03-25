@@ -66,11 +66,11 @@ namespace Features.Connection.UI
         [Serializable]
         public class ClickGroup
         {
-            [SerializeField] private List<BaseButtonRotationElement> _activeObjects;
+            [SerializeField] private List<BaseButtonToggleElement> _activeObjects;
 
             public void ActivateAll(ButtonToggleGroupManager buttonToggleGroupManager)
             {
-                foreach (BaseButtonRotationElement buttonRotationElement in _activeObjects)
+                foreach (BaseButtonToggleElement buttonRotationElement in _activeObjects)
                 {
                     buttonRotationElement.Activate(buttonToggleGroupManager);
                 }
@@ -78,7 +78,7 @@ namespace Features.Connection.UI
             
             public void DeactivateAll(ButtonToggleGroupManager buttonToggleGroupManager)
             {
-                foreach (BaseButtonRotationElement buttonRotationElement in _activeObjects)
+                foreach (BaseButtonToggleElement buttonRotationElement in _activeObjects)
                 {
                     buttonRotationElement.Deactivate(buttonToggleGroupManager);
                 }

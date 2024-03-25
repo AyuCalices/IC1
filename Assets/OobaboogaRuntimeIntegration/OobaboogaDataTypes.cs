@@ -221,7 +221,6 @@ namespace OobaboogaRuntimeIntegration
         public ChatCompletionRequest(bool stream, ChatCompletionRequestContainer chatCompletionRequestContainer)
         {
             Messages = chatCompletionRequestContainer.MessageWrapper.Messages;
-            Continue_ = chatCompletionRequestContainer.MessageWrapper.Continue_;
 
             if (Messages.Count == 0 && Continue_)
             {
@@ -315,12 +314,6 @@ namespace OobaboogaRuntimeIntegration
         /// https://github.com/oobabooga/text-generation-webui/wiki/03-‐-Parameters-Tab
         /// </summary>
         public List<Message> Messages { get; set; }
-        
-        /// <summary>
-        /// Makes the last bot message in the history be continued instead of starting a new message.
-        /// https://github.com/oobabooga/text-generation-webui/blob/main/extensions/openai/typing.py
-        /// </summary>
-        public bool Continue_ { get; set; }
     }
     
     public interface IChatCompletionParameters
@@ -337,6 +330,12 @@ namespace OobaboogaRuntimeIntegration
         public string Instruction_Template_Str { get; set; }
         public string Chat_Template_Str { get; set; }
         public string Chat_Instruct_Command { get; set; }
+        
+        /// <summary>
+        /// Makes the last bot message in the history be continued instead of starting a new message.
+        /// https://github.com/oobabooga/text-generation-webui/blob/main/extensions/openai/typing.py
+        /// </summary>
+        public bool Continue_ { get; set; }
     }
 
     public interface ICharacterName
@@ -346,10 +345,36 @@ namespace OobaboogaRuntimeIntegration
     
     public interface ICharacterParameters
     {
+        /// <summary>
+        /// Your name (the user). By default, it's \"You\"." (User_Name)
+        /// https://github.com/oobabooga/text-generation-webui/blob/main/extensions/openai/typing.py
+        /// </summary>
         public string Name1 { get; set; }
+        
+        /// <summary>
+        /// The user description/personality.
+        /// </summary>
         public string User_Bio { get; set; }
+        
+        /// <summary>
+        /// Overwrites the value set by character field. (Bot_Name)
+        /// https://github.com/oobabooga/text-generation-webui/blob/main/extensions/openai/typing.py
+        /// </summary>
         public string Name2 { get; set; }
+        
+        /// <summary>
+        /// Overwrites the value set by character field.
+        /// A string that is always at the top of the prompt. It never gets truncated.
+        /// It usually defines the bot's personality and some key elements of the conversation.
+        /// https://github.com/oobabooga/text-generation-webui/blob/main/extensions/openai/typing.py
+        /// </summary>
         public string Context { get; set; }
+        
+        /// <summary>
+        /// Overwrites the value set by character field.
+        /// An opening message for the bot. When set, it appears whenever you start a new chat.
+        /// https://github.com/oobabooga/text-generation-webui/blob/main/extensions/openai/typing.py
+        /// </summary>
         public string Greeting { get; set; }
     }
     

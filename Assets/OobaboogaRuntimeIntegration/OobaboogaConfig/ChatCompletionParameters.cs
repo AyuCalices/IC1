@@ -114,6 +114,8 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
         //TODO: no clue
         [field: SerializeField, HideInInspector] public string Chat_Instruct_Command { get; set; } = string.Empty;
         
+        public bool Continue_ { get; set; }
+
         #endregion
     }
 }

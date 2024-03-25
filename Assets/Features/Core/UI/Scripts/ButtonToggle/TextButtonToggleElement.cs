@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Features.Connection.UI
 {
-    public class TextButtonRotationElement : BaseButtonRotationElement
+    public class TextButtonToggleElement : BaseButtonToggleElement
     {
         [SerializeField] private TMP_Text _text;
         [SerializeField, TextArea(0, 2)] private string _activeString;

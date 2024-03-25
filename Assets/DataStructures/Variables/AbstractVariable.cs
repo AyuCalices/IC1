@@ -18,7 +18,7 @@ namespace VENTUS.DataStructures.Variables
         public void Restore()
         {
             storedValue = SetStoredDefault();
-            if (storedValue.Equals(runtimeValue)) return;
+            if (storedValue != null && storedValue.Equals(runtimeValue)) return;
 
             T bufferedPreviousValue = runtimeValue;
             runtimeValue = storedValue;

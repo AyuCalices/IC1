@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -11,8 +10,9 @@ using Utils;
 
 namespace OobaboogaRuntimeIntegration.Example
 {
-    public class ChatGeneration : MonoBehaviour, IMessageWrapper
+    public class ChatGeneration : MonoBehaviour//, IMessageWrapper
     {
+        /*
         [Header("Parameters")] 
         [SerializeField] private OobaboogaAPIVariable _oobaboogaAPIVariable;
         [SerializeField] private CharacterData _character;
@@ -32,8 +32,6 @@ namespace OobaboogaRuntimeIntegration.Example
 
         //TODO: messages change with different character
         public List<Message> Messages { get; set; } = new();
-        //TODO: implement input method for continue
-        public bool Continue_ { get; set; } = false;
 
         private void Awake()
         {
@@ -114,6 +112,7 @@ namespace OobaboogaRuntimeIntegration.Example
             Messages.Add(new Message{Role = "char", Content = _chatMessageViews[^1].Content});
         }
         
+        //TODO: text formatting
         private string FormatTextQuotation(string originalText, char separator, string prefix, string suffix)
         {
             string[] parts = originalText.Split(separator);
@@ -134,6 +133,6 @@ namespace OobaboogaRuntimeIntegration.Example
             }
 
             return formattedText;
-        }
+        }*/
     }
 }

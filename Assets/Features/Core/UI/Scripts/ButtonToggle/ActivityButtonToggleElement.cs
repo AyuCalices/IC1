@@ -1,17 +1,15 @@
 namespace Features.Connection.UI
 {
-    public class BoolButtonRotationElement : BaseButtonRotationElement
+    public class ActivityButtonToggleElement : BaseButtonToggleElement
     {
-        public bool IsActive { get; private set; }
-        
         protected override void ActivateInternal(ButtonToggleGroupManager buttonToggleGroupManager)
         {
-            IsActive = true;
+            gameObject.SetActive(true);
         }
 
         protected override void DeactivateInternal(ButtonToggleGroupManager buttonToggleGroupManager)
         {
-            IsActive = false;
+            gameObject.SetActive(false);
         }
     }
 }
