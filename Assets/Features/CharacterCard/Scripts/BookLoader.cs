@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,13 +24,10 @@ namespace Features.CharacterCard.Scripts
             _bookSerializer.Load();
             foreach (BookData bookData in _bookSerializer.BookDataList)
             {
-                BookSelectElement instantiatedElement = Instantiate(_bookPrefab, _instantiationParent);
-                instantiatedElement.Initialize(bookData, _onPressPlayBook, _onPressEditBook, RemoveBook);
-                _instantiatedElements.Add(instantiatedElement);
-                _lastElement.SetAsLastSibling();
+                InstantiateBook(bookData);
             }
         }
-
+        
         private void OnDestroy()
         {
             _bookSerializer.Save();
@@ -37,22 +35,28 @@ namespace Features.CharacterCard.Scripts
 
         public void AddNewBook(BookData bookData)
         {
-            _bookSerializer.AddBook(bookData);
+            if (_bookSerializer.AddBook(bookData))
+            {
+                InstantiateBook(bookData);
+            }
+        }
+
+        private void InstantiateBook(BookData bookData)
+        {
             BookSelectElement instantiatedElement = Instantiate(_bookPrefab, _instantiationParent);
-            instantiatedElement.Initialize(bookData, _onPressPlayBook, _onPressEditBook, _bookSerializer.RemoveBook);
+            instantiatedElement.Initialize(bookData, _onPressPlayBook, _onPressEditBook, RemoveBook);
+            _instantiatedElements.Add(instantiatedElement);
             _lastElement.SetAsLastSibling();
         }
 
-        public void RemoveBook(BookData bookData)
+        private void RemoveBook(BookData bookData)
         {
-            _bookSerializer.RemoveBook(bookData);
-
             BookSelectElement bookSelectElement = _instantiatedElements.Find(x => x.ContainedBook == bookData);
-            if (bookSelectElement != null)
+            if (bookSelectElement != null && _bookSerializer.RemoveBook(bookData))
             {
                 _instantiatedElements.Remove(bookSelectElement);
+                Destroy(bookSelectElement.gameObject);
             }
-            Destroy(bookSelectElement.gameObject);
         }
     }
 }

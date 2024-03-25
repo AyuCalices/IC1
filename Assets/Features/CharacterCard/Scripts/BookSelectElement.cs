@@ -24,21 +24,28 @@ namespace Features.CharacterCard.Scripts
         public void Initialize(BookData bookData, UnityEvent<BookData> onPressPlayButton, UnityEvent<BookData> onPressEditButton, Action<BookData> onRemoveAction)
         {
             ContainedBook = bookData;
-            
+            ContainedBook.OnValueChanged += UpdateData;
             _playButton.onClick.AddListener(() => onPressPlayButton.Invoke(bookData));
             _editButton.onClick.AddListener(() => onPressEditButton.Invoke(bookData));
             _deleteButton.onClick.AddListener(() => onRemoveAction.Invoke(bookData));
-            
-            //_bookCoverImage.sprite = 
-            _title.text = bookData.Name2;
-            _context.text = bookData.Context;
+
+            UpdateData();
         }
+        
 
         private void OnDestroy()
         {
+            ContainedBook.OnValueChanged -= UpdateData;
             _playButton.onClick.RemoveAllListeners();
             _editButton.onClick.RemoveAllListeners();
             _deleteButton.onClick.RemoveAllListeners();
+        }
+        
+        private void UpdateData()
+        {
+            //_bookCoverImage.sprite = 
+            _title.text = ContainedBook.Name2;
+            _context.text = ContainedBook.Context;
         }
     }
 }

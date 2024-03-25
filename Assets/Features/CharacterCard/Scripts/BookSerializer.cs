@@ -8,14 +8,14 @@ namespace Features.CharacterCard.Scripts
     {
         public HashSet<BookData> BookDataList { get; private set; } = new ();
 
-        public void AddBook(BookData bookData)
+        public bool AddBook(BookData bookData)
         {
-            BookDataList.Add(bookData);
+            return BookDataList.Add(bookData);
         }
 
-        public void RemoveBook(BookData bookData)
+        public bool RemoveBook(BookData bookData)
         {
-            BookDataList.Remove(bookData);
+            return BookDataList.Remove(bookData);
         }
 
         public void Save()

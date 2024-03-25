@@ -61,7 +61,7 @@ namespace Features.CharacterCard.Scripts
                 _userBio.text = _bookDataToLoad.Get().User_Bio;
                 _characterName.text = _bookDataToLoad.Get().Name2;
                 _context.text = _bookDataToLoad.Get().Context;
-                _greeting.text = _bookDataToLoad.Get().Context;
+                _greeting.text = _bookDataToLoad.Get().Greeting;
             }
         }
         
@@ -70,20 +70,33 @@ namespace Features.CharacterCard.Scripts
             _onCancel.Invoke();
         }
 
-        private void InvokeOnCreate()
+        private BookData SelectBook()
         {
             string characterName = _buttonToggleGroupManager.IsToggleActive ? _characterName.text : "Narrator";
-            BookData newBook = new BookData(string.Empty, _userName.text, _userBio.text, 
+            
+            if (_bookDataToLoad != null && _bookDataToLoad.Get() != null)
+            {
+                BookData bookData = _bookDataToLoad.Get();
+                bookData.Name1 = _userName.text;
+                bookData.User_Bio = _userBio.text;
+                bookData.Name2 = characterName;
+                bookData.Context = _context.text;
+                bookData.Greeting = _greeting.text;
+                return bookData;
+            }
+
+            return new BookData(string.Empty, _userName.text, _userBio.text, 
                 characterName, _context.text, _greeting.text);
-            _onCreate.Invoke(newBook);
+        }
+
+        private void InvokeOnCreate()
+        {
+            _onCreate.Invoke(SelectBook());
         }
         
         private void InvokeOnCreateAndStart()
         {
-            string characterName = _buttonToggleGroupManager.IsToggleActive ? _characterName.text : "Narrator";
-            BookData newBook = new BookData(string.Empty, _userName.text, _userBio.text, 
-                characterName, _context.text, _greeting.text);
-            _onCreateAndPlay.Invoke(newBook);
+            _onCreateAndPlay.Invoke(SelectBook());
         }
     }
 }
