@@ -6237,7 +6237,7 @@ MonoBehaviour:
   _apiLoaderOrder:
   - {fileID: 1285194919}
   - {fileID: 1285194918}
-  _timeoutInSeconds: 1
+  _timeoutInSeconds: 60
   _timeoutText: {fileID: 1023111340}
   _loadingText: {fileID: 8613028}
   _onLoadComplete:
