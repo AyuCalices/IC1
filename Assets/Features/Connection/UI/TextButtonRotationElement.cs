@@ -9,12 +9,12 @@ namespace Features.Connection.UI
         [SerializeField, TextArea(0, 2)] private string _activeString;
         [SerializeField, TextArea(0, 2)] private string _inactiveString;
         
-        protected override void ActivateInternal(ButtonRotationManager buttonRotationManager)
+        protected override void ActivateInternal(ButtonToggleGroupManager buttonToggleGroupManager)
         {
             _text.text = _activeString;
         }
 
-        protected override void DeactivateInternal(ButtonRotationManager buttonRotationManager)
+        protected override void DeactivateInternal(ButtonToggleGroupManager buttonToggleGroupManager)
         {
             _text.text = _inactiveString;
         }

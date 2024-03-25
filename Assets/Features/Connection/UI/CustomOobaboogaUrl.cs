@@ -8,17 +8,27 @@ namespace Features.Connection.UI
     public class CustomOobaboogaUrl : MonoBehaviour
     {
         [SerializeField] private OobaboogaAPIVariable _oobaboogaAPIVariable;
-        [SerializeField] private BoolButtonRotationElement _isRemoteModeButtonRotationElement;
+        [SerializeField] private ButtonToggleGroupManager _isRemoteModeButtonRotationManager;
         [SerializeField] private TMP_InputField _remoteServerUrl;
         [SerializeField] private TMP_InputField _localServerUrl;
     
         public void SetURL()
         {
-            string activeText = _isRemoteModeButtonRotationElement.IsActive ? _remoteServerUrl.text : _localServerUrl.text;
-            
-            if (!string.IsNullOrEmpty(activeText))
+            if (_isRemoteModeButtonRotationManager.IsToggleActive)
             {
-                _oobaboogaAPIVariable.Set(new OobaboogaAPI(activeText));
+                UpdateVariable(_localServerUrl.isActiveAndEnabled ? _localServerUrl.text : string.Empty);
+            }
+            else
+            {
+                UpdateVariable(_remoteServerUrl.text);
+            }
+        }
+
+        private void UpdateVariable(string url)
+        {
+            if (!string.IsNullOrEmpty(url))
+            {
+                _oobaboogaAPIVariable.Set(new OobaboogaAPI(url));
             }
             else
             {

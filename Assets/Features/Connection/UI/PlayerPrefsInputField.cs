@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,10 +18,16 @@ namespace Features.Connection.UI
 
         private void OnDestroy()
         {
+            SaveAsPlayerPref();
+        }
+
+        [ContextMenu("Save as PlayerPref")]
+        private void SaveAsPlayerPref()
+        {
             PlayerPrefs.SetString(GetGameObjectPath(gameObject), _directoryInputField.text);
             PlayerPrefs.Save();
         }
-        
+
         private string GetGameObjectPath(GameObject obj)
         {
             string path = obj.name;

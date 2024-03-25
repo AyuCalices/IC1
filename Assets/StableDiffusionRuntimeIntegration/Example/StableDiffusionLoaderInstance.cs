@@ -12,12 +12,12 @@ namespace StableDiffusionRuntimeIntegration.Example
     public class StableDiffusionLoaderInstance : BaseAPILoaderInstance
     {
         [Header("Request")]
-        [SerializeField] private BoolButtonRotationElement _isRemoteModeButtonRotationElement;
+        [SerializeField] private ButtonToggleGroupManager _isRemoteModeButtonRotationManager;
         [SerializeField] private StableDiffusionAPIVariable _stableDiffusionAPIVariable;
         [SerializeField] private SDModelsVariable _sdModelsVariable;
         [SerializeField] private SDSamplersVariable _sdSamplersVariable;
 
-        public override bool CanStartupAPI => !_isRemoteModeButtonRotationElement.IsActive;
+        public override bool CanStartupAPI => _isRemoteModeButtonRotationManager.IsToggleActive;
 
         public override async Task<bool> TryStartup(Action<string> updateProgressMethod)
         {

@@ -12,11 +12,11 @@ namespace OobaboogaRuntimeIntegration.Example
     public class OobaboogaLoaderInstance : BaseAPILoaderInstance
     {
         [Header("Request")]
-        [SerializeField] private BoolButtonRotationElement _isRemoteModeButtonRotationElement;
+        [SerializeField] private ButtonToggleGroupManager _isRemoteModeButtonRotationManager;
         [SerializeField] private OobaboogaAPIVariable _oobaboogaAPIVariable;
         [SerializeField] private OobaboogaModelsVariable _oobaboogaModelsVariable;
 
-        public override bool CanStartupAPI => !_isRemoteModeButtonRotationElement.IsActive;
+        public override bool CanStartupAPI => _isRemoteModeButtonRotationManager.IsToggleActive;
 
         public override async Task<bool> TryStartup(Action<string> updateProgressMethod)
         {

@@ -40,16 +40,17 @@ namespace Utils
 
         public async void LoadAPIInstances()
         {
+            List<BaseAPILoaderInstance> instancesToStartAPI = new();
             foreach (BaseAPILoaderInstance apiLoaderInstance in _apiLoaderOrder)
             {
                 if (_cancellationToken.IsCancellationRequested)
                     return;
-
-                if (await apiLoaderInstance.TryStartup(UpdateProgressState)) continue;
                 
+                if (await apiLoaderInstance.TryStartup(UpdateProgressState)) continue;
+
                 if (apiLoaderInstance.CanStartupAPI)
                 {
-                    await StartupAPI(apiLoaderInstance);
+                    instancesToStartAPI.Add(apiLoaderInstance);
                 }
                 else
                 {
@@ -57,6 +58,11 @@ namespace Utils
                     _onLoadFailed.Invoke();
                     return;
                 }
+            }
+            
+            foreach (BaseAPILoaderInstance apiLoaderInstance in instancesToStartAPI)
+            {
+                await StartupAPI(apiLoaderInstance);
             }
             
             foreach (BaseAPILoaderInstance apiLoaderInstance in _apiLoaderOrder)

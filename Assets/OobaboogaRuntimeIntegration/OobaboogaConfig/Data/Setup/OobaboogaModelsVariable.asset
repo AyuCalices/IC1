@@ -16,5 +16,7 @@ MonoBehaviour:
   _modelList:
     model_names:
     - None
-    - Yanchi_xxx_TinyLLaMA_medical_sft
+    - llama-2-13b-chat.Q4_K_M.gguf
+    - TheBloke_MythoLogic-Mini-7B-GPTQ
+    - TheBloke_storytime-13B-GPTQ
   _currentModelIndex: 1

@@ -5,28 +5,28 @@ namespace Features.Connection.UI
 {
     public abstract class BaseButtonRotationElement : MonoBehaviour
     {
-        private readonly List<ButtonRotationManager> _disablingManagers = new ();
+        private readonly List<ButtonToggleGroupManager> _disablingManagers = new ();
     
-        public void Activate(ButtonRotationManager buttonRotationManager)
+        public void Activate(ButtonToggleGroupManager buttonToggleGroupManager)
         {
-            _disablingManagers.Remove(buttonRotationManager);
+            _disablingManagers.Remove(buttonToggleGroupManager);
             if (_disablingManagers.Count == 0)
             {
-                ActivateInternal(buttonRotationManager);
+                ActivateInternal(buttonToggleGroupManager);
             }
         }
 
-        protected abstract void ActivateInternal(ButtonRotationManager buttonRotationManager);
+        protected abstract void ActivateInternal(ButtonToggleGroupManager buttonToggleGroupManager);
     
-        public void Deactivate(ButtonRotationManager buttonRotationManager)
+        public void Deactivate(ButtonToggleGroupManager buttonToggleGroupManager)
         {
-            _disablingManagers.Add(buttonRotationManager);
+            _disablingManagers.Add(buttonToggleGroupManager);
             if (gameObject.activeSelf)
             {
-                DeactivateInternal(buttonRotationManager);
+                DeactivateInternal(buttonToggleGroupManager);
             }
         }
         
-        protected abstract void DeactivateInternal(ButtonRotationManager buttonRotationManager);
+        protected abstract void DeactivateInternal(ButtonToggleGroupManager buttonToggleGroupManager);
     }
 }
