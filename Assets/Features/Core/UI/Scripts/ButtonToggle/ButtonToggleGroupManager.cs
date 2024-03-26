@@ -12,6 +12,8 @@ namespace Features.Connection.UI
         [SerializeField] private ClickGroup _entryGroup;
         [SerializeField] private ClickGroup _toggledGroup;
 
+        private bool _isSet;
+
         public bool IsToggleActive { get; private set; }
 
         private void Awake()
@@ -26,6 +28,8 @@ namespace Features.Connection.UI
 
         private void Start()
         {
+            if (_isSet) return;
+            
             if (_startWithToggleGroup)
             {
                 ActivateToggleGroup();
@@ -36,21 +40,25 @@ namespace Features.Connection.UI
             }
         }
 
-        private void ActivateEntryGroup()
+        public void ActivateEntryGroup()
         {
+            _isSet = true;
+            
             IsToggleActive = false;
             _toggledGroup.DeactivateAll(this);
             _entryGroup.ActivateAll(this);
         }
 
-        private void ActivateToggleGroup()
+        public void ActivateToggleGroup()
         {
+            _isSet = true;
+            
             IsToggleActive = true;
             _entryGroup.DeactivateAll(this);
             _toggledGroup.ActivateAll(this);
         }
 
-        private void PerformToggle()
+        public void PerformToggle()
         {
             if (IsToggleActive)
             {

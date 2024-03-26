@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -41,9 +42,19 @@ namespace Features.CharacterCard.Scripts
             _deleteButton.onClick.RemoveAllListeners();
         }
         
-        private void UpdateData()
+        private async void UpdateData()
         {
-            //_bookCoverImage.sprite = 
+            if (File.Exists(ContainedBook.ImagePath))
+            {
+                Texture2D texture = new Texture2D(2, 2);
+                byte[] fileImage = await File.ReadAllBytesAsync(ContainedBook.ImagePath);
+                texture.LoadImage(fileImage);
+                texture.Apply();
+                            
+                Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+                _bookCoverImage.sprite = sprite;
+            }
+            
             _title.text = ContainedBook.Name2;
             _context.text = ContainedBook.Context;
         }

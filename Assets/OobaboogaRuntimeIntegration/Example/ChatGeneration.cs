@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using DataStructures.Variables;
+using Features.CharacterCard.Scripts;
 using OobaboogaRuntimeIntegration.OobaboogaConfig;
 using TMPro;
 using UnityEngine;
@@ -10,12 +11,12 @@ using Utils;
 
 namespace OobaboogaRuntimeIntegration.Example
 {
-    public class ChatGeneration : MonoBehaviour//, IMessageWrapper
+    public class ChatGeneration : MonoBehaviour, IMessageWrapper
     {
-        /*
+        [SerializeField] private BookDataVariable _currentBook;
+        
         [Header("Parameters")] 
         [SerializeField] private OobaboogaAPIVariable _oobaboogaAPIVariable;
-        [SerializeField] private CharacterData _character;
         [SerializeField] private ChatCompletionParameters _chatCompletionParameters;
         [SerializeField] private GenerationParameters _generationParameters;
         
@@ -42,9 +43,9 @@ namespace OobaboogaRuntimeIntegration.Example
         private void Start()
         {
             ChatMessageView instantiatedMessage = Instantiate(_chatMessageView, _instantiationParent);
-            instantiatedMessage.Role = _character.Name2;
+            instantiatedMessage.Role = _currentBook.Get().Name2;
             
-            string starFormatted = FormatTextQuotation(_character.Greeting, '*', "<i>", "</i>");
+            string starFormatted = FormatTextQuotation(_currentBook.Get().Greeting, '*', "<i>", "</i>");
             string quotationFormatted = FormatTextQuotation(starFormatted, '\"', "\"<i>", "</i>\"");
             instantiatedMessage.Content = quotationFormatted;
         }
@@ -53,7 +54,7 @@ namespace OobaboogaRuntimeIntegration.Example
         {
             Messages.Add(new Message{Role = "user", Content = _inputField.text});
             ChatMessageView instantiatedMessage = Instantiate(_chatMessageView, _instantiationParent);
-            instantiatedMessage.Role = _character.Name1;
+            instantiatedMessage.Role = _currentBook.Get().Name1;
             instantiatedMessage.Content = _inputField.text;
             _inputField.text = "";
             GenerateChatCompletion();
@@ -61,7 +62,7 @@ namespace OobaboogaRuntimeIntegration.Example
 
         private void RegenerateMessage()
         {
-            if (Messages[^1].Role == "char")
+            if (Messages[^1].Role == "assistant")
             {
                 Messages.RemoveAt(Messages.Count - 1);
                 
@@ -83,9 +84,9 @@ namespace OobaboogaRuntimeIntegration.Example
         {
             ChatMessageView chatMessageView = Instantiate(_chatMessageView, _instantiationParent);
             _chatMessageViews.Add(chatMessageView);
-            chatMessageView.Role = _character.Name2;
+            chatMessageView.Role = _currentBook.Get().Name2;
             
-            ChatCompletionRequestContainer chatCompletionRequestContainer = new ChatCompletionRequestContainer(this, _character)
+            ChatCompletionRequestContainer chatCompletionRequestContainer = new ChatCompletionRequestContainer(this, _currentBook.Get())
             {
                 ChatCompletionParameters = _chatCompletionParameters,
                 GenerationParameters = _generationParameters,
@@ -109,7 +110,7 @@ namespace OobaboogaRuntimeIntegration.Example
 
         private void OnComplete()
         {
-            Messages.Add(new Message{Role = "char", Content = _chatMessageViews[^1].Content});
+            Messages.Add(new Message{Role = "assistant", Content = _chatMessageViews[^1].Content});
         }
         
         //TODO: text formatting
@@ -133,6 +134,6 @@ namespace OobaboogaRuntimeIntegration.Example
             }
 
             return formattedText;
-        }*/
+        }
     }
 }

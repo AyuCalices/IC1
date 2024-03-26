@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Features.Connection.UI
 {
     public class ActivityButtonToggleElement : BaseButtonToggleElement

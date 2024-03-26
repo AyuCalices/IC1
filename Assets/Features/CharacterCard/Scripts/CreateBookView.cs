@@ -1,5 +1,5 @@
-using System;
 using Features.Connection.UI;
+using StableDiffusionRuntimeIntegration;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,8 +23,9 @@ namespace Features.CharacterCard.Scripts
         [Header("Create And Play")]
         [SerializeField] private Button _createAndStartButton;
         [SerializeField] private UnityEvent<BookData> _onCreateAndPlay;
-        
-        [Header("References")]
+
+        [Header("References")] 
+        [SerializeField] private StableDiffusionImageReference _imageGenerator;
         [SerializeField] private TMP_InputField _userName;
         [SerializeField] private TMP_InputField _userBio;
         [SerializeField] private TMP_InputField _characterName;
@@ -49,6 +50,7 @@ namespace Features.CharacterCard.Scripts
         {
             if (_bookDataToLoad == null || _bookDataToLoad.Get() == null)
             {
+                _imageGenerator.UnloadImage();
                 _userName.text = string.Empty;
                 _userBio.text = string.Empty;
                 _characterName.text = string.Empty;
@@ -57,11 +59,22 @@ namespace Features.CharacterCard.Scripts
             }
             else
             {
+                _imageGenerator.LoadImageFromPath(_bookDataToLoad.Get().ImagePath);
                 _userName.text = _bookDataToLoad.Get().Name1;
                 _userBio.text = _bookDataToLoad.Get().User_Bio;
                 _characterName.text = _bookDataToLoad.Get().Name2;
                 _context.text = _bookDataToLoad.Get().Context;
                 _greeting.text = _bookDataToLoad.Get().Greeting;
+
+                if (_bookDataToLoad.Get().Name2 == "Narrator")
+                {
+                    _buttonToggleGroupManager.ActivateEntryGroup();
+                }
+                else
+                {
+                    _buttonToggleGroupManager.ActivateToggleGroup();
+                }
+                Debug.Log(_buttonToggleGroupManager.IsToggleActive);
             }
         }
         
@@ -77,6 +90,7 @@ namespace Features.CharacterCard.Scripts
             if (_bookDataToLoad != null && _bookDataToLoad.Get() != null)
             {
                 BookData bookData = _bookDataToLoad.Get();
+                bookData.ImagePath = _imageGenerator.CurrentPath;
                 bookData.Name1 = _userName.text;
                 bookData.User_Bio = _userBio.text;
                 bookData.Name2 = characterName;
@@ -85,7 +99,7 @@ namespace Features.CharacterCard.Scripts
                 return bookData;
             }
 
-            return new BookData(string.Empty, _userName.text, _userBio.text, 
+            return new BookData(_imageGenerator.CurrentPath, _userName.text, _userBio.text, 
                 characterName, _context.text, _greeting.text);
         }
 
