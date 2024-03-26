@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -99,6 +101,29 @@ namespace Utils
         {
             string jsonData = JsonConvert.SerializeObject(@object, JsonSerializerSettings);
             return Encoding.UTF8.GetBytes(jsonData);
+        }
+        
+        public static void CopyProperties(object source, object destination)
+        {
+            if (source == null) return;
+            
+            Type sourceType = source.GetType();
+            Type destinationType = destination.GetType();
+
+            PropertyInfo[] sourceProperties = sourceType.GetProperties();
+            PropertyInfo[] destinationProperties = destinationType.GetProperties();
+
+            foreach (PropertyInfo sourceProperty in sourceProperties)
+            {
+                PropertyInfo destinationProperty = destinationProperties.FirstOrDefault(
+                    p => p.Name == sourceProperty.Name && p.PropertyType == sourceProperty.PropertyType);
+
+                if (destinationProperty != null && destinationProperty.CanWrite)
+                {
+                    object value = sourceProperty.GetValue(source);
+                    destinationProperty.SetValue(destination, value);
+                }
+            }
         }
         
         #endregion

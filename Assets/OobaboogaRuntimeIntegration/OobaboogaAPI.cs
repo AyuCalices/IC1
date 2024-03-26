@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using Utils;

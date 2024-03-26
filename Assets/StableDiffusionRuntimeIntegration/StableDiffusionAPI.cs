@@ -112,6 +112,7 @@ namespace StableDiffusionRuntimeIntegration
         public string info;
     }
     
+    //TODO: add parameters
     [Serializable]
     public class SDInTxt2Img
     {
