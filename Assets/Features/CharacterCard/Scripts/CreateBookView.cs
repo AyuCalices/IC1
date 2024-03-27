@@ -25,10 +25,11 @@ namespace Features.CharacterCard.Scripts
         [SerializeField] private UnityEvent<BookData> _onCreateAndPlay;
 
         [Header("References")] 
-        [SerializeField] private StableDiffusionImageReference _imageGenerator;
         [SerializeField] private TMP_InputField _userName;
+        [SerializeField] private StableDiffusionImageReference _userImageGenerator;
         [SerializeField] private TMP_InputField _userBio;
         [SerializeField] private TMP_InputField _characterName;
+        [SerializeField] private StableDiffusionImageReference _characterImageGenerator;
         [SerializeField] private TMP_InputField _context;
         [SerializeField] private TMP_InputField _greeting;
 
@@ -51,18 +52,20 @@ namespace Features.CharacterCard.Scripts
             if (_bookDataToLoad == null || _bookDataToLoad.Get() == null)
             {
                 _userName.text = string.Empty;
+                _userImageGenerator.UnloadImage();
                 _userBio.text = string.Empty;
                 _characterName.text = string.Empty;
-                _imageGenerator.UnloadImage();
+                _characterImageGenerator.UnloadImage();
                 _context.text = string.Empty;
                 _greeting.text = string.Empty;
             }
             else
             {
                 _userName.text = _bookDataToLoad.Get().Name1;
+                _userImageGenerator.LoadImageFromPath(_bookDataToLoad.Get().ImagePathUser);
                 _userBio.text = _bookDataToLoad.Get().User_Bio;
                 _characterName.text = _bookDataToLoad.Get().Name2;
-                _imageGenerator.LoadImageFromPath(_bookDataToLoad.Get().ImagePathAssistant);
+                _characterImageGenerator.LoadImageFromPath(_bookDataToLoad.Get().ImagePathAssistant);
                 _context.text = _bookDataToLoad.Get().Context;
                 _greeting.text = _bookDataToLoad.Get().Greeting;
 
@@ -82,7 +85,6 @@ namespace Features.CharacterCard.Scripts
             _onCancel.Invoke();
         }
 
-        //TODO: implement User Path
         private BookData SelectBook()
         {
             string characterName = _buttonToggleGroupManager.IsToggleActive ? _characterName.text : "Narrator";
@@ -91,17 +93,17 @@ namespace Features.CharacterCard.Scripts
             {
                 BookData bookData = _bookDataToLoad.Get();
                 bookData.Name1 = _userName.text;
-                bookData.ImagePathUser = "";
+                bookData.ImagePathUser = _userImageGenerator.CurrentPath;
                 bookData.User_Bio = _userBio.text;
                 bookData.Name2 = characterName;
-                bookData.ImagePathAssistant = _imageGenerator.CurrentPath;
+                bookData.ImagePathAssistant = _characterImageGenerator.CurrentPath;
                 bookData.Context = _context.text;
                 bookData.Greeting = _greeting.text;
                 return bookData;
             }
 
-            return new BookData(_userName.text, "", _userBio.text, 
-                characterName, _imageGenerator.CurrentPath, _context.text, _greeting.text);
+            return new BookData(_userName.text, _userImageGenerator.CurrentPath, _userBio.text, 
+                characterName, _characterImageGenerator.CurrentPath, _context.text, _greeting.text);
         }
 
         private void InvokeOnCreate()

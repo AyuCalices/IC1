@@ -101,7 +101,6 @@ namespace OobaboogaRuntimeIntegration.Example
             foreach (Message message in _currentBook.Get().Messages)
             {
                 string mappedRole = message.Role == AssistantRole ? _currentBook.Get().Name2 : _currentBook.Get().Name1;
-                Debug.Log(_currentBook.Get().ImagePathUser);
                 string mappedImagePath = message.Role == AssistantRole ? _currentBook.Get().ImagePathAssistant : _currentBook.Get().ImagePathUser;
                 _chatMessageViews.Add(InstantiateMessage(mappedImagePath, mappedRole, message.Content));
             }

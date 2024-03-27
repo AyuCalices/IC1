@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -17,7 +18,7 @@ namespace Utils
         
         [Header("Timeout Text")]
         [SerializeField] private float _timeoutInSeconds = 100;
-        [SerializeField] private TMP_Text _timeoutText;
+        [SerializeField] private GameObject _timeoutContainer;
         
         [Header("Visualization")]
         [SerializeField] private TMP_Text _loadingText;
@@ -28,26 +29,27 @@ namespace Utils
     
         private const int TaskDelay = 1000;
     
-        private readonly CancellationTokenSource _cancellationToken = new();
+        private CancellationTokenSource _cancellationToken;
         private bool _currentlyOpening;
         private float _timeoutDelta;
 
-        private void Awake()
+        private void OnEnable()
         {
             _loadingText.text = string.Empty;
-            _timeoutText.gameObject.SetActive(false);
+            _timeoutContainer.SetActive(false);
+            _cancellationToken = new();
         }
 
         private void Update()
         {
-            _timeoutText.gameObject.SetActive(_timeoutDelta > _timeoutInSeconds);
+            _timeoutContainer.SetActive(_timeoutDelta > _timeoutInSeconds);
             
             if (!_currentlyOpening) return;
             
             _timeoutDelta += Time.deltaTime;
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             _cancellationToken.Cancel();
         }
@@ -77,6 +79,9 @@ namespace Utils
             
             foreach (BaseAPILoaderInstance apiLoaderInstance in instancesToStartAPI)
             {
+                if (_cancellationToken.IsCancellationRequested)
+                    return;
+                
                 await StartupAPI(apiLoaderInstance);
             }
             
