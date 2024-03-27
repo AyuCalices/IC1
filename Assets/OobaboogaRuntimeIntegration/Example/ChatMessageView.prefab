@@ -239,6 +239,7 @@ GameObject:
   - component: {fileID: 3980271455272905254}
   - component: {fileID: 2618449720730487630}
   - component: {fileID: 8060068827820895383}
+  - component: {fileID: 4923088905127350318}
   m_Layer: 5
   m_Name: ProfilePicture
   m_TagString: Untagged
@@ -323,6 +324,20 @@ MonoBehaviour:
   m_FlexibleWidth: 0
   m_FlexibleHeight: 0
   m_LayoutPriority: 1
+--- !u!114 &4923088905127350318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3680478542489837195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62b565c8183e9184599e648f6e336091, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _image: {fileID: 2618449720730487630}
+  _clearOnEnable: 0
 --- !u!1 &8605290460222463312
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,7 +394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d6aa641e3352fb4cb08b2664cb1801a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _image: {fileID: 2618449720730487630}
+  _image: {fileID: 4923088905127350318}
   _role: {fileID: 349432718777944256}
   _content: {fileID: 4315455040857090382}
 --- !u!222 &7968657765893449755

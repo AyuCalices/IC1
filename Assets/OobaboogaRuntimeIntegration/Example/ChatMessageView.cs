@@ -1,3 +1,4 @@
+using StableDiffusionRuntimeIntegration;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,14 +7,13 @@ namespace OobaboogaRuntimeIntegration.Example
 {
     public class ChatMessageView : MonoBehaviour
     {
-        [SerializeField] private Image _image;
+        [SerializeField] private StableDiffusionImageReference _image;
         [SerializeField] private TMP_Text _role;
         [SerializeField] private TMP_Text _content;
-
-        public Sprite Image
+        
+        public void SetImageByPath(string path)
         {
-            get => _image.sprite;
-            set => _image.sprite = value;
+            _image.LoadImageFromPath(path);
         }
         
         public string Role

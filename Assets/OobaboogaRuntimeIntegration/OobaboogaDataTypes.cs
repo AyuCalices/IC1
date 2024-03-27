@@ -193,40 +193,31 @@ namespace OobaboogaRuntimeIntegration
     
     #region ChatCompletion
     
-    public class ChatCompletionRequestContainer
+    public class ChatCompletionRequestContainer : IMessageWrapper, IContinueOption
     {
-        /// <summary>
-        /// Given your prompt, the model calculates the probabilities for every possible next token.
-        /// https://github.com/oobabooga/text-generation-webui/wiki/03-‐-Parameters-Tab
-        /// </summary>
-        public IMessageWrapper MessageWrapper { get; }
-        public ICharacterName CharacterName { get; }
-        public ICharacterParameters CharacterParameters { get; }
-        
-        public ChatCompletionRequestContainer(IMessageWrapper messageWrapper, ICharacterName characterName)
+        public ChatCompletionRequestContainer(List<Message> messages, bool continue_)
         {
-            MessageWrapper = messageWrapper;
-            CharacterName = characterName;
+            Messages = messages;
+            Continue_ = continue_;
         }
         
-        public ChatCompletionRequestContainer(IMessageWrapper messageWrapper, ICharacterParameters characterParameters)
-        {
-            MessageWrapper = messageWrapper;
-            CharacterParameters = characterParameters;
-        }
+        public List<Message> Messages { get; set; }
+        public bool Continue_ { get; set; }
         
         public IChatCompletionParameters ChatCompletionParameters { get; set; }
+        public ICharacterName CharacterName { get; set; }
+        public ICharacterParameters CharacterParameters { get; set; }
         public IGenerationParameters GenerationParameters { get; set; }
         public IPresetName PresetName { get; set; }
         public IPresetParameters PresetParameters { get; set; }
-        
     }
     
-    public class ChatCompletionRequest : IChatCompletionParameters, IMessageWrapper, ICharacterName, ICharacterParameters, IGenerationParameters, IPresetName, IPresetParameters
+    public class ChatCompletionRequest : IChatCompletionParameters, IMessageWrapper, IContinueOption, ICharacterName, ICharacterParameters, IGenerationParameters, IPresetName, IPresetParameters
     {
         public ChatCompletionRequest(bool stream, ChatCompletionRequestContainer chatCompletionRequestContainer)
         {
-            Messages = chatCompletionRequestContainer.MessageWrapper.Messages;
+            Messages = chatCompletionRequestContainer.Messages;
+            Continue_ = chatCompletionRequestContainer.Continue_;
             Stream = stream;
             
             APICore.CopyProperties(chatCompletionRequestContainer.ChatCompletionParameters, this);
@@ -321,6 +312,15 @@ namespace OobaboogaRuntimeIntegration
         /// </summary>
         public List<Message> Messages { get; set; }
     }
+
+    public interface IContinueOption
+    {
+        /// <summary>
+        /// Makes the last bot message in the history be continued instead of starting a new message.
+        /// https://github.com/oobabooga/text-generation-webui/blob/main/extensions/openai/typing.py
+        /// </summary>
+        public bool Continue_ { get; set; }
+    }
     
     public interface IChatCompletionParameters
     {
@@ -389,12 +389,6 @@ namespace OobaboogaRuntimeIntegration
         
         //TODO: no clue
         public string Chat_Instruct_Command { get; set; }
-        
-        /// <summary>
-        /// Makes the last bot message in the history be continued instead of starting a new message.
-        /// https://github.com/oobabooga/text-generation-webui/blob/main/extensions/openai/typing.py
-        /// </summary>
-        public bool Continue_ { get; set; }
     }
 
     public interface ICharacterName
