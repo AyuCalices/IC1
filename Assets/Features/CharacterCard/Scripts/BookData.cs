@@ -10,26 +10,16 @@ namespace Features.CharacterCard.Scripts
     {
         public event Action OnValueChanged;
         
-        public BookData(string imagePath, string userName, string userBio, string assistantName, string context, string greeting)
+        public BookData(string userName, string imagePathUser, string userBio, string assistantName, string imagePathAssistant, string context, string greeting)
         {
-            ImagePath = imagePath;
             Messages = new List<Message>();
             Name1 = userName;
+            ImagePathUser = imagePathUser;
             User_Bio = userBio;
             Name2 = assistantName;
+            ImagePathAssistant = imagePathAssistant;
             Context = context;
             Greeting = greeting;
-        }
-
-        [SerializeField] private string _imagePath;
-        public string ImagePath
-        {
-            get => _imagePath;
-            set
-            {
-                _imagePath = value;
-                OnValueChanged?.Invoke();
-            }
         }
 
         [SerializeField] private List<Message> _messages;
@@ -54,6 +44,17 @@ namespace Features.CharacterCard.Scripts
             }
         }
         
+        [SerializeField] private string _imagePathUser;
+        public string ImagePathUser
+        {
+            get => _imagePathUser;
+            set
+            {
+                _imagePathUser = value;
+                OnValueChanged?.Invoke();
+            }
+        }
+        
         [SerializeField] private string _userBio;
         public string User_Bio 
         {
@@ -72,6 +73,17 @@ namespace Features.CharacterCard.Scripts
             set
             {
                 _name2 = value;
+                OnValueChanged?.Invoke();
+            }
+        }
+        
+        [SerializeField] private string _imagePathAssistant;
+        public string ImagePathAssistant
+        {
+            get => _imagePathAssistant;
+            set
+            {
+                _imagePathAssistant = value;
                 OnValueChanged?.Invoke();
             }
         }

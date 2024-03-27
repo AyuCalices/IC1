@@ -24,6 +24,7 @@ namespace OobaboogaRuntimeIntegration.Example
             }
             
             _rect.sizeDelta = new Vector2(_rect.sizeDelta.x, _text.preferredHeight);
+            _text.UpdateVertexData();
         }
     }
 }

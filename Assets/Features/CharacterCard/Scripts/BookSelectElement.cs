@@ -42,12 +42,13 @@ namespace Features.CharacterCard.Scripts
             _deleteButton.onClick.RemoveAllListeners();
         }
         
+        //TODO: duplicate code
         private async void UpdateData()
         {
-            if (File.Exists(ContainedBook.ImagePath))
+            if (File.Exists(ContainedBook.ImagePathAssistant))
             {
                 Texture2D texture = new Texture2D(2, 2);
-                byte[] fileImage = await File.ReadAllBytesAsync(ContainedBook.ImagePath);
+                byte[] fileImage = await File.ReadAllBytesAsync(ContainedBook.ImagePathAssistant);
                 texture.LoadImage(fileImage);
                 texture.Apply();
                             

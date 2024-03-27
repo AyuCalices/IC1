@@ -13,6 +13,13 @@ namespace StableDiffusionRuntimeIntegration
 
         public string CurrentPath { get; private set; }
 
+        private Sprite _entrySprite;
+
+        private void Awake()
+        {
+            _entrySprite = _image.sprite;
+        }
+
         private void OnEnable()
         {
             if (_clearOnEnable)
@@ -39,10 +46,11 @@ namespace StableDiffusionRuntimeIntegration
 
         public void UnloadImage()
         {
-            _image.sprite = null;
+            _image.sprite = _entrySprite;
             CurrentPath = string.Empty;
         }
 
+        //TODO: duplicate code
         private async void TryLoadSpriteFromPathAsync(string path, Action<Sprite> onSuccessful, Action onFailed = null)
         {
             if (File.Exists(path))

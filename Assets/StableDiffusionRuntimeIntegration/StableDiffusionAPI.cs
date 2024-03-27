@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
-using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using Utils;
@@ -13,7 +12,7 @@ namespace StableDiffusionRuntimeIntegration
     [Serializable]
     public class StableDiffusionAPI
     {
-        [SerializeField, DataStructures.Attributes.ReadOnly] private string _serverUrl;
+        [SerializeField] private string _serverUrl;
         public string ServerUrl => _serverUrl;
 
         public StableDiffusionAPI(string url = "http://127.0.0.1:7860")

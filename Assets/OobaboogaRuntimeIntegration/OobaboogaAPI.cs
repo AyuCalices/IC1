@@ -13,7 +13,7 @@ namespace OobaboogaRuntimeIntegration
     [Serializable]
     public class OobaboogaAPI
     {
-        [SerializeField, DataStructures.Attributes.ReadOnly] private string _serverUrl;
+        [SerializeField] private string _serverUrl;
         public string ServerUrl => _serverUrl;
 
         public OobaboogaAPI(string url = "http://127.0.0.1:5000")

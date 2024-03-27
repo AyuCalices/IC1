@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -24,6 +25,7 @@ namespace OobaboogaRuntimeIntegration.Example
 
         [Header("Text Instantiation")] 
         [SerializeField] private ScrollRect _scrollView;
+        [SerializeField] private VerticalLayoutGroup _contentLayoutGroup;
         [SerializeField] private ChatMessageView _chatMessageView;
         [SerializeField] private Transform _instantiationParent;
 
@@ -41,26 +43,33 @@ namespace OobaboogaRuntimeIntegration.Example
         
         public bool Continue_ { get; set; }
 
+        private bool _currentlyGenerating;
         private const string UserRole = "user";
         private const string AssistantRole = "assistant";
 
         private void Awake()
         {
+            _inputField.onSubmit.AddListener(CommitUserMessage);
             _submitButton.onClick.AddListener(CommitUserMessage);
-            _regenerateButton.onClick.AddListener(RegenerateLastAssistantMessage);
             _deleteChatButton.onClick.AddListener(DeleteChat);
+            _regenerateButton.onClick.AddListener(RegenerateLastAssistantMessage);
             _continueChatButton.onClick.AddListener(BotContinuesChat);
         }
 
         private void Update()
         {
+            if (_currentlyGenerating) return;
+            
             _submitButton.interactable = _inputField.text != string.Empty;
+            _regenerateButton.interactable = _currentBook.Get().Messages.Count > 0 && _currentBook.Get().Messages[^1].Role == AssistantRole;
+            _continueChatButton.interactable = _currentBook.Get().Messages.Count == 0 || _currentBook.Get().Messages[^1].Role == AssistantRole;
         }
 
         private void OnDestroy()
         {
             _token.Cancel();
             
+            _inputField.onSubmit.RemoveListener(CommitUserMessage);
             _submitButton.onClick.RemoveListener(CommitUserMessage);
             _regenerateButton.onClick.RemoveListener(RegenerateLastAssistantMessage);
             _deleteChatButton.onClick.RemoveListener(DeleteChat);
@@ -87,21 +96,30 @@ namespace OobaboogaRuntimeIntegration.Example
         
         private void SetCurrentBook()
         {
-            _initialMessage = InstantiateMessage(_currentBook.Get().ImagePath, _currentBook.Get().Name2, _currentBook.Get().Greeting);
+            _initialMessage = InstantiateMessage(_currentBook.Get().ImagePathAssistant, _currentBook.Get().Name2, _currentBook.Get().Greeting);
             
             foreach (Message message in _currentBook.Get().Messages)
             {
-                string mappedMassage = message.Role == AssistantRole ? _currentBook.Get().Name2 : _currentBook.Get().Name1;
-                _chatMessageViews.Add(InstantiateMessage(_currentBook.Get().ImagePath, mappedMassage, message.Content));
+                string mappedRole = message.Role == AssistantRole ? _currentBook.Get().Name2 : _currentBook.Get().Name1;
+                Debug.Log(_currentBook.Get().ImagePathUser);
+                string mappedImagePath = message.Role == AssistantRole ? _currentBook.Get().ImagePathAssistant : _currentBook.Get().ImagePathUser;
+                _chatMessageViews.Add(InstantiateMessage(mappedImagePath, mappedRole, message.Content));
             }
 
             _currentBookData = _currentBook.Get();
         }
 
+        private void CommitUserMessage(string _)
+        {
+            CommitUserMessage();
+        }
+
         private void CommitUserMessage()
         {
+            if (string.IsNullOrEmpty(_inputField.text)) return;
+            
             Message userMessage = new Message { Role = UserRole, Content = _inputField.text };
-            _chatMessageViews.Add(InstantiateMessage(_currentBook.Get().ImagePath, userMessage.Role, userMessage.Content));
+            _chatMessageViews.Add(InstantiateMessage(_currentBook.Get().ImagePathUser, _currentBook.Get().Name1, userMessage.Content));
             _currentBook.Get().Messages.Add(userMessage);
             _inputField.text = "";
             GenerateChatCompletion();
@@ -109,13 +127,9 @@ namespace OobaboogaRuntimeIntegration.Example
 
         private void RegenerateLastAssistantMessage()
         {
-            if (_currentBook.Get().Messages.Count > 0 && _currentBook.Get().Messages[^1].Role == AssistantRole)
-            {
-                RemoveBookMessage(_currentBook.Get().Messages.Count - 1);
-                DestroyChatMessage(_chatMessageViews.Count - 1);
-            
-                GenerateChatCompletion();
-            }
+            RemoveBookMessage(_currentBook.Get().Messages.Count - 1);
+            DestroyChatMessage(_chatMessageViews.Count - 1);
+            GenerateChatCompletion();
         }
 
         private void DeleteChat()
@@ -126,17 +140,14 @@ namespace OobaboogaRuntimeIntegration.Example
 
         private void BotContinuesChat()
         {
-            if (_currentBook.Get().Messages.Count == 0 || _currentBook.Get().Messages[^1].Role == AssistantRole)
-            {
-                GenerateChatCompletion(true);
-            }
+            GenerateChatCompletion(true);
         }
         
         private void GenerateChatCompletion(bool continue_ = false)
         {
-            SetInputActivity(false);
+            UpdateCurrentlyGenerating(true);
             
-            _chatMessageViews.Add(InstantiateMessage(_currentBook.Get().ImagePath, _currentBook.Get().Name2, ""));
+            _chatMessageViews.Add(InstantiateMessage(_currentBook.Get().ImagePathAssistant, _currentBook.Get().Name2, ""));
             ChatCompletionRequestContainer chatCompletionRequestContainer = new ChatCompletionRequestContainer(_currentBook.Get().Messages, continue_)
             {
                 CharacterParameters = _currentBook.Get(),
@@ -160,16 +171,17 @@ namespace OobaboogaRuntimeIntegration.Example
         private void OnComplete()
         {
             _currentBook.Get().Messages.Add(new Message{Role = AssistantRole, Content = _chatMessageViews[^1].Content});
-            SetInputActivity(true);
+            UpdateCurrentlyGenerating(false);
         }
         
-        private void SetInputActivity(bool value)
+        private void UpdateCurrentlyGenerating(bool value)
         {
-            _inputField.interactable = value;
-            _submitButton.interactable = value;
-            _regenerateButton.interactable = value;
-            _deleteChatButton.interactable = value;
-            _continueChatButton.interactable = value;
+            _currentlyGenerating = value;
+            _inputField.interactable = !value;
+            _submitButton.interactable = !value;
+            _regenerateButton.interactable = !value;
+            _deleteChatButton.interactable = !value;
+            _continueChatButton.interactable = !value;
         }
         
         private ChatMessageView InstantiateMessage(string imagePath, string role, string message)
@@ -185,8 +197,19 @@ namespace OobaboogaRuntimeIntegration.Example
             string starFormatted = TextFormattingHelper.FormatTextQuotation(message, '*', "<i>", "</i>");
             string quotationFormatted = TextFormattingHelper.FormatTextQuotation(starFormatted, '\"', "\"<i>", "</i>\"");
             instantiatedMessage.Content = quotationFormatted;
-            _scrollView.normalizedPosition = new Vector2(0, 0);
+            StartCoroutine(UpdateLayout(2));
             return instantiatedMessage;
+        }
+        
+        private IEnumerator UpdateLayout(int callAmount)
+        {
+            for (int call = 0; call < callAmount; call++)
+            {
+                yield return new WaitForEndOfFrame();
+                _contentLayoutGroup.CalculateLayoutInputVertical();
+                LayoutRebuilder.ForceRebuildLayoutImmediate(_contentLayoutGroup.transform as RectTransform);
+                _scrollView.normalizedPosition = Vector2.zero;
+            }
         }
         
         private void RemoveBookMessage(int index)

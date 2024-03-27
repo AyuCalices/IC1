@@ -50,19 +50,19 @@ namespace Features.CharacterCard.Scripts
         {
             if (_bookDataToLoad == null || _bookDataToLoad.Get() == null)
             {
-                _imageGenerator.UnloadImage();
                 _userName.text = string.Empty;
                 _userBio.text = string.Empty;
                 _characterName.text = string.Empty;
+                _imageGenerator.UnloadImage();
                 _context.text = string.Empty;
                 _greeting.text = string.Empty;
             }
             else
             {
-                _imageGenerator.LoadImageFromPath(_bookDataToLoad.Get().ImagePath);
                 _userName.text = _bookDataToLoad.Get().Name1;
                 _userBio.text = _bookDataToLoad.Get().User_Bio;
                 _characterName.text = _bookDataToLoad.Get().Name2;
+                _imageGenerator.LoadImageFromPath(_bookDataToLoad.Get().ImagePathAssistant);
                 _context.text = _bookDataToLoad.Get().Context;
                 _greeting.text = _bookDataToLoad.Get().Greeting;
 
@@ -74,7 +74,6 @@ namespace Features.CharacterCard.Scripts
                 {
                     _buttonToggleGroupManager.ActivateToggleGroup();
                 }
-                Debug.Log(_buttonToggleGroupManager.IsToggleActive);
             }
         }
         
@@ -83,6 +82,7 @@ namespace Features.CharacterCard.Scripts
             _onCancel.Invoke();
         }
 
+        //TODO: implement User Path
         private BookData SelectBook()
         {
             string characterName = _buttonToggleGroupManager.IsToggleActive ? _characterName.text : "Narrator";
@@ -90,17 +90,18 @@ namespace Features.CharacterCard.Scripts
             if (_bookDataToLoad != null && _bookDataToLoad.Get() != null)
             {
                 BookData bookData = _bookDataToLoad.Get();
-                bookData.ImagePath = _imageGenerator.CurrentPath;
                 bookData.Name1 = _userName.text;
+                bookData.ImagePathUser = "";
                 bookData.User_Bio = _userBio.text;
                 bookData.Name2 = characterName;
+                bookData.ImagePathAssistant = _imageGenerator.CurrentPath;
                 bookData.Context = _context.text;
                 bookData.Greeting = _greeting.text;
                 return bookData;
             }
 
-            return new BookData(_imageGenerator.CurrentPath, _userName.text, _userBio.text, 
-                characterName, _context.text, _greeting.text);
+            return new BookData(_userName.text, "", _userBio.text, 
+                characterName, _imageGenerator.CurrentPath, _context.text, _greeting.text);
         }
 
         private void InvokeOnCreate()

@@ -1,3 +1,4 @@
+using System;
 using StableDiffusionRuntimeIntegration;
 using TMPro;
 using UnityEngine;
@@ -10,7 +11,8 @@ namespace OobaboogaRuntimeIntegration.Example
         [SerializeField] private StableDiffusionImageReference _image;
         [SerializeField] private TMP_Text _role;
         [SerializeField] private TMP_Text _content;
-        
+        [SerializeField] private Button _button;
+
         public void SetImageByPath(string path)
         {
             _image.LoadImageFromPath(path);
@@ -27,5 +29,7 @@ namespace OobaboogaRuntimeIntegration.Example
             get => _content.text;
             set => _content.text = value;
         }
+
+        public Button.ButtonClickedEvent OnDeleteButtonClicked => _button.onClick;
     }
 }
