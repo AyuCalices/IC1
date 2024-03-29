@@ -43,7 +43,6 @@ namespace Features.ModelLoading.Scripts
         public void FinalizeModelList()
         {
             string serializedOptions = JsonConvert.SerializeObject(optionsContainer);
-            Debug.Log(serializedOptions);
             PlayerPrefs.SetString(GetType().ToString(), serializedOptions);
             PlayerPrefs.Save();
         }
