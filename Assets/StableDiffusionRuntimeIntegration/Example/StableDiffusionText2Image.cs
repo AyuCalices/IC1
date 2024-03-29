@@ -6,6 +6,7 @@ using DataStructures.Variables;
 using StableDiffusionRuntimeIntegration.SDConfig;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace StableDiffusionRuntimeIntegration.Example
 {
@@ -20,7 +21,7 @@ namespace StableDiffusionRuntimeIntegration.Example
         [Header("Generation")] 
         [SerializeField] private TMP_InputField _characterNamePromptInputField;
         [SerializeField] private TMP_InputField _contextPromptInputField;
-        //[SerializeField] private string _prompt = "";
+        [SerializeField] private string _additionalPrompt = "";
         [SerializeField] private string _negativePrompt = "";
         [SerializeField, Range(1, 150)] private int _steps = 25;
         [SerializeField, Range(1, 30)] private int _cfgScale = 7;
@@ -39,11 +40,12 @@ namespace StableDiffusionRuntimeIntegration.Example
             }
         }
 
+        //TODO: show text on error
         private async Task InternalGetTxt2Img()
         {
             SDInTxt2Img inTxt2Img = new SDInTxt2Img
             {
-                prompt = _characterNamePromptInputField.text + ":1.4, " + _contextPromptInputField.text,
+                prompt = _characterNamePromptInputField.text + ":1.4, " + _contextPromptInputField.text + _additionalPrompt,
                 negative_prompt = _negativePrompt,
                 steps = _steps,
                 cfg_scale = _cfgScale,

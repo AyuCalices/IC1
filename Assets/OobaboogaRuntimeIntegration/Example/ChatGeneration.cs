@@ -142,6 +142,7 @@ namespace OobaboogaRuntimeIntegration.Example
             GenerateChatCompletion(true);
         }
         
+        //TODO: show text on error
         private void GenerateChatCompletion(bool continue_ = false)
         {
             UpdateCurrentlyGenerating(true);

@@ -5,7 +5,6 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
     [CreateAssetMenu(fileName = "OobaboogaGenerationParameters", menuName = "Oobabooga/GenerationParameters")]
     public class GenerationParameters : ScriptableObject, IGenerationParameters
     {
-        //TODO:
         [field: SerializeField, Header("General")] public PresetOption Preset_Option { get; set; }
         
         [field: SerializeField, Space] public int Seed { get; set; } = -1;

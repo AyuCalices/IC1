@@ -245,7 +245,7 @@ namespace OobaboogaRuntimeIntegration
         public int N { get; set; } = 1;
         public int Presence_Penalty { get; set; } = 0;
         public string[] Stop { get; set; } = Array.Empty<string>();
-        public bool Stream { get; set; } = false;   //TODO: currently is set internally -> not inside interface
+        public bool Stream { get; set; } = false;   //currently set internally -> not inside interface
         public float Temperature { get; set; } = 1f;
         public float Top_P { get; set; } = 1f;
         public string User { get; set; } = string.Empty;

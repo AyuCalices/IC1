@@ -10,7 +10,6 @@ namespace Features.CharacterCard.Scripts
     public class BookSelectElement : MonoBehaviour
     {
         [Header("Visual")]
-        //TODO: cover image
         [SerializeField] private Image _bookCoverImage;
         [SerializeField] private TMP_Text _title;
         [SerializeField] private TMP_Text _context;
