@@ -21,13 +21,5 @@ namespace Features.ModelLoading.Scripts
                 }
             }
         }
-
-        private void OnDisable()
-        {
-            foreach (ModelFetcherInstance modelLoaderInstance in _apiLoaderOrder)
-            {
-                modelLoaderInstance.FinalizeModelList();
-            }
-        }
     }
 }

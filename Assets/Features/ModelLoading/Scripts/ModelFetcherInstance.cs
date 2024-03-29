@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -16,12 +17,35 @@ namespace Features.ModelLoading.Scripts
         protected OptionsContainer optionsContainer;
         private bool _initialized;
 
+        private void Awake()
+        {
+            _dropdown.onValueChanged.AddListener(UpdateOptionIndex);
+        }
+
+        private void OnDestroy()
+        {
+            _dropdown.onValueChanged.RemoveListener(UpdateOptionIndex);
+        }
+
         private void OnDisable()
         {
             if (!_initialized) return;
             
             _initialized = false;
             FinalizeModelList();
+        }
+
+        private void UpdateOptionIndex(int selectedIndex)
+        {
+            optionsContainer.selectedOptionIndex = selectedIndex;
+        }
+        
+        public void FinalizeModelList()
+        {
+            string serializedOptions = JsonConvert.SerializeObject(optionsContainer);
+            Debug.Log(serializedOptions);
+            PlayerPrefs.SetString(GetType().ToString(), serializedOptions);
+            PlayerPrefs.Save();
         }
 
         public async Task<(bool IsValid, string ErrorMessage)> TryInitializeModelList()
@@ -52,8 +76,20 @@ namespace Features.ModelLoading.Scripts
                 return (false, "An API is missing valid models!");
             }
 
+            SetupVisuals(modelListContent);
+            
+            return (true, "");
+        }
+
+        protected abstract Task<(APIResponse Response, string CurrentModel)> TryGetCurrentAPIModel();
+        
+        protected abstract Task<(APIResponse Response, List<string> ModelList)> TryGetModelList();
+        
+        private void SetupVisuals((APIResponse Response, List<string> ModelList) modelListContent)
+        {
             //load saved previous selected model
             string serializedOptions = PlayerPrefs.GetString(GetType().ToString());
+            Debug.LogWarning(serializedOptions);
             if (serializedOptions != "null")
             {
                 OptionsContainer previousOptions = JsonConvert.DeserializeObject<OptionsContainer>(serializedOptions);
@@ -77,19 +113,8 @@ namespace Features.ModelLoading.Scripts
             
             _dropdown.ClearOptions();
             _dropdown.AddOptions(modelListContent.ModelList);
-            
-            return (true, "");
+            _dropdown.value = optionsContainer.selectedOptionIndex;
         }
-
-        public void FinalizeModelList()
-        {
-            string serializedOptions = JsonConvert.SerializeObject(optionsContainer);
-            PlayerPrefs.SetString(GetType().ToString(), serializedOptions);
-        }
-
-        protected abstract Task<(APIResponse Response, string CurrentModel)> TryGetCurrentAPIModel();
-        
-        protected abstract Task<(APIResponse Response, List<string> ModelList)> TryGetModelList();
         
         private bool ModelListMatchesWithPrevious(List<string> previousOptions, List<string> newOptions)
         {
@@ -119,7 +144,7 @@ namespace Features.ModelLoading.Scripts
                 this.options = options;
             }
             
-            public readonly int selectedOptionIndex;
+            public int selectedOptionIndex;
             public readonly List<string> options;
         }
     }
