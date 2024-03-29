@@ -58,7 +58,7 @@ namespace OobaboogaRuntimeIntegration.Example
 
         private void Update()
         {
-            if (_currentlyGenerating) return;
+            if (_currentlyGenerating || _currentBook == null || _currentBook.Get() == null) return;
             
             _submitButton.interactable = _inputField.text != string.Empty;
             _regenerateButton.interactable = _currentBook.Get().Messages.Count > 0 && _currentBook.Get().Messages[^1].Role == AssistantRole;

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Features.Connection.UI
+namespace Features.Core.UI.Scripts.ButtonToggle
 {
     public abstract class BaseButtonToggleElement : MonoBehaviour
     {

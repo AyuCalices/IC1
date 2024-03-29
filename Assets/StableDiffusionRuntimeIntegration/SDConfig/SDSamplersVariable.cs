@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using Utils;
 
-namespace StableDiffusionRuntimeIntegration
+namespace StableDiffusionRuntimeIntegration.SDConfig
 {
     [CreateAssetMenu]
     public class SDSamplersVariable : ScriptableObject

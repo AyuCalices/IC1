@@ -26,20 +26,20 @@ namespace StableDiffusionRuntimeIntegration
             return await APICore.DispatchRequest<SDOutSampler[]>(url, UnityWebRequest.kHttpVerbGET);
         }
         
-        public async Task<(APIResponse Response, SDOutModel[] Data)> GetModelsAsync()
+        public async Task<(APIResponse Response, SDOutModel[] Data)> GetAllModelsAsync()
         {
             string url = $"{ServerUrl}/sdapi/v1/sd-models";
             return await APICore.DispatchRequest<SDOutModel[]>(url, UnityWebRequest.kHttpVerbGET);
         }
         
-        public async Task PostOptionsModelCheckpointAsync(string modelName)
+        public async Task<APIResponse> PostOptionsModelCheckpointAsync(string modelName)
         {
             string url = $"{ServerUrl}/sdapi/v1/options";
             SDInOptionsModelCheckpoint loadModelRequest = new SDInOptionsModelCheckpoint()
             {
                 sd_model_checkpoint = modelName
             };
-            await APICore.DispatchRequest<SDOutModel[]>(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(loadModelRequest));
+            return (await APICore.DispatchRequest<SDOutModel[]>(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(loadModelRequest))).Response;
         }
         
         private string ParseResponse(string responseText)

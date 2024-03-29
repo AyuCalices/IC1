@@ -1,8 +1,8 @@
+using DataStructures.Event;
 using Unity.VisualScripting;
 using UnityEngine;
-using VENTUS.DataStructures.Event;
 
-namespace VENTUS.DataStructures.Variables
+namespace DataStructures.Variables
 {
     public abstract class AbstractVariable<T> : ScriptableObject
     {

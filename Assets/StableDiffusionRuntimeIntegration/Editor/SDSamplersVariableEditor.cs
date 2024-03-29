@@ -1,3 +1,4 @@
+using StableDiffusionRuntimeIntegration.SDConfig;
 using UnityEditor;
 using UnityEngine;
 

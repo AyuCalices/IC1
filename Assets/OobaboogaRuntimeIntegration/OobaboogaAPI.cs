@@ -21,26 +21,26 @@ namespace OobaboogaRuntimeIntegration
             _serverUrl = url;
         }
     
-        public async Task<(APIResponse Response, ModelInfoResponse Data)> GetCurrentModelAsync()
+        public async Task<(APIResponse GetCurrentModelResponse, ModelInfoResponse Data)> GetCurrentModelAsync()
         {
             string url = $"{ServerUrl}/v1/internal/model/info";
             return await APICore.DispatchRequest<ModelInfoResponse>(url, UnityWebRequest.kHttpVerbGET);
         }
     
-        public async Task<(APIResponse Response, ModelListResponse Data)> GetAllModelAsync()
+        public async Task<(APIResponse Response, ModelListResponse Data)> GetAllModelsAsync()
         {
             string url = $"{ServerUrl}/v1/internal/model/list";
             return await APICore.DispatchRequest<ModelListResponse>(url, UnityWebRequest.kHttpVerbGET);
         }
     
-        public async Task LoadModelAsync(string modelName)
+        public async Task<APIResponse> LoadModelAsync(string modelName)
         {
             string url = $"{ServerUrl}/v1/internal/model/load";
             LoadModelRequest loadModelRequest = new LoadModelRequest()
             {
                 model_name = modelName
             };
-            await APICore.DispatchRequest<string>(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(loadModelRequest));
+            return (await APICore.DispatchRequest<string>(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(loadModelRequest))).Response;
         }
         
         public async Task<APIResponse> UnloadModelAsync()

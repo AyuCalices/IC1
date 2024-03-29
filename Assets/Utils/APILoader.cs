@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -30,7 +29,7 @@ namespace Utils
         private const int TaskDelay = 1000;
     
         private CancellationTokenSource _cancellationToken;
-        private bool _currentlyOpening;
+        private bool _currentlyStartingAPI;
         private float _timeoutDelta;
 
         private void OnEnable()
@@ -44,7 +43,7 @@ namespace Utils
         {
             _timeoutContainer.SetActive(_timeoutDelta > _timeoutInSeconds);
             
-            if (!_currentlyOpening) return;
+            if (!_currentlyStartingAPI) return;
             
             _timeoutDelta += Time.deltaTime;
         }
@@ -85,20 +84,12 @@ namespace Utils
                 await StartupAPI(apiLoaderInstance);
             }
             
-            foreach (BaseAPILoaderInstance apiLoaderInstance in _apiLoaderOrder)
-            {
-                if (_cancellationToken.IsCancellationRequested)
-                    return;
-
-                await apiLoaderInstance.OnStart(UpdateProgressState);
-            }
-            
             _onLoadComplete?.Invoke();
         }
         
         private async Task StartupAPI(BaseAPILoaderInstance baseAPILoaderInstance)
         {
-            _currentlyOpening = true;
+            _currentlyStartingAPI = true;
             
             if (StartProcess(baseAPILoaderInstance))
             {
@@ -107,7 +98,7 @@ namespace Utils
             }
 
             _timeoutDelta = 0f;
-            _currentlyOpening = false;
+            _currentlyStartingAPI = false;
         }
 
         private bool StartProcess(BaseAPILoaderInstance baseAPILoaderInstance)

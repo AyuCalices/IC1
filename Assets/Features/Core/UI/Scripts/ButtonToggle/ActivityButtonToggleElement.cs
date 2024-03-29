@@ -1,6 +1,4 @@
-using UnityEngine;
-
-namespace Features.Connection.UI
+namespace Features.Core.UI.Scripts.ButtonToggle
 {
     public class ActivityButtonToggleElement : BaseButtonToggleElement
     {

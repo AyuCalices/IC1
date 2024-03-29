@@ -1,10 +1,11 @@
-using UnityEngine;
-using System.Linq;
-using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using OpenAI;
+using UnityEngine;
+using UnityEngine.UI;
 
-namespace OpenAI
+namespace Samples.OpenAI_Unity._0._2._0.Stream_Response
 {
     public class StreamResponse : MonoBehaviour
     {

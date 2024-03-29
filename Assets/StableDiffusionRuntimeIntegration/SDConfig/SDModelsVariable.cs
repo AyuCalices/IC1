@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DataStructures.Variables;
@@ -23,9 +24,9 @@ namespace StableDiffusionRuntimeIntegration.SDConfig
         }
 
         [ContextMenu("Get All Models")]
-        public async Task<(APIResponse Response, SDOutModel[] Data)> SetupAllModelsAsync()
+        public async Task<(APIResponse Response, SDOutModel[] Data)> GetAllModelsAsync()
         {
-            var content = await _stableDiffusionAPIVariable.Get().GetModelsAsync();
+            var content = await _stableDiffusionAPIVariable.Get().GetAllModelsAsync();
             if (content.Response.IsError) return content;
             
             _modelList = content.Data;
@@ -46,10 +47,8 @@ namespace StableDiffusionRuntimeIntegration.SDConfig
             
             if (_modelList.All(x => x.sha256 != currentModelSha256Content.Data))
             {
-                Debug.Log("Setting up all models, because the requested model is not locally available!");
-                var content = await SetupAllModelsAsync();
-                newestResponse = content.Response;
-                if (content.Response.IsError) return (newestResponse, null);
+                Debug.Log("The requested model is not locally available! Maybe you forgot to load all models?");
+                return (newestResponse, null);
             }
 
             SDOutModel foundModel = null;
@@ -78,6 +77,25 @@ namespace StableDiffusionRuntimeIntegration.SDConfig
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
 #endif
+        }
+        
+        public async Task<APIResponse> LoadModelAsync(string modelName)
+        {
+            List<SDOutModel> modelList = _modelList.ToList();
+            
+            if (!modelList.Exists(x => x.model_name == modelName))
+            {
+                Debug.LogWarning("Couldn't load the model, because it doesn't exist in the current Model list. Maybe you forgot to load it first?");
+            }
+
+            _currentModelIndex = modelList.FindIndex(x => x.model_name == modelName);
+            APIResponse response = await _stableDiffusionAPIVariable.Get().PostOptionsModelCheckpointAsync(modelName);
+            
+#if UNITY_EDITOR
+            EditorUtility.SetDirty(this);
+#endif
+
+            return response;
         }
     }
 }

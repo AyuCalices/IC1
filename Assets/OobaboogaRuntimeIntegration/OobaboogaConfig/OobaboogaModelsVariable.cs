@@ -25,12 +25,12 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
         [ContextMenu("Get All Models")]
         public async void SetupAllModels()
         {
-            await SetupAllModelsAsync();
+            await GetAllModelsAsync();
         }
 
-        public async Task<(APIResponse Response, ModelListResponse Data)> SetupAllModelsAsync()
+        public async Task<(APIResponse Response, ModelListResponse Data)> GetAllModelsAsync()
         {
-            var content = await _oobaboogaAPIVariable.Get().GetAllModelAsync();
+            var content = await _oobaboogaAPIVariable.Get().GetAllModelsAsync();
             if (content.Response.IsError) return (content.Response, null);
             
             _modelList = content.Data;
@@ -49,10 +49,10 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
             await GetCurrentModelAsync();
         }
         
-        public async Task<(APIResponse Response, ModelInfoResponse Data)> GetCurrentModelAsync()
+        public async Task<(APIResponse GetCurrentModelResponse, ModelInfoResponse Data)> GetCurrentModelAsync()
         {
             var content = await _oobaboogaAPIVariable.Get().GetCurrentModelAsync();
-            if (content.Response.IsError) return (content.Response, null);
+            if (content.GetCurrentModelResponse.IsError) return (content.GetCurrentModelResponse, null);
             
             _currentModel = content.Data;
 
@@ -96,6 +96,24 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
 #endif
+        }
+        
+        public async Task<APIResponse> LoadModelAsync(string modelName)
+        {
+            if (!_modelList.model_names.Contains(modelName))
+            {
+                Debug.LogWarning("Couldn't load the model, because it doesn't exist in the current Model list. Maybe you forgot to load it first?");
+            }
+            
+            Debug.Log(modelName);
+            _currentModelIndex = _modelList.model_names.FindIndex(x => x == modelName);
+            APIResponse response = await _oobaboogaAPIVariable.Get().LoadModelAsync(modelName);
+            
+#if UNITY_EDITOR
+            EditorUtility.SetDirty(this);
+#endif
+
+            return response;
         }
         
         [ContextMenu("Unload Current Model")]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using DataStructures.Variables;
+using StableDiffusionRuntimeIntegration.SDConfig;
 using TMPro;
 using UnityEngine;
 

@@ -1,20 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
+using Features.Core.UI.Scripts.TransitionView;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Utils.CanvasNavigator
 {
     public class CanvasManager : MonoBehaviour
     {
         [SerializeField] private bool _includeInactive;
+        [SerializeField] private UnityEvent _onPrepareCanvases;
         
-        private List<CanvasController> canvasControllerList;
-        private CanvasController lastActiveCanvas;
+        private List<CanvasController> _canvasControllerList;
+        private CanvasController _lastActiveCanvas;
 
         private void Awake()
         {
-            canvasControllerList = GetComponentsInChildren<CanvasController>(_includeInactive).ToList();
-            canvasControllerList.ForEach(x =>
+            _canvasControllerList = GetComponentsInChildren<CanvasController>(_includeInactive).ToList();
+            _canvasControllerList.ForEach(x =>
             {
                 if (!x.gameObject.activeSelf)
                 {
@@ -22,37 +25,36 @@ namespace Utils.CanvasNavigator
                 }
                 x.gameObject.SetActive(false);
             });
+            _onPrepareCanvases.Invoke();
         
-            MenuType_SO startingMenu = canvasControllerList.Find(controller => controller.isStartMenu).canvasType;
+            MenuType_SO startingMenu = _canvasControllerList.Find(controller => controller.isStartMenu).canvasType;
             SwitchCanvas(startingMenu);
         }
 
         public void SwitchCanvas(MenuType_SO type)
         {
-            if (lastActiveCanvas != null)
+            if (_lastActiveCanvas != null)
             {
-                lastActiveCanvas.gameObject.SetActive(false);
+                _lastActiveCanvas.gameObject.Disable(DeactivationType.Disable);
             }
-            CanvasController desiredCanvas = canvasControllerList.Find(x => x.canvasType == type);
+            CanvasController desiredCanvas = _canvasControllerList.Find(x => x.canvasType == type);
             if (desiredCanvas != null)
             {
-                desiredCanvas.gameObject.SetActive(true);
-                lastActiveCanvas = desiredCanvas;
+                desiredCanvas.gameObject.Enable();
+                _lastActiveCanvas = desiredCanvas;
             }
             else
             {
                 Debug.LogWarning("Desired canvas was not found");
             }
-        
-        
         }
 
         public void CloseCanvas()
         {
-            if (lastActiveCanvas != null)
+            if (_lastActiveCanvas != null)
             {
-                lastActiveCanvas.gameObject.SetActive(false);
-                lastActiveCanvas = null;
+                _lastActiveCanvas.gameObject.Disable(DeactivationType.Disable);
+                _lastActiveCanvas = null;
             }
             else
             {

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace VENTUS.DataStructures.Variables
+namespace DataStructures.Variables
 {
     public class ScriptableObjectRegistrator : MonoBehaviour
     {

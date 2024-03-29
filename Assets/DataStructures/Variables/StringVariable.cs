@@ -1,5 +1,4 @@
 using UnityEngine;
-using VENTUS.DataStructures.Variables;
 
 namespace DataStructures.Variables
 {

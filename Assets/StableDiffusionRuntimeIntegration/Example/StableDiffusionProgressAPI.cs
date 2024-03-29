@@ -1,13 +1,11 @@
-using System;
 using System.Threading.Tasks;
 using DataStructures.Variables;
-using StableDiffusionRuntimeIntegration;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Core.UI
+namespace StableDiffusionRuntimeIntegration.Example
 {
     public class StableDiffusionProgressAPI : Text2ImageTaskCallback
     {

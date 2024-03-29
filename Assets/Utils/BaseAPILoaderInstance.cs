@@ -21,10 +21,5 @@ namespace Utils
         {
             return Task.FromResult(true);
         }
-
-        public virtual Task OnStart(Action<string> updateProgressMethod)
-        {
-            return Task.CompletedTask;
-        }
     }
 }

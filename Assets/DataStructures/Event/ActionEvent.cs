@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace VENTUS.DataStructures.Event
+namespace DataStructures.Event
 {
     [CreateAssetMenu(fileName = "new ActionEvent", menuName = "VENTUS/DataStructures/Action Event")]
     public class ActionEvent : ScriptableObject

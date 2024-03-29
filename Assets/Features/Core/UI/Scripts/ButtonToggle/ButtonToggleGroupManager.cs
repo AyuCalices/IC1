@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Features.Connection.UI
+namespace Features.Core.UI.Scripts.ButtonToggle
 {
     public class ButtonToggleGroupManager : MonoBehaviour
     {

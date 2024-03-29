@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Features.Connection.UI
+namespace Features.Core.UI.Scripts.ButtonToggle
 {
     public class TextButtonToggleElement : BaseButtonToggleElement
     {

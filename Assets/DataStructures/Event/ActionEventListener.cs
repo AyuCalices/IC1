@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace VENTUS.DataStructures.Event
+namespace DataStructures.Event
 {
     public class ActionEventListener : MonoBehaviour
     {

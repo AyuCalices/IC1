@@ -31,7 +31,7 @@ namespace StableDiffusionRuntimeIntegration.Editor
             if (GUILayout.Button("Get All Models"))
             {
                 // Code to execute when the button is clicked
-                samplersVariable.SetupAllModelsAsync();
+                samplersVariable.GetAllModelsAsync();
             }
             
             if (GUILayout.Button("Get Current Model"))

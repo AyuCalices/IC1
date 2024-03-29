@@ -1,4 +1,5 @@
 using Features.Connection.UI;
+using Features.Core.UI.Scripts.ButtonToggle;
 using StableDiffusionRuntimeIntegration;
 using TMPro;
 using UnityEngine;
