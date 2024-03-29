@@ -56,7 +56,7 @@ namespace Features.ModelLoading.Scripts
             (APIResponse Response, string CurrentModel) currentAPIModelContent = await TryGetCurrentAPIModel();
             if (currentAPIModelContent.Response.IsError)
             {
-                string errorMessage = $"An error occured while fetching the available Models! Error: {currentAPIModelContent.Response.ResponseCode} {currentAPIModelContent.Response.Result}";
+                string errorMessage = $"An error occured while fetching the available Models! Error: {currentAPIModelContent.Response.ResponseCode} {currentAPIModelContent.Response.Error}";
                 return (false, errorMessage);
             }
             _currentModelText.text = currentAPIModelContent.CurrentModel;
@@ -65,7 +65,7 @@ namespace Features.ModelLoading.Scripts
             (APIResponse Response, List<string> ModelList) modelListContent = await TryGetModelList();
             if (modelListContent.Response.IsError)
             {
-                string errorMessage = $"An error occured while fetching the available Models! Error: {modelListContent.Response.ResponseCode} {modelListContent.Response.Result}";
+                string errorMessage = $"An error occured while fetching the available Models! Error: {modelListContent.Response.ResponseCode} {modelListContent.Response.Error}";
                 return (false, errorMessage);
             }
 
@@ -87,14 +87,17 @@ namespace Features.ModelLoading.Scripts
         private void SetupVisuals((APIResponse Response, List<string> ModelList) modelListContent)
         {
             //load saved previous selected model
-            string serializedOptions = PlayerPrefs.GetString(GetType().ToString());
-            Debug.LogWarning(serializedOptions);
-            if (serializedOptions != "null")
+            string json = PlayerPrefs.GetString(GetType().ToString());
+            if (!string.IsNullOrEmpty(json))
             {
-                OptionsContainer previousOptions = JsonConvert.DeserializeObject<OptionsContainer>(serializedOptions);
+                OptionsContainer previousOptions = JsonConvert.DeserializeObject<OptionsContainer>(json);
             
                 //notify, if server model list isn't the same a local model list
-                if (!ModelListMatchesWithPrevious(previousOptions.options, modelListContent.ModelList))
+                if (previousOptions == null)
+                {
+                    optionsContainer = new OptionsContainer(0, modelListContent.ModelList);
+                }
+                else if (!ModelListMatchesWithPrevious(previousOptions.options, modelListContent.ModelList))
                 {
                     _notifyText.gameObject.SetActive(true);
                     _notifyText.text = "The model list changed from last session! Selected the first Model!";

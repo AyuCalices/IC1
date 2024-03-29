@@ -12,7 +12,7 @@ namespace Features.ModelLoading.Scripts
             APIResponse response = await InternalLoadModel(updateProgressMethod);
             if (response.IsError)
             {
-                string errorMessage = $"An error occured while fetching the available Models! Error: {response.ResponseCode} {response.Result}";
+                string errorMessage = $"An error occured while fetching the available Models! Error: {response.ResponseCode} {response.Error}";
                 return (false, errorMessage);
             }
 

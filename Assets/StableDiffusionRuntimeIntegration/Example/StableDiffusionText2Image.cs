@@ -6,7 +6,7 @@ using DataStructures.Variables;
 using StableDiffusionRuntimeIntegration.SDConfig;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
+using Utils;
 
 namespace StableDiffusionRuntimeIntegration.Example
 {
@@ -17,6 +17,7 @@ namespace StableDiffusionRuntimeIntegration.Example
         [Header("API")]
         [SerializeField] private StableDiffusionAPIVariable _stableDiffusionAPIVariable;
         [SerializeField] private SDSamplersVariable _sdSamplersVariable;
+        [SerializeField] private TMP_Text _errorMessage;
 
         [Header("Generation")] 
         [SerializeField] private TMP_InputField _characterNamePromptInputField;
@@ -29,6 +30,11 @@ namespace StableDiffusionRuntimeIntegration.Example
         [SerializeField] private int _height = 512;
         [SerializeField] private int _seed = -1;
 
+        private void Awake()
+        {
+            _errorMessage.gameObject.SetActive(false);
+        }
+
         [ContextMenu("Generate Txt2Img")]
         public async void GetTxt2Img()
         {
@@ -40,9 +46,9 @@ namespace StableDiffusionRuntimeIntegration.Example
             }
         }
 
-        //TODO: show text on error
         private async Task InternalGetTxt2Img()
         {
+            _errorMessage.gameObject.SetActive(false);
             SDInTxt2Img inTxt2Img = new SDInTxt2Img
             {
                 prompt = _characterNamePromptInputField.text + ":1.4, " + _contextPromptInputField.text + _additionalPrompt,
@@ -55,8 +61,13 @@ namespace StableDiffusionRuntimeIntegration.Example
                 sampler_name = _sdSamplersVariable.GetCurrent
             };
 
-            var content = await _stableDiffusionAPIVariable.Get().PostTextToImage(inTxt2Img);
-            if (content.Response.IsError) return;
+            (APIResponse Response, SDOutTxt2Img Data) content = await _stableDiffusionAPIVariable.Get().PostTextToImage(inTxt2Img);
+            if (content.Response.IsError)
+            {
+                _errorMessage.gameObject.SetActive(true);
+                _errorMessage.text = $"An error occured while generating the chat! Error: {content.Response.ResponseCode} {content.Response.Error}";
+                return;
+            }
 
             SDOutTxt2Img outTxt2Img = content.Data;
             bool hasImage = outTxt2Img.images != null && outTxt2Img.images.Count != 0;

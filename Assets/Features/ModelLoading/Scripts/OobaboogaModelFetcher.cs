@@ -22,7 +22,8 @@ namespace Features.ModelLoading.Scripts
         protected override async Task<(APIResponse Response, List<string> ModelList)> TryGetModelList()
         {
             (APIResponse Response, ModelListResponse Data) content = await _oobaboogaModelsVariable.GetAllModelsAsync();
-            
+
+            content.Data.model_names.Remove("None");
             return content.Response.IsError ? (content.Response, null) : (content.Response, content.Data.model_names);
         }
     }

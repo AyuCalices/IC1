@@ -18,6 +18,16 @@ namespace Features.Connection.UI
                 baseButtonCondition.OnConditionUpdate += CheckInteractable;
             }
         }
+        
+        private void OnEnable()
+        {
+            CheckInteractable();
+        }
+
+        private void OnDisable()
+        {
+            CheckInteractable();
+        }
 
         private void OnDestroy()
         {

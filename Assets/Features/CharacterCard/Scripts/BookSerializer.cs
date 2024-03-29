@@ -28,6 +28,8 @@ namespace Features.CharacterCard.Scripts
         public void Load()
         {
             string json = PlayerPrefs.GetString(GetType().ToString());
+            if (string.IsNullOrEmpty(json)) return;
+            
             HashSet<BookData> result = JsonConvert.DeserializeObject<HashSet<BookData>>(json);
             if (result != null)
             {

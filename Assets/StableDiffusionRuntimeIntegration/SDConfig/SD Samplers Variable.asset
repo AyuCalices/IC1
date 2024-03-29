@@ -45,4 +45,4 @@ MonoBehaviour:
   - PLMS
   - UniPC
   - LCM
-  _currentSampler: 0
+  _currentSampler: 1

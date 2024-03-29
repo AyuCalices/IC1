@@ -1,3 +1,4 @@
+using System;
 using DataStructures.Variables;
 using UnityEngine;
 
@@ -9,6 +10,11 @@ namespace Features.CharacterCard.Scripts
         protected override BookData SetStoredDefault()
         {
             return null;
+        }
+
+        private void OnDisable()
+        {
+            Restore();
         }
     }
 }

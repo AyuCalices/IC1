@@ -9,7 +9,7 @@ namespace Features.Connection.UI
     {
         [SerializeField] private TMP_InputField _directoryInputField;
         [SerializeField] private UnityEvent _onLoadComplete;
-    
+
         private void Start()
         {
             _directoryInputField.text = PlayerPrefs.GetString(GetGameObjectPath(gameObject));

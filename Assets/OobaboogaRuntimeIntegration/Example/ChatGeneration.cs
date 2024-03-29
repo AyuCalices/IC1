@@ -31,6 +31,7 @@ namespace OobaboogaRuntimeIntegration.Example
 
         [Header("User")]
         [SerializeField] private TMP_InputField _inputField;
+        [SerializeField] private TMP_Text _errorText;
         [SerializeField] private Button _submitButton;
         [SerializeField] private Button _regenerateButton;
         [SerializeField] private Button _deleteChatButton;
@@ -49,6 +50,7 @@ namespace OobaboogaRuntimeIntegration.Example
 
         private void Awake()
         {
+            _errorText.gameObject.SetActive(false);
             _inputField.onSubmit.AddListener(CommitUserMessage);
             _submitButton.onClick.AddListener(CommitUserMessage);
             _deleteChatButton.onClick.AddListener(DeleteChat);
@@ -142,9 +144,9 @@ namespace OobaboogaRuntimeIntegration.Example
             GenerateChatCompletion(true);
         }
         
-        //TODO: show text on error
         private void GenerateChatCompletion(bool continue_ = false)
         {
+            _errorText.gameObject.SetActive(false);
             UpdateCurrentlyGenerating(true);
             
             _chatMessageViews.Add(InstantiateMessage(_currentBook.Get().ImagePathAssistant, _currentBook.Get().Name2, ""));
@@ -168,8 +170,14 @@ namespace OobaboogaRuntimeIntegration.Example
             UpdateMessageContent(_chatMessageViews[^1], newText);
         }
 
-        private void OnComplete()
+        private void OnComplete(APIResponse response)
         {
+            if (response.IsError)
+            {
+                _errorText.gameObject.SetActive(true);
+                _errorText.text = $"An error occured while generating the chat! Error: {response.ResponseCode} {response.Error}";
+            }
+            
             _currentBook.Get().Messages.Add(new Message{Role = AssistantRole, Content = _chatMessageViews[^1].Content});
             UpdateCurrentlyGenerating(false);
         }

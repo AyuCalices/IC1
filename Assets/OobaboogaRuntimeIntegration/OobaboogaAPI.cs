@@ -68,7 +68,7 @@ namespace OobaboogaRuntimeIntegration
         /// https://github.com/oobabooga/text-generation-webui/wiki/03-‐-Parameters-Tab
         /// </summary>
         public void CreateCompletionStream(CompletionRequestContainer completionRequestContainer, CancellationTokenSource token, 
-            Action<(APIResponse Response, List<CompletionResponse> Data)> onResponseContent = null, Action onComplete = null)
+            Action<(APIResponse Response, List<CompletionResponse> Data)> onResponseContent = null, Action<APIResponse> onComplete = null)
         {
             CompletionRequest chatCompletionRequest = new CompletionRequest(true, completionRequestContainer);
             string url = $"{ServerUrl}/v1/completions";
@@ -96,7 +96,7 @@ namespace OobaboogaRuntimeIntegration
         /// https://github.com/oobabooga/text-generation-webui/wiki/03-‐-Parameters-Tab
         /// </summary>
         public void CreateChatCompletionStream(ChatCompletionRequestContainer chatCompletionRequestContainer, CancellationTokenSource token, 
-            Action<(APIResponse Response, List<ChatCompletionResponse> Data)> onResponseContent = null, Action onComplete = null)
+            Action<(APIResponse Response, List<ChatCompletionResponse> Data)> onResponseContent = null, Action<APIResponse> onComplete = null)
         {
             ChatCompletionRequest chatCompletionRequest = new ChatCompletionRequest(true, chatCompletionRequestContainer);
             string url = $"{ServerUrl}/v1/chat/completions";

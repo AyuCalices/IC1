@@ -22,7 +22,7 @@ namespace Utils
         #region Public Methods
         
         public static async void DispatchRequest<T>(string url, string webMethod, byte[] body, 
-            Func<string, List<T>> responseParseMethod, CancellationTokenSource token, Action<(APIResponse, List<T>)> onResponse = null, Action onComplete = null)
+            Func<string, List<T>> responseParseMethod, CancellationTokenSource token, Action<(APIResponse, List<T>)> onResponse = null, Action<APIResponse> onComplete = null)
         {
             using var request = UnityWebRequest.Put(url, body);
             request.method = webMethod;
@@ -30,6 +30,7 @@ namespace Utils
 
             var asyncOperation = request.SendWebRequest();
             
+            APIResponse response = new APIResponse();
             string previousResponse = string.Empty;
             while (!asyncOperation.isDone && !token.IsCancellationRequested)
             {
@@ -37,12 +38,9 @@ namespace Utils
                 if (!text.Equals(previousResponse))
                 {
                     previousResponse = text;
-                    
-                    APIResponse response = new APIResponse()
-                    {
-                        ResponseCode = request.responseCode,
-                        Result = request.result
-                    };
+
+                    response.ResponseCode = request.responseCode;
+                    response.Result = request.result;
                     
                     onResponse?.Invoke((response, responseParseMethod(text)));
                 }
@@ -50,8 +48,12 @@ namespace Utils
                 await Task.Yield();
             }
 
+            response.ResponseCode = request.responseCode;
+            response.Result = request.result;
+            
             if (request.result != UnityWebRequest.Result.Success)
             {
+                response.Error = request.error;
                 Debug.LogWarning($"Request Error: {request.responseCode} | {request.error}");
             }
             else
@@ -59,7 +61,7 @@ namespace Utils
                 Debug.LogWarning($"Finished request to {request.url} with result {request.responseCode} {request.result}");
             }
             
-            onComplete?.Invoke();
+            onComplete?.Invoke(response);
         }
         
         public static async Task<(APIResponse Response, T Data)> DispatchRequest<T>(string url, string webMethod, byte[] body = null, Func<string, T> responseParseMethod = null)
@@ -79,6 +81,7 @@ namespace Utils
             T data = default;
             if (request.result != UnityWebRequest.Result.Success)
             {
+                response.Error = request.error;
                 Debug.LogWarning($"Request Error to {request.url}: {request.responseCode} | {request.error} | {request.result}");
             }
             else
@@ -158,8 +161,10 @@ namespace Utils
             or UnityWebRequest.Result.DataProcessingError;
         public bool IsInProgress => Result is UnityWebRequest.Result.InProgress;
         public bool IsValid => Result is UnityWebRequest.Result.Success or UnityWebRequest.Result.InProgress;
+        
         public long ResponseCode { get; set; }
         public UnityWebRequest.Result Result { get; set; }
+        public string Error { get; set; }
     }
     
     public static class ExtensionMethods

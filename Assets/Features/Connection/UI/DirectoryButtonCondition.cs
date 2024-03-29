@@ -1,3 +1,4 @@
+using System;
 using DataStructures.Variables;
 using TMPro;
 using UnityEngine;
@@ -18,11 +19,6 @@ namespace Features.Connection.UI
             _directoryPath.onValueChanged.AddListener(_ => InternalOnConditionUpdate());
         }
 
-        private void OnDestroy()
-        {
-            _directoryPath.onValueChanged.RemoveListener(_ => InternalOnConditionUpdate());
-        }
-
         private void OnEnable()
         {
             _errorText.gameObject.SetActive(_errorTextActiveState);
@@ -33,6 +29,11 @@ namespace Features.Connection.UI
         {
             _errorText.gameObject.SetActive(false);
             InternalOnConditionUpdate();
+        }
+
+        private void OnDestroy()
+        {
+            _directoryPath.onValueChanged.RemoveListener(_ => InternalOnConditionUpdate());
         }
 
         public override bool ButtonIsEnabled()
