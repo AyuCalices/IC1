@@ -104,10 +104,9 @@ namespace OobaboogaRuntimeIntegration.OobaboogaConfig
             {
                 Debug.LogWarning("Couldn't load the model, because it doesn't exist in the current Model list. Maybe you forgot to load it first?");
             }
-            
-            Debug.Log(modelName);
+
             _currentModelIndex = _modelList.model_names.FindIndex(x => x == modelName);
-            APIResponse response = await _oobaboogaAPIVariable.Get().LoadModelAsync(modelName);
+            APIResponse response = (await _oobaboogaAPIVariable.Get().LoadModelAsync(modelName));
             
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);

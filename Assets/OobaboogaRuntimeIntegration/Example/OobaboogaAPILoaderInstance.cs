@@ -5,7 +5,6 @@ using Features.Core.UI.Scripts.ButtonToggle;
 using OobaboogaRuntimeIntegration.OobaboogaConfig;
 using UnityEngine;
 using Utils;
-using Debug = UnityEngine.Debug;
 
 namespace OobaboogaRuntimeIntegration.Example
 {
