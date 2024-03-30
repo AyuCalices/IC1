@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace StableDiffusionRuntimeIntegration
 {
-    public class StableDiffusionImageReference : Text2ImageTaskCallback
+    public class StableDiffusionImageReference : MonoBehaviour
     {
         [SerializeField] private Image _image;
         [SerializeField] private bool _clearOnEnable;
@@ -26,13 +26,6 @@ namespace StableDiffusionRuntimeIntegration
             {
                 UnloadImage();
             }
-        }
-
-        public override void OnPerformTaskCallback(Task task) { }
-
-        public override async void OnTaskCompletedCallback(string imagePath)
-        {
-            LoadImageFromPath(imagePath);
         }
 
         public void LoadImageFromPath(string imagePath)

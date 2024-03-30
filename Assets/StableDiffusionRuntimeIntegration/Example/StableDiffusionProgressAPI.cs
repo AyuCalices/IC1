@@ -1,3 +1,5 @@
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 using DataStructures.Variables;
 using TMPro;
@@ -7,7 +9,7 @@ using UnityEngine.UI;
 
 namespace StableDiffusionRuntimeIntegration.Example
 {
-    public class StableDiffusionProgressAPI : Text2ImageTaskCallback
+    public class StableDiffusionProgressAPI : MonoBehaviour
     {
         [Header("Request")]
         [SerializeField] private StableDiffusionAPIVariable _stableDiffusionAPIVariable;
@@ -17,21 +19,21 @@ namespace StableDiffusionRuntimeIntegration.Example
         [SerializeField] private TMP_Text _sliderText;
         
         private const int TaskDelay = 1000;
-        
-        public override async void OnPerformTaskCallback(Task task)
-        {
-            await RequestProgressAsync(task);
-        }
+        private bool _startedUpdateProgressBar;
+        private CancellationTokenSource _cancellationToken;
 
-        public override void OnTaskCompletedCallback(string imagePath)
+        private void OnDestroy()
         {
             FinishProgressBar();
         }
 
-        private async Task RequestProgressAsync(Task task)
+        public async void UpdateRequestProgressAsync(Task task)
         {
+            _startedUpdateProgressBar = true;
+            _cancellationToken = new CancellationTokenSource();
+            
             InitializeProgressbar("Waiting ...");
-            while (true)
+            while (!_cancellationToken.IsCancellationRequested)
             {
                 var content = await _stableDiffusionAPIVariable.Get().GetProgressAsync();
                 if (content.Response.IsError) break;
@@ -43,6 +45,25 @@ namespace StableDiffusionRuntimeIntegration.Example
 
                 await Task.Delay(TaskDelay);
             }
+        }
+        
+        public void FinishProgressBar()
+        {
+            if (!_startedUpdateProgressBar) return;
+            
+#if UNITY_EDITOR
+            if (!EditorApplication.isPlaying)
+            {
+                EditorUtility.ClearProgressBar();
+            }
+#endif
+            if (Application.isPlaying)
+            {
+                UpdateSlider(1, "Done");
+            }
+
+            _cancellationToken.Cancel();
+            _startedUpdateProgressBar = false;
         }
         
         private void InitializeProgressbar(string message)
@@ -72,20 +93,6 @@ namespace StableDiffusionRuntimeIntegration.Example
             if (Application.isPlaying)
             {
                 UpdateSlider(progress.progress, $"{info} ETA: {progress.eta_relative:F0}s");
-            }
-        }
-        
-        private void FinishProgressBar()
-        {
-#if UNITY_EDITOR
-            if (!EditorApplication.isPlaying)
-            {
-                EditorUtility.ClearProgressBar();
-            }
-#endif
-            if (Application.isPlaying)
-            {
-                UpdateSlider(1, "Done");
             }
         }
 

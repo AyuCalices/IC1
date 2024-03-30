@@ -8,7 +8,7 @@ namespace Features.Connection.UI
 {
     public class ConditionalButtonManager : MonoBehaviour
     {
-        [SerializeField] private Button _button;
+        [SerializeField] private List<Button> _buttons;
         [SerializeField] private List<BaseButtonCondition> _baseButtonCondition;
 
         private void Awake()
@@ -39,7 +39,10 @@ namespace Features.Connection.UI
 
         public void CheckInteractable()
         {
-            _button.interactable = _baseButtonCondition.All(x => !x.isActiveAndEnabled || x.ButtonIsEnabled());
+            foreach (Button button in _buttons)
+            {
+                button.interactable = _baseButtonCondition.All(x => !x.isActiveAndEnabled || x.ButtonIsEnabled());
+            }
         }
     }
 }

@@ -1,19 +1,17 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using DataStructures.Variables;
 using StableDiffusionRuntimeIntegration.SDConfig;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using Utils;
 
 namespace StableDiffusionRuntimeIntegration.Example
 {
     public class StableDiffusionText2Image : MonoBehaviour
     {
-        [SerializeField] private List<Text2ImageTaskCallback> _baseTaskCallbacks;
-        
         [Header("API")]
         [SerializeField] private StableDiffusionAPIVariable _stableDiffusionAPIVariable;
         [SerializeField] private SDSamplersVariable _sdSamplersVariable;
@@ -30,8 +28,15 @@ namespace StableDiffusionRuntimeIntegration.Example
         [SerializeField] private int _height = 512;
         [SerializeField] private int _seed = -1;
 
+        [Header("Events")] 
+        [SerializeField] private UnityEvent<Task> _onStartGenerating;
+        [SerializeField] private UnityEvent<string> _onGeneratingSuccessful;
+        [SerializeField] private UnityEvent<string> _onGeneratingFailed;
+
+        private static bool _currentlyGenerating;
+
         private void Awake()
-        {
+        { 
             _errorMessage.gameObject.SetActive(false);
         }
 
@@ -39,11 +44,8 @@ namespace StableDiffusionRuntimeIntegration.Example
         public async void GetTxt2Img()
         {
             Task task = InternalGetTxt2Img();
-
-            foreach (Text2ImageTaskCallback baseTaskCallback in _baseTaskCallbacks)
-            {
-                baseTaskCallback.OnPerformTaskCallback(task);
-            }
+            
+            _onStartGenerating?.Invoke(task);
         }
 
         private async Task InternalGetTxt2Img()
@@ -65,7 +67,9 @@ namespace StableDiffusionRuntimeIntegration.Example
             if (content.Response.IsError)
             {
                 _errorMessage.gameObject.SetActive(true);
-                _errorMessage.text = $"An error occured while generating the chat! Error: {content.Response.ResponseCode} {content.Response.Error}";
+                string errorMessage = $"An error occured while generating the chat! Error: {content.Response.ResponseCode} {content.Response.Error}";
+                _errorMessage.text = errorMessage;
+                _onGeneratingFailed?.Invoke(errorMessage);
                 return;
             }
 
@@ -80,7 +84,6 @@ namespace StableDiffusionRuntimeIntegration.Example
                     {
                         byte[] imageBytes = Convert.FromBase64String(image);
                         string filePath = Path.Combine(Application.persistentDataPath, DateTime.Now.ToString("yyyyMMddHHmmss") + ".png");
-                        
                         Debug.Log("Trying to save to: " + filePath);
 
                         await using (FileStream sourceStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 4096, useAsync: true))
@@ -88,17 +91,20 @@ namespace StableDiffusionRuntimeIntegration.Example
                             await sourceStream.WriteAsync(imageBytes, 0, imageBytes.Length);
                         }
                         
-                        foreach (Text2ImageTaskCallback text2ImageTaskCallback in _baseTaskCallbacks)
-                        {
-                            text2ImageTaskCallback.OnTaskCompletedCallback(filePath);
-                        }
+                        _onGeneratingSuccessful?.Invoke(filePath);
+                        return;
                     }
                     catch (Exception ex)
                     {
                         Debug.LogError(ex.Message);
+                        _onGeneratingFailed?.Invoke("ex.Message");
                         throw;
                     }
                 }
+            }
+            else
+            {
+                _onGeneratingFailed?.Invoke("The response didn't return an image.");
             }
         }
     }
