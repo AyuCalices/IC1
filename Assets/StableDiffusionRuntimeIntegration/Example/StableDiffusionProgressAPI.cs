@@ -22,6 +22,11 @@ namespace StableDiffusionRuntimeIntegration.Example
         private bool _startedUpdateProgressBar;
         private CancellationTokenSource _cancellationToken;
 
+        private void OnDisable()
+        {
+            FinishProgressBar();
+        }
+
         private void OnDestroy()
         {
             FinishProgressBar();

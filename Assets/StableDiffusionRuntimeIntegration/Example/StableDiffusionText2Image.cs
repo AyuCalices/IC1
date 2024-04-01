@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using DataStructures.Variables;
 using StableDiffusionRuntimeIntegration.SDConfig;
@@ -34,10 +35,19 @@ namespace StableDiffusionRuntimeIntegration.Example
         [SerializeField] private UnityEvent<string> _onGeneratingFailed;
 
         private static bool _currentlyGenerating;
+        private CancellationTokenSource _cancellationToken;
 
         private void Awake()
         { 
             _errorMessage.gameObject.SetActive(false);
+        }
+
+        private void OnDestroy()
+        {
+            if (_currentlyGenerating)
+            {
+                _cancellationToken.Cancel();
+            }
         }
 
         [ContextMenu("Generate Txt2Img")]
@@ -50,6 +60,9 @@ namespace StableDiffusionRuntimeIntegration.Example
 
         private async Task InternalGetTxt2Img()
         {
+            _currentlyGenerating = true;
+            _cancellationToken = new CancellationTokenSource();
+            
             _errorMessage.gameObject.SetActive(false);
             SDInTxt2Img inTxt2Img = new SDInTxt2Img
             {
@@ -82,6 +95,8 @@ namespace StableDiffusionRuntimeIntegration.Example
                 {
                     try
                     {
+                        if (_cancellationToken.IsCancellationRequested) return;
+                        
                         byte[] imageBytes = Convert.FromBase64String(image);
                         string filePath = Path.Combine(Application.persistentDataPath, DateTime.Now.ToString("yyyyMMddHHmmss") + ".png");
                         Debug.Log("Trying to save to: " + filePath);
@@ -92,7 +107,6 @@ namespace StableDiffusionRuntimeIntegration.Example
                         }
                         
                         _onGeneratingSuccessful?.Invoke(filePath);
-                        return;
                     }
                     catch (Exception ex)
                     {
@@ -106,6 +120,8 @@ namespace StableDiffusionRuntimeIntegration.Example
             {
                 _onGeneratingFailed?.Invoke("The response didn't return an image.");
             }
+            
+            _currentlyGenerating = false;
         }
     }
 }
