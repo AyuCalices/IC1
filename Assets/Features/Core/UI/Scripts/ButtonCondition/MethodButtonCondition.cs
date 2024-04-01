@@ -6,6 +6,7 @@ namespace Features.Core.UI.Scripts.ButtonCondition
     public class MethodButtonCondition : BaseButtonCondition
     {
         [SerializeField] private bool _buttonDisabledAtSpawn;
+        [SerializeField] private bool _buttonDisabledAtEnabled;
         
         private bool _buttonEnabled;
         
@@ -16,6 +17,8 @@ namespace Features.Core.UI.Scripts.ButtonCondition
 
         private void OnEnable()
         {
+            _buttonEnabled = !_buttonDisabledAtEnabled;
+            
             InternalOnConditionUpdate();
         }
 

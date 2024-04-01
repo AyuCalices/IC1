@@ -15,7 +15,9 @@ MonoBehaviour:
   _oobaboogaAPIVariable: {fileID: 11400000, guid: a3f4c16cb0d96f041b10167c70d5b575, type: 2}
   _modelList:
     model_names:
+    - KoboldAI_GPT-J-6B-Skein
     - llama-2-13b-chat.Q4_K_M.gguf
+    - mistralai_Mistral-7B-v0.1
     - TheBloke_MythoLogic-Mini-7B-GPTQ
     - TheBloke_storytime-13B-GPTQ
-  _currentModelIndex: 2
+  _currentModelIndex: 4

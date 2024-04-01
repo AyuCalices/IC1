@@ -29,36 +29,47 @@ namespace Utils
             request.SetRequestHeader("Content-Type", "application/json"); //TODO: remove magic variable
 
             var asyncOperation = request.SendWebRequest();
-            
             APIResponse response = new APIResponse();
-            string previousResponse = string.Empty;
-            while (!asyncOperation.isDone && !token.IsCancellationRequested)
+            
+            try
             {
-                string text = request.downloadHandler.text;
-                if (!text.Equals(previousResponse))
+                string previousResponse = string.Empty;
+                while (!asyncOperation.isDone && !token.IsCancellationRequested)
                 {
-                    previousResponse = text;
+                    string text = request.downloadHandler.text;
+                    if (!text.Equals(previousResponse))
+                    {
+                        previousResponse = text;
 
-                    response.ResponseCode = request.responseCode;
-                    response.Result = request.result;
-                    
-                    onResponse?.Invoke((response, responseParseMethod(text)));
+                        response.ResponseCode = request.responseCode;
+                        response.Result = request.result;
+
+                        List<T> parsedContent = responseParseMethod(text);
+                        onResponse?.Invoke((response, parsedContent));
+                    }
+
+                    await Task.Yield();
                 }
 
-                await Task.Yield();
+                response.ResponseCode = request.responseCode;
+                response.Result = request.result;
+                
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    response.Error = request.error;
+                    Debug.LogWarning($"Request Error: {request.responseCode} | {request.error}");
+                }
+                else
+                {
+                    Debug.Log($"Finished request to {request.url} with result {request.responseCode} {request.result}");
+                }
             }
-
-            response.ResponseCode = request.responseCode;
-            response.Result = request.result;
-            
-            if (request.result != UnityWebRequest.Result.Success)
+            catch (Exception e)
             {
-                response.Error = request.error;
-                Debug.LogWarning($"Request Error: {request.responseCode} | {request.error}");
-            }
-            else
-            {
-                Debug.LogWarning($"Finished request to {request.url} with result {request.responseCode} {request.result}");
+                response.ResponseCode = 500;
+                response.Result = UnityWebRequest.Result.DataProcessingError;
+                response.Error = e.ToString();
+                Debug.LogWarning(e);
             }
             
             onComplete?.Invoke(response);
@@ -77,24 +88,34 @@ namespace Utils
                 ResponseCode = request.responseCode,
                 Result = request.result
             };
-
             T data = default;
-            if (request.result != UnityWebRequest.Result.Success)
+            
+            try
             {
-                response.Error = request.error;
-                Debug.LogWarning($"Request Error to {request.url}: {request.responseCode} | {request.error} | {request.result}");
-            }
-            else
-            {
-                Debug.LogWarning($"Finished request to {request.url} with result {request.responseCode} {request.result}");
-                if (responseParseMethod == null)
+                if (request.result != UnityWebRequest.Result.Success)
                 {
-                    data = JsonConvert.DeserializeObject<T>(request.downloadHandler.text);
+                    response.Error = request.error;
+                    Debug.LogWarning($"Request Error to {request.url}: {request.responseCode} | {request.error} | {request.result}");
                 }
                 else
                 {
-                    data = responseParseMethod.Invoke(request.downloadHandler.text);
+                    Debug.Log($"Finished request to {request.url} with result {request.responseCode} {request.result}");
+                    if (responseParseMethod == null)
+                    {
+                        data = JsonConvert.DeserializeObject<T>(request.downloadHandler.text);
+                    }
+                    else
+                    {
+                        data = responseParseMethod.Invoke(request.downloadHandler.text);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                response.ResponseCode = 500;
+                response.Result = UnityWebRequest.Result.DataProcessingError;
+                response.Error = UnityWebRequest.Result.DataProcessingError.ToString();
+                Debug.LogWarning(e);
             }
             
             return (response, data);

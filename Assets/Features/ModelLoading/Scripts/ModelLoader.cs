@@ -55,6 +55,7 @@ namespace Features.ModelLoading.Scripts
                 if (!result.IsValid)
                 {
                     _onLoadFailed?.Invoke(result.ErrorMessage);
+                    return;
                 }
             }
             _timeoutDelta = 0f;

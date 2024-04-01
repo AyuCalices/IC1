@@ -10,9 +10,10 @@ namespace Features.ModelLoading.Scripts
         public async Task<(bool IsValid, string ErrorMessage)> LoadModel(Action<string> updateProgressMethod)
         {
             APIResponse response = await InternalLoadModel(updateProgressMethod);
+            Debug.LogWarning(response.ResponseCode + " " + response.Error + " " + response.Result + " " + response.IsError);
             if (response.IsError)
             {
-                string errorMessage = $"An error occured while fetching the available Models! Error: {response.ResponseCode} {response.Error}";
+                string errorMessage = $"An error occured while loading the Model! Error: {response.ResponseCode} {response.Error}";
                 return (false, errorMessage);
             }
 

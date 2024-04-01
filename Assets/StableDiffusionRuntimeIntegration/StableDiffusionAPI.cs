@@ -42,16 +42,11 @@ namespace StableDiffusionRuntimeIntegration
             return (await APICore.DispatchRequest<SDOutModel[]>(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(loadModelRequest))).Response;
         }
         
-        private string ParseResponse(string responseText)
+        public async Task<(APIResponse Response, string Data)> InterruptGeneration()
         {
-            JObject obj = JObject.Parse(responseText);
-            JToken currentModelSha256 = obj["sd_checkpoint_hash"];
-            if (currentModelSha256 != null)
-            {
-                return currentModelSha256.Value<string>();
-            }
+            string url = $"{ServerUrl}/sdapi/v1/interrupt";
             
-            return "";
+            return await APICore.DispatchRequest<string>(url, UnityWebRequest.kHttpVerbPOST);
         }
         
         public async Task<(APIResponse Response, string Data)> GetSDCheckpointSha256Async()
@@ -71,6 +66,18 @@ namespace StableDiffusionRuntimeIntegration
         {
             string url = $"{ServerUrl}/sdapi/v1/txt2img";
             return await APICore.DispatchRequest<SDOutTxt2Img>(url, UnityWebRequest.kHttpVerbPOST, APICore.CreateBody(inTxt2Img));
+        }
+        
+        private string ParseResponse(string responseText)
+        {
+            JObject obj = JObject.Parse(responseText);
+            JToken currentModelSha256 = obj["sd_checkpoint_hash"];
+            if (currentModelSha256 != null)
+            {
+                return currentModelSha256.Value<string>();
+            }
+            
+            return "";
         }
     }
     
