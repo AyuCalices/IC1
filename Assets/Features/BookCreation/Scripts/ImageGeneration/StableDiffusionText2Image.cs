@@ -84,7 +84,7 @@ namespace Features.BookCreation.Scripts.ImageGeneration
                 _onGeneratingFailed?.Invoke(errorMessage);
                 return;
             }
-
+            
             SDOutTxt2Img outTxt2Img = content.Data;
             bool hasImage = outTxt2Img.images != null && outTxt2Img.images.Count != 0;
             

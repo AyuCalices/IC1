@@ -48,6 +48,13 @@ namespace Features._Core.API.StableDiffusion.Scripts
             return await APICore.DispatchRequest<string>(url, UnityWebRequest.kHttpVerbPOST);
         }
         
+        public async Task<(APIResponse Response, string Data)> SkipGeneration()
+        {
+            string url = $"{ServerUrl}/sdapi/v1/skip";
+            
+            return await APICore.DispatchRequest<string>(url, UnityWebRequest.kHttpVerbPOST);
+        }
+        
         public async Task<(APIResponse Response, string Data)> GetSDCheckpointSha256Async()
         {
             string url = $"{ServerUrl}/sdapi/v1/options";
