@@ -19,7 +19,7 @@ namespace Features.Connection.Scripts.APILoader
 
         public override async Task<bool> TryStartup(Action<string> updateProgressMethod)
         {
-            updateProgressMethod.Invoke("Setup Image Generation API ...");
+            updateProgressMethod.Invoke("Checking Image Generation API ...");
             return (await _sdModelsVariable.GetAllModelsAsync()).Response.IsValid &&
                    (await _sdSamplersVariable.SetupSampler()).Response.IsValid;
         }

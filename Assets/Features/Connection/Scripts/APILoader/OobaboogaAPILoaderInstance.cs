@@ -19,7 +19,7 @@ namespace Features.Connection.Scripts.APILoader
 
         public override async Task<bool> TryStartup(Action<string> updateProgressMethod)
         {
-            updateProgressMethod.Invoke("Setup Text Generation API ...");
+            updateProgressMethod.Invoke("Checking Text Generation API ...");
             return (await _oobaboogaModelsVariable.GetAllModelsAsync()).Response.IsValid;
         }
     }
