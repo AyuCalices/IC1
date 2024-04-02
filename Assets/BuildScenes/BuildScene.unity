@@ -10178,7 +10178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48956ebcaad6e694f8ee8d48beec1ee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buttons: []
+  _buttons:
+  - {fileID: 1238925185}
   _baseButtonCondition:
   - {fileID: 130594075}
   - {fileID: 1598793562}
@@ -10214,6 +10215,17 @@ MonoBehaviour:
   _isRemoteModeButtonRotationManager: {fileID: 1665338455}
   _remoteServerUrl: {fileID: 1032523933}
   _localServerUrl: {fileID: 1656189889}
+--- !u!114 &1238925185 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1052958043392444675, guid: 0960a908be2e80946beb29e3a37e8fab, type: 3}
+  m_PrefabInstance: {fileID: 2557681282196760901}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438380395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1277445556
 PrefabInstance:
   m_ObjectHideFlags: 0
