@@ -19,4 +19,4 @@ MonoBehaviour:
     - mistralai_Mistral-7B-v0.1
     - TheBloke_MythoLogic-Mini-7B-GPTQ
     - TheBloke_storytime-13B-GPTQ
-  _currentModelIndex: 1
+  _currentModelIndex: 3

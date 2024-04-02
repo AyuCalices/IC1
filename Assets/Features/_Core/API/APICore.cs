@@ -31,45 +31,42 @@ namespace Features._Core.API
             var asyncOperation = request.SendWebRequest();
             APIResponse response = new APIResponse();
             
-            try
+            string previousResponse = string.Empty;
+            while (!asyncOperation.isDone && !token.IsCancellationRequested)
             {
-                string previousResponse = string.Empty;
-                while (!asyncOperation.isDone && !token.IsCancellationRequested)
+                string text = request.downloadHandler.text;
+                if (!text.Equals(previousResponse))
                 {
-                    string text = request.downloadHandler.text;
-                    if (!text.Equals(previousResponse))
+                    previousResponse = text;
+
+                    response.ResponseCode = request.responseCode;
+                    response.Result = request.result;
+
+                    try
                     {
-                        previousResponse = text;
-
-                        response.ResponseCode = request.responseCode;
-                        response.Result = request.result;
-
                         List<T> parsedContent = responseParseMethod(text);
                         onResponse?.Invoke((response, parsedContent));
                     }
-
-                    await Task.Yield();
+                    catch (Exception e)
+                    {
+                        Debug.LogWarning("Couldn't parse the Response text. Error: " + e);
+                    }
                 }
 
-                response.ResponseCode = request.responseCode;
-                response.Result = request.result;
-                
-                if (request.result != UnityWebRequest.Result.Success)
-                {
-                    response.Error = request.error;
-                    Debug.LogWarning($"Request Error: {request.responseCode} | {request.error}");
-                }
-                else
-                {
-                    Debug.Log($"Finished request to {request.url} with result {request.responseCode} {request.result}");
-                }
+                await Task.Yield();
             }
-            catch (Exception e)
+
+            response.ResponseCode = request.responseCode;
+            response.Result = request.result;
+            
+            if (request.result != UnityWebRequest.Result.Success)
             {
-                response.ResponseCode = 500;
-                response.Result = UnityWebRequest.Result.DataProcessingError;
-                response.Error = UnityWebRequest.Result.DataProcessingError.ToString();
-                Debug.LogWarning(e);
+                response.Error = request.error;
+                Debug.LogWarning($"Request Error: {request.responseCode} | {request.error}");
+            }
+            else
+            {
+                Debug.Log($"Finished request to {request.url} with result {request.responseCode} {request.result}");
             }
             
             onComplete?.Invoke(response);
