@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0d297e155f389e40a9856d64577033d, type: 3}
+  m_Name: SD Models Variable
+  m_EditorClassIdentifier: 
+  _stableDiffusionAPIVariable: {fileID: 11400000, guid: dfd44a0a12a6c7f4cbf9d1c2a97f33d3, type: 2}
+  _modelList:
+  - rid: 2586739689171714048
+  - rid: 2586739689171714049
+  - rid: 2586739689171714050
+  - rid: 2586739689171714051
+  - rid: 2586739689171714052
+  - rid: 2586739689171714053
+  _currentModelIndex: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 2586739689171714048
+      type: {class: SDOutModel, ns: Features._Core.API.StableDiffusion.Scripts, asm: Assembly-CSharp}
+      data:
+        title: cyberrealistic_v42.safetensors [93ed864a22]
+        model_name: cyberrealistic_v42
+        hash: 93ed864a22
+        sha256: 93ed864a2245c0ec0338fd4681595ba5fa7c397764798de8ef0a9bdbc4946216
+        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\cyberrealistic_v42.safetensors
+        config: 
+    - rid: 2586739689171714049
+      type: {class: SDOutModel, ns: Features._Core.API.StableDiffusion.Scripts, asm: Assembly-CSharp}
+      data:
+        title: dreamshaperXL_turboDpmppSDE.safetensors [676f0d60c8]
+        model_name: dreamshaperXL_turboDpmppSDE
+        hash: 676f0d60c8
+        sha256: 676f0d60c8e860146d5e8a0d802599cadd04e7cadf85c283f189f41f01c9e359
+        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\dreamshaperXL_turboDpmppSDE.safetensors
+        config: 
+    - rid: 2586739689171714050
+      type: {class: SDOutModel, ns: Features._Core.API.StableDiffusion.Scripts, asm: Assembly-CSharp}
+      data:
+        title: ghostmix_v20Bakedvae.safetensors [e3edb8a26f]
+        model_name: ghostmix_v20Bakedvae
+        hash: e3edb8a26f
+        sha256: e3edb8a26f44dfddc124129004b5ded3378be974b8d3bf82f43b9660d416d3d1
+        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\ghostmix_v20Bakedvae.safetensors
+        config: 
+    - rid: 2586739689171714051
+      type: {class: SDOutModel, ns: Features._Core.API.StableDiffusion.Scripts, asm: Assembly-CSharp}
+      data:
+        title: henmixReal_v5c.safetensors
+        model_name: henmixReal_v5c
+        hash: 
+        sha256: 
+        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\henmixReal_v5c.safetensors
+        config: 
+    - rid: 2586739689171714052
+      type: {class: SDOutModel, ns: Features._Core.API.StableDiffusion.Scripts, asm: Assembly-CSharp}
+      data:
+        title: neverendingDreamNED_v122BakedVae.safetensors [ecefb796ff]
+        model_name: neverendingDreamNED_v122BakedVae
+        hash: ecefb796ff
+        sha256: ecefb796ffcb7e4099df12f6419dffad671caa88780ff84fac9d680947173a0f
+        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\neverendingDreamNED_v122BakedVae.safetensors
+        config: 
+    - rid: 2586739689171714053
+      type: {class: SDOutModel, ns: Features._Core.API.StableDiffusion.Scripts, asm: Assembly-CSharp}
+      data:
+        title: rpg_v5.safetensors [bb7e29def5]
+        model_name: rpg_v5
+        hash: bb7e29def5
+        sha256: bb7e29def5e64f1a303bf0d87195b7e88f4d463696b532c6cdfd109fbec4fd9e
+        filename: C:\Custom\IndependantCoursework1\stable-diffusion-webui\models\Stable-diffusion\rpg_v5.safetensors
+        config: 
