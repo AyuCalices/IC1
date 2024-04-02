@@ -6,7 +6,7 @@ The pre-release can be downloaded [here]([https://github.com/AyuCalices/BeforeTh
 
 ## Credits :bow:
 :wrench: **Utils**
-* dobrado76: [Stable Diffusion Unity Integration]([https://joelsteudler.itch.io/retro-fantasy-music-pack-vol-2](https://github.com/dobrado76/Stable-Diffusion-Unity-Integration))
+* dobrado76: [Stable Diffusion Unity Integration](https://github.com/dobrado76/Stable-Diffusion-Unity-Integration)
 * srcnalt: [OpenAI-Unity](https://github.com/srcnalt/OpenAI-Unity)
 * Oobabooga: [Text Generation WebUI](https://github.com/oobabooga/text-generation-webui)
 
