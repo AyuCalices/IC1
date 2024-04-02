@@ -2,7 +2,7 @@
 A simple frontend for chat and storywriting which uses Stable Diffusion Automatic1111 and Oobabooga as backend.
 This project was created during a Uni course at HTW, Berlin.
 
-The pre-release can be downloaded [here](https://github.com/AyuCalices/IC1/releases/tag/v1.0.0)(Latest version: Version 1.0.0).
+The pre-release can be downloaded [here] (https://github.com/AyuCalices/IC1/releases/tag/v1.0.0)(Latest version: Version 1.0.0).
 
 ## Credits :bow:
 :wrench: **Utils**
