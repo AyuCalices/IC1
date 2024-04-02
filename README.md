@@ -1,4 +1,4 @@
-# Chat and image generation fronend
+# Chat and image generation frontend
 A simple frontend for chat and storywriting which uses Stable Diffusion Automatic1111 and Oobabooga as backends.
 This project was created during a Uni course at HTW, Berlin.
 
